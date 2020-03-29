@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "outDir": "./build",
+    "baseUrl": "./server",
+    "moduleResolution": "node",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  },
+  "include": ["server/**/*.ts"],
+  "exclude": ["node_modules"]
+}

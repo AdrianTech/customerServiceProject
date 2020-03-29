@@ -1,41 +1,39 @@
 {
-  "name": "vueproject",
-  "version": "0.1.0",
-  "private": true,
+  "name": "cls",
+  "version": "1.0.0",
+  "description": "Client management system",
+  "main": "server.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "client": "npm run serve --prefix client",
+    "server": "nodemon server/server.ts --ignore client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node build/server.js",
+    "build": "tsc"
   },
+  "author": "Adriantech",
+  "license": "ISC",
   "dependencies": {
-    "core-js": "^3.4.4",
-    "vue": "^2.6.10"
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment-timezone": "^0.5.27",
+    "mongoose": "^5.9.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.2",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/moment-timezone": "^0.5.12",
+    "@types/mongoose": "^5.7.1",
+    "@types/node": "^13.7.1",
+    "concurrently": "^5.1.0"
+  }
 }

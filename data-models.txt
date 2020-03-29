@@ -1,0 +1,7 @@
+Client {
+	fullname: string,
+	type-of-service: string,
+	startTime: string,
+	finishTime: string,
+	active: boolean,
+}
