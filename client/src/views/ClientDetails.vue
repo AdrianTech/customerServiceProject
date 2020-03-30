@@ -1,22 +1,12 @@
 <template>
   <div class="dashboard-details">
     <div class="name">
-      <h2>{{ client.fullname }}</h2>
+      <h2>{{ fullname }}</h2>
     </div>
-    <h3>Active services ({{ client.typeOfService.length }})</h3>
-    <div class="active-services" :class="[client.typeOfService.length < 2 ? test : '']">
-      <Service v-for="service in client.typeOfService" :key="service._id" :service="service" />
+    <h3>Active services ({{ typeOfService.length }})</h3>
+    <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
+      <Service v-for="service in typeOfService" :key="service._id" :service="service" />
     </div>
-    <!-- <div class="actions">
-      <div class="send-email">
-        <i class="material-icons">email</i>
-        <p>Send an email</p>
-      </div>
-      <div class="delete">
-        <i class="material-icons">delete_forever</i>
-        <p>Delete forever</p>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -26,9 +16,12 @@ export default {
   components: { Service },
   name: "ClientDetails",
   data() {
+    const { fullname, typeOfService, notes } = this.$route.params;
     return {
-      client: this.$route.params,
-      test: "test"
+      extraWidth: "extraWidth",
+      fullname,
+      typeOfService,
+      notes
     };
   }
 };
@@ -67,7 +60,7 @@ h3 {
     width: 90%;
     margin: auto;
   }
-  .test {
+  .extra-width {
     width: 60%;
   }
 }

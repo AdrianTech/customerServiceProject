@@ -16,9 +16,10 @@ export default {
     ...mapGetters(["userLoginState"])
   },
   methods: {
-    ...mapActions(["getClients"])
+    ...mapActions(["getClients", "loginUser"])
   },
   mounted() {
+    // this.loginUser()
     // this.getCliets();
     // if (!this.userLoginState) this.$router.push("/");
   }

@@ -8,9 +8,6 @@
         <li>
           <router-link to="/show-client-list">Client List</router-link>
         </li>
-        <!-- <li>
-          <router-link to="/create-client">Create account</router-link>
-        </li>-->
         <li>
           <router-link to="/settings">Settings</router-link>
         </li>
@@ -38,13 +35,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../scss/_variables.scss";
 header {
   width: 100%;
-  background-color: #2e5cf3;
+  background-color: $dark-blue;
   height: 60px;
   top: 0;
   position: fixed;
   z-index: 50;
+  font-family: "Baloo Thambi 2", sans-serif;
+  button {
+    padding: 4px 8px;
+    font-family: "Baloo Thambi 2", sans-serif;
+    background-color: transparent;
+    border: 1px solid #ffffff79;
+    font-size: 14px;
+    color: white;
+    transition: 0.35s;
+    &:hover,
+    &:focus {
+      color: black;
+      background-color: #fff;
+    }
+  }
 }
 nav {
   height: 100%;
@@ -56,7 +69,6 @@ nav {
   }
   a {
     color: aliceblue;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     font-size: 14px;
 
@@ -72,7 +84,8 @@ nav {
 }
 @media (min-width: 768px) {
   nav ul a {
-    font-size: 17px;
+    font-size: 18px;
   }
 }
 </style>
+//

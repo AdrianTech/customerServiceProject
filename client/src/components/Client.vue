@@ -4,9 +4,7 @@
       <div class="counter-details">
         <span>{{ displayTimeCounter() }}</span>
       </div>
-      <span class="more" v-if="typeOfService.length > 0"
-        >And {{ typeOfService.length - 1 }} more</span
-      >
+      <span class="more" v-if="typeOfService.length > 0">And {{ typeOfService.length - 1 }} more</span>
     </div>
     <div class="fullname">
       <div @click="clientDetails()">
@@ -15,6 +13,9 @@
       </div>
     </div>
     <div class="actions">EMAIL</div>
+    <button class="addService">
+      <span>+</span>
+    </button>
   </div>
 </template>
 
