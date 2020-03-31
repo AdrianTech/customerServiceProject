@@ -5,8 +5,16 @@
     </div>
     <h3>Active services ({{ typeOfService.length }})</h3>
     <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
-      <Service v-for="service in typeOfService" :key="service._id" :service="service" />
+      <Service
+        v-for="service in typeOfService"
+        :key="service._id"
+        :clientId="id"
+        :service="service"
+      />
     </div>
+    <button @click="addService" class="addService">
+      <span>+</span>
+    </button>
   </div>
 </template>
 
@@ -16,13 +24,27 @@ export default {
   components: { Service },
   name: "ClientDetails",
   data() {
-    const { fullname, typeOfService, notes } = this.$route.params;
+    const { fullname, typeOfService, notes, id } = this.$route.params;
     return {
       extraWidth: "extraWidth",
       fullname,
       typeOfService,
-      notes
+      notes,
+      id
     };
+  },
+  methods: {
+    addService() {
+      // console.log(this.clientID);
+      this.$router.push({
+        name: "Add New Service",
+        params: {
+          id: this.id,
+          service: this.typeOfService,
+          name: this.fullname
+        }
+      });
+    }
   }
 };
 </script>
@@ -33,8 +55,8 @@ export default {
 }
 .active-services {
   display: grid;
-  grid-gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr;
+  grid-gap: 3px;
   padding: 10px;
 }
 
@@ -57,6 +79,7 @@ h3 {
 }
 @media (min-width: 768px) {
   .active-services {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
     width: 90%;
     margin: auto;
   }

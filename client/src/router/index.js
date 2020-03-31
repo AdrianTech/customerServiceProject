@@ -5,6 +5,7 @@ import ClientList from "../views/ShowClientList.vue";
 // import CreateAccount from "../views/CreateClientAccount.vue";
 import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
+import AddNewService from "../components/addNewService.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -34,6 +35,12 @@ const routes = [
     name: "ClientDetails",
     props: { default: true },
     component: ClientDetails
+  },
+  {
+    path: "/add-new-service/:id",
+    name: "Add New Service",
+    props: { default: true },
+    component: AddNewService
   }
 ];
 
