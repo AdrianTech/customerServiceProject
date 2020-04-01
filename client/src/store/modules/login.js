@@ -11,9 +11,9 @@ const state = {
 };
 
 const getters = {
-  loginInfo: state => state.info,
+  eventInfo: state => state.info,
   userData: state => state.user,
-  userLoginState: state => state.isLogged
+  isLogged: state => state.isLogged
 };
 
 const mutations = {
@@ -30,7 +30,7 @@ const mutations = {
       };
     }, 3000);
   },
-  userLoginState: (state, payload) => (state.isLogged = payload),
+  isLogged: (state, payload) => (state.isLogged = payload),
   clearUser: (state, payload) => (state.user = payload)
 };
 const actions = {
@@ -41,12 +41,12 @@ const actions = {
     try {
       const res = await axios.post("/loginUser", data);
       commit("userResponse", res.data);
-      commit("userLoginState", true);
+      commit("isLogged", true);
       dispatch("getClients");
     } catch (err) {
       console.log(err.response);
       dispatch("errHandler", err.response.data);
-      commit("userLoginState", false);
+      commit("isLogged", false);
     }
   },
 
@@ -54,7 +54,7 @@ const actions = {
     try {
       axios.get("/logout");
       commit("clearUser", null);
-      commit("userLoginState", false);
+      commit("isLogged", false);
       dispatch("resetClientsArray");
       if (router.history.current.path !== "/") router.push("/");
     } catch (err) {

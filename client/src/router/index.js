@@ -3,9 +3,10 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ClientList from "../views/ShowClientList.vue";
 // import CreateAccount from "../views/CreateClientAccount.vue";
+import CreateNewService from "../components/CreateNewService.vue";
 import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
-import AddNewService from "../components/addNewService.vue";
+import AddNewService from "../components/AddNewService.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -41,6 +42,12 @@ const routes = [
     name: "Add New Service",
     props: { default: true },
     component: AddNewService
+  },
+  {
+    path: "/create-service",
+    name: "Create Service",
+    props: { default: true },
+    component: CreateNewService
   }
 ];
 
@@ -50,8 +57,8 @@ const router = new VueRouter({
   routes
 });
 router.beforeResolve((to, from, next) => {
-  const { userLoginState } = store.getters;
-  if (to.name !== "Home" && !userLoginState) next({ name: "Home" });
+  const { isLogged } = store.getters;
+  if (to.name !== "Home" && !isLogged) next({ name: "Home" });
   else next();
 });
 

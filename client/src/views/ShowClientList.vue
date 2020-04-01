@@ -17,7 +17,7 @@ export default {
     Client
   },
   computed: {
-    ...mapGetters(["clientData", "userLoginState"])
+    ...mapGetters(["clientData"])
   }
 };
 </script>

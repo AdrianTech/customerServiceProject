@@ -11,7 +11,7 @@
         <li>
           <router-link to="/settings">Settings</router-link>
         </li>
-        <button v-if="userLoginState" @click="logout">Logout</button>
+        <button v-if="isLogged" @click="logout">Logout</button>
       </ul>
     </nav>
   </header>
@@ -23,7 +23,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Header",
   computed: {
-    ...mapGetters(["userLoginState"])
+    ...mapGetters(["isLogged"])
   },
   methods: {
     ...mapActions(["logoutUser"]),

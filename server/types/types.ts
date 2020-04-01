@@ -22,3 +22,9 @@ export interface IUser extends mongoose.Document {
   password: string;
   email: string;
 }
+export type ICompanyServices = {
+  name: string;
+  values: Array<number>;
+  createdDate: string;
+  unitPrice: number;
+};

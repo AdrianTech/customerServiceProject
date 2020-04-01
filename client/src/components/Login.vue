@@ -5,7 +5,7 @@
     <label for>Your password</label>
     <input type="password" name="password" v-model="password" />
     <button class="btn-confirm">Log in</button>
-    <h3 v-if="loginInfo.bool">{{ loginInfo.message }}</h3>
+    <h3 v-if="eventInfo.bool">{{ eventInfo.message }}</h3>
   </form>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["loginInfo"])
+    ...mapGetters(["eventInfo"])
   },
   methods: {
     ...mapActions(["loginUser", "errHandler"]),

@@ -19,3 +19,23 @@ export const validationLogin = data => {
   }
   return validInfo;
 };
+
+export const createNewServiceValid = data => {
+  let validInfo = {
+    bool: true,
+    msg: "Ok"
+  };
+  const { name, unitPrice } = data;
+  if (name === "" || name.length < 3)
+    return (validInfo = {
+      bool: false,
+      msg: "Name of service must contain at least 3 characters"
+    });
+  if (unitPrice === "" || unitPrice < 0)
+    return (validInfo = {
+      bool: false,
+      msg: "Wrong type of value. Please, enter correct value"
+    });
+  console.log(validInfo);
+  return validInfo;
+};

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header v-if="userLoginState" />
+    <Header v-if="isLogged" />
     <router-view />
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
     Header
   },
   computed: {
-    ...mapGetters(["userLoginState"])
+    ...mapGetters(["isLogged"])
   },
   methods: {
     ...mapActions(["getClients", "loginUser"])
