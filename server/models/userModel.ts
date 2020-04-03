@@ -4,11 +4,14 @@ const Schema = mongoose.Schema;
 const userModel = new Schema({
   email: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   }
 });
 

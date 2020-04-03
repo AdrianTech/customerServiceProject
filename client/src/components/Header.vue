@@ -35,7 +35,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
 header {
   width: 100%;
   background-color: $dark-blue;

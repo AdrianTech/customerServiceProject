@@ -1,7 +1,31 @@
 <template>
   <div class="dashboard-details">
-    <div class="name">
-      <h2>{{ fullname }}</h2>
+    <div class="client-details">
+      <div class="name">
+        <h2>{{ fullname }}</h2>
+      </div>
+      <div class="data">
+        <div class="item">
+          <span class="material-icons">mail_outline</span>
+          {{email}}
+        </div>
+        <div class="item">
+          <span class="material-icons">phone</span> 675 555 234
+        </div>
+        <div class="item">
+          <button>Show me notes</button>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="send-email">
+          <span class="material-icons">mail_outline</span>
+          <p>Send Email</p>
+        </div>
+        <div class="add-note">
+          <span class="material-icons">note_add</span>
+          <p>Add note</p>
+        </div>
+      </div>
     </div>
     <h3>Active services ({{ typeOfService.length }})</h3>
     <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
@@ -24,18 +48,18 @@ export default {
   components: { Service },
   name: "ClientDetails",
   data() {
-    const { fullname, typeOfService, notes, id } = this.$route.params;
+    const { fullname, typeOfService, notes, id, email } = this.$route.params;
     return {
       extraWidth: "extraWidth",
       fullname,
       typeOfService,
       notes,
-      id
+      id,
+      email
     };
   },
   methods: {
     addService() {
-      // console.log(this.clientID);
       this.$router.push({
         name: "Add New Service",
         params: {
@@ -51,7 +75,9 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-details {
-  padding-top: 80px;
+  padding: 70px 12px 12px 12px;
+  width: 100%;
+  color: $dark-blue;
 }
 .active-services {
   display: grid;
@@ -59,10 +85,29 @@ export default {
   grid-gap: 3px;
   padding: 10px;
 }
-
-.name {
+.data {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
   width: 100%;
-  padding: 15px;
+  .item {
+    margin: 10px;
+    font-size: 16px;
+    @include flexCentered;
+    span {
+      margin-right: 12px;
+    }
+    button {
+      background-color: transparent;
+      border: 1px solid $db-light;
+      padding: 6px 12px;
+      font-size: 15px;
+      font-family: Helvetica;
+    }
+  }
 }
 .name,
 .active-services,
@@ -72,17 +117,40 @@ h3 {
 .name,
 .actions {
   padding: 10px 0;
+  text-align: center;
 }
 .actions {
   display: flex;
+  margin: 10px auto;
+  border-top: 1px solid $db-light;
+  border-bottom: 1px solid $db-light;
   justify-content: space-around;
+  span {
+    cursor: pointer;
+  }
 }
 @media (min-width: 768px) {
-  .active-services {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
-    width: 90%;
+  .dashboard-details {
+    width: 80%;
     margin: auto;
   }
+  .data {
+    flex-direction: row;
+    .item {
+      font-size: 19px;
+      button {
+        font-size: 17px;
+      }
+    }
+  }
+  .active-services {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+    // width: 80%;
+    // margin: auto;
+  }
+  // .client-details {
+  //   // width: 80%;
+  // }
   .extra-width {
     width: 60%;
   }

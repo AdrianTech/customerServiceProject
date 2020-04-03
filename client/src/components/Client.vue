@@ -4,7 +4,7 @@
       <div class="counter-details">
         <span>{{ displayTimeCounter() }}</span>
       </div>
-      <span class="more" v-if="typeOfService.length > 0">And {{ typeOfService.length - 1 }} more</span>
+      <span class="more" v-if="typeOfService.length > 1">And {{ typeOfService.length - 1 }} more</span>
     </div>
     <div class="fullname">
       <div @click="clientDetails()">
@@ -12,7 +12,12 @@
         <span class="showClientDetails">Show me details</span>
       </div>
     </div>
-    <div class="actions">EMAIL</div>
+    <div class="actions">
+      <div class="email-action">
+        <span class="material-icons">mail_outline</span>
+        <p>Send email</p>
+      </div>
+    </div>
     <button class="addService">
       <span>+</span>
     </button>
@@ -55,12 +60,11 @@ export default {
   display: flex;
   text-align: center;
   font-size: 14px;
-  // margin-top: 15px;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $dark-blue;
   padding: 7px 0;
   &:first-child {
-    border-top: 1px solid black;
+    border-top: 1px solid $dark-blue;
   }
   .counter {
     flex: 1;
@@ -79,6 +83,12 @@ export default {
   }
   .actions {
     flex: 1;
+    cursor: pointer;
+    .email-action {
+      p {
+        font-size: 13px;
+      }
+    }
   }
   .counter-details {
     span {

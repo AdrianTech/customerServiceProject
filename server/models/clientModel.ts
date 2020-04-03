@@ -22,9 +22,23 @@ const NotesClientSubSchema = new Schema({
 const ClientSchema = new Schema<IClient>({
   fullname: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  email: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  phone: {
+    type: String,
+    trim: true
+  },
+  registerDate: {
+    type: String,
+    trim: true
+  },
   typeOfService: [ArrayClientSubSchema],
   notes: [NotesClientSubSchema]
 });

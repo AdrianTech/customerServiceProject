@@ -18,11 +18,6 @@ export default {
   methods: {
     ...mapActions(["getClients", "loginUser"])
   },
-  mounted() {
-    // this.loginUser()
-    // this.getCliets();
-    // if (!this.userLoginState) this.$router.push("/");
-  }
 };
 </script>
 

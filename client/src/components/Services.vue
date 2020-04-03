@@ -67,7 +67,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
 .service-details {
   border: 1px solid #0000002f;
   background-color: #f5f8f7;
@@ -88,7 +87,6 @@ ul li {
     &:nth-child(2) {
       font-size: 15px;
       flex: 1.3;
-      // padding-left: 10%;
     }
   }
   &:last-child {
