@@ -4,8 +4,8 @@
       <label>Name of service</label>
       <input v-model.trim="name" value="name" type="text" />
       <label>Unit Price</label>
-      <input v-model.number.trim="unitPrice" value="unitPrice" type="number" />
-      <button @click.prevent="serviceHandler">Confirm all data</button>
+      <input v-model.number.trim="unitPrice" value="unitPrice" type="text" />
+      <button @click.prevent="serviceHandler">Confirm</button>
       <h3 v-if="eventInfo.bool">{{eventInfo.message}}</h3>
     </form>
   </section>
@@ -27,7 +27,7 @@ export default {
     ...mapGetters(["services", "eventInfo"])
   },
   methods: {
-    ...mapActions(["errHandler"]),
+    ...mapActions(["errHandler", "createService"]),
     serviceHandler() {
       const { name, unitPrice } = this;
       const data = {
@@ -36,6 +36,7 @@ export default {
       };
       const { msg, bool } = createNewServiceValid(data);
       if (!bool) return this.errHandler(msg);
+      this.createService(data);
     }
   }
 };
@@ -44,6 +45,10 @@ export default {
 <style lang="scss" scoped>
 .createNewService {
   padding-top: 80px;
+}
+button {
+  @include primary-btn;
+  max-width: 150px;
 }
 @media (min-width: 500px) {
 }

@@ -9,8 +9,9 @@ module.exports = {
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
-    // "no-unused-vars": ["error", { vars: "none", args: "after-used", ignoreRestSiblings: false }]
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    // "vue/no-unused-vars": "off"
+    "no-unused-vars": ["error", { caughtErrors: "none" }]
   },
   overrides: [
     {

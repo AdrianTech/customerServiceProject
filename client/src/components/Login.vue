@@ -44,8 +44,17 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
+  height: 60%;
+  font-size: 17px;
   padding: 15px;
+  > * {
+    @include balFont;
+  }
   h3 {
     color: #c40404;
   }
@@ -55,23 +64,14 @@ export default {
   }
   input {
     padding: 7px;
-    font-size: 17px;
+    font-size: 19px;
+    border-radius: 7px;
+    border: 1px solid $dark-blue;
   }
 }
 .btn-confirm {
   max-width: 200px;
-  border: 1px solid #062e06;
-  padding: 5px 18px;
-  color: yellow;
-  font-size: 17px;
-  background-color: green;
-  border-radius: 8px;
-  transition: 0.3s ease-in;
-  outline: none;
-  &:focus:hover {
-    background-color: white;
-    color: #062e06;
-  }
+  @include primary-btn;
 }
 
 @media (min-width: 480px) {
@@ -82,6 +82,9 @@ export default {
 @media (min-width: 768px) {
   .form {
     width: 50%;
+    font-size: 18px;
+    padding: 50px;
+    border: 1px solid $db-light;
   }
 }
 </style>

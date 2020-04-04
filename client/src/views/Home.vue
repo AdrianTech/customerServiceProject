@@ -39,11 +39,7 @@ export default {
     margin: 14px 0;
   }
   a {
-    font-size: 18px;
-    color: #440101;
-    font-weight: 700;
-    padding: 10px;
-    border: 1px solid #440101;
+    @include primary-link;
   }
 }
 </style>

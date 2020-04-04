@@ -10,7 +10,6 @@ class Auth {
     try {
       const verify = await jwt.verify(auth, KEY);
     } catch (err) {
-      console.log(err);
       return res.status(401).json("Unauthorized");
     }
     next();

@@ -19,9 +19,9 @@ export default class UseController {
       user: user.id
     };
     let cookieOptions = {
-      maxAge: 1000 * 60 * 60 * 24
+      maxAge: 1000 * 60 * 60 * 12
     };
-    const auth = jwt.sign(payload, KEY, { expiresIn: "1d" });
+    const auth = jwt.sign(payload, KEY, { expiresIn: "12h" });
     if (!match) return res.status(404).json("Wrong password or email");
     else {
       const userRes = {
