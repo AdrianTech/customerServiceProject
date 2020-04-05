@@ -3,10 +3,10 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ClientList from "../views/ShowClientList.vue";
 // import CreateAccount from "../views/CreateClientAccount.vue";
-import CreateNewService from "../components/CreateNewService.vue";
+import CreateNewService from "../components/services/CreateNewService.vue";
 import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
-import AddNewService from "../components/AddNewService.vue";
+import AddNewService from "../components/services/AddNewService.vue";
 import store from "../store";
 
 Vue.use(VueRouter);

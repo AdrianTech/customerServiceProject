@@ -28,13 +28,15 @@
       </div>
     </div>
     <h3>Active services ({{ typeOfService.length }})</h3>
-    <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
-      <Service
-        v-for="service in typeOfService"
-        :key="service._id"
-        :clientId="id"
-        :service="service"
-      />
+    <div class="test">
+      <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
+        <Service
+          v-for="service in typeOfService"
+          :key="service._id"
+          :clientId="id"
+          :service="service"
+        />
+      </div>
     </div>
     <button @click="addService" class="addService">
       <span>+</span>
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-import Service from "@/components/Services";
+import Service from "@/components/services/Services";
 export default {
   components: { Service },
   name: "ClientDetails",
@@ -82,8 +84,9 @@ export default {
 .active-services {
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 3px;
-  padding: 10px;
+  grid-gap: 15px 5px;
+  padding-top: 15px;
+  justify-content: space-evenly;
 }
 .data {
   display: flex;

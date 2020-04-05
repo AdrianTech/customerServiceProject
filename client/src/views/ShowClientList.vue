@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Client from "../components/Client";
+import Client from "../components/client/Client";
 import { mapGetters } from "vuex";
 export default {
   components: {

@@ -29,7 +29,7 @@ export const createNewServiceValid = data => {
   if (name === "" || name.length < 3)
     return (validInfo = {
       bool: false,
-      msg: "Name of service must contain at least 3 characters"
+      msg: "Name of service must contains at least 3 characters"
     });
   if (unitPrice === "" || unitPrice < 0)
     return (validInfo = {

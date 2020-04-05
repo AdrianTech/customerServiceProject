@@ -6,7 +6,7 @@
       <label>Unit Price</label>
       <input v-model.number.trim="unitPrice" value="unitPrice" type="text" />
       <button @click.prevent="serviceHandler">Confirm</button>
-      <h3 v-if="eventInfo.bool">{{eventInfo.message}}</h3>
+      <Alert />
     </form>
   </section>
 </template>
@@ -14,8 +14,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { createNewServiceValid } from "@/shared/validation.js";
+import Alert from "../events/Alert.vue";
 export default {
-  components: {},
+  components: { Alert },
   data() {
     return {
       name: "",
