@@ -101,14 +101,10 @@ export default {
     font-size: 16px;
     @include flexCentered;
     span {
-      margin-right: 12px;
+      margin-right: 8px;
     }
     button {
-      background-color: transparent;
-      border: 1px solid $db-light;
-      padding: 6px 12px;
-      font-size: 15px;
-      font-family: Helvetica;
+      @include primary-btn;
     }
   }
 }
