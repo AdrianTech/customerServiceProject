@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// import axios from "axios";
-
 const state = {
   services: []
 };
@@ -17,11 +15,18 @@ const actions = {
   async createService({ commit }, data) {
     try {
       const res = await axios.post("/createService", data);
-      console.log(res);
+      commit("serviceData", res.data);
     } catch (err) {
       console.log(err.response);
     }
-    commit("serviceData", data);
+  },
+  async getServices({ commit }) {
+    try {
+      const res = await axios.get("/getServices");
+      commit("serviceData", res.data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 

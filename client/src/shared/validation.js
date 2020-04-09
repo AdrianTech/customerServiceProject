@@ -36,6 +36,5 @@ export const createNewServiceValid = data => {
       bool: false,
       msg: "Wrong type of value. Please, enter correct value"
     });
-  console.log(validInfo);
   return validInfo;
 };

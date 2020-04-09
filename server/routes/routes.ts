@@ -11,9 +11,10 @@ export class Routes {
   public routes(app: any): void {
     const { addNewClient, sendClientData } = this.ClientController;
     const { userLogin, logout } = this.UserController;
-    const { createService } = this.ServiceController;
+    const { createService, getServices } = this.ServiceController;
     app.post("/createClient", addNewClient);
     app.get("/getClients", sendClientData);
+    app.get("/getServices", getServices);
     app.post("/createService", this.auth.checkToken, createService);
     app.post("/loginUser", userLogin);
     app.get("/logout", logout);

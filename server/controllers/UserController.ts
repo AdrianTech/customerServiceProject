@@ -34,6 +34,6 @@ export default class UseController {
   }
   public logout(req: Request, res: Response) {
     res.clearCookie("Auth");
-    res.redirect("/");
+    res.status(200).json("You've been logged out");
   }
 }

@@ -24,4 +24,8 @@ export default class ServiceController {
       res.status(400).json("Something went wrong");
     }
   }
+  public async getServices(req: Request, res: Response) {
+    const data = await ServicesModel.find();
+    res.status(200).json(data);
+  }
 }

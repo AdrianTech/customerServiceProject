@@ -8,15 +8,17 @@
       <button @click.prevent="serviceHandler">Confirm</button>
       <Alert />
     </form>
+    <ServicesList />
   </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { createNewServiceValid } from "@/shared/validation.js";
+import ServicesList from "./ServicesList";
 import Alert from "../events/Alert.vue";
 export default {
-  components: { Alert },
+  components: { Alert, ServicesList },
   data() {
     return {
       name: "",
@@ -46,6 +48,9 @@ export default {
 <style lang="scss" scoped>
 .createNewService {
   padding-top: 80px;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
 }
 button {
   @include primary-btn;
@@ -54,7 +59,12 @@ button {
 @media (min-width: 500px) {
 }
 @media (min-width: 768px) {
+  .createNewService {
+    width: 75%;
+    margin: auto;
+  }
 }
 @media (min-width: 1000px) {
 }
 </style>
+//

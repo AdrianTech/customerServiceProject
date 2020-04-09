@@ -1,13 +1,13 @@
 <template>
-  <div class="dashboard-details">
+  <div class="dashboard-details" v-if="data !== null">
     <div class="client-details">
       <div class="name">
-        <h2>{{ fullname }}</h2>
+        <h2>{{ data.fullname }}</h2>
       </div>
       <div class="data">
         <div class="item">
           <span class="material-icons">mail_outline</span>
-          {{email}}
+          {{data.email}}
         </div>
         <div class="item">
           <span class="material-icons">phone</span> 675 555 234
@@ -27,11 +27,11 @@
         </div>
       </div>
     </div>
-    <h3>Active services ({{ typeOfService.length }})</h3>
+    <h3>Active services ({{ data.typeOfService.length }})</h3>
     <div class="test">
-      <div class="active-services" :class="[typeOfService.length < 2 ? extraWidth : '']">
+      <div class="active-services" :class="[data.typeOfService.length < 2 ? extraWidth : '']">
         <Service
-          v-for="service in typeOfService"
+          v-for="service in data.typeOfService"
           :key="service._id"
           :clientId="id"
           :service="service"
@@ -46,19 +46,30 @@
 
 <script>
 import Service from "@/components/services/Services";
+import { mapGetters } from "vuex";
 export default {
   components: { Service },
   name: "ClientDetails",
   data() {
-    const { fullname, typeOfService, notes, id, email } = this.$route.params;
+    const { id } = this.$route.params;
     return {
       extraWidth: "extraWidth",
-      fullname,
-      typeOfService,
-      notes,
       id,
-      email
+      data: null
     };
+  },
+  mounted() {
+    const ID = this.id;
+    const test = this.clientData.find(i => i._id === ID);
+    this.data = test;
+    // this.fullname = test.fullname;
+    // this.email = test.email;
+    // this.typeOfService = test.typeOfService;
+    // this.notes = test.notes;
+    console.log(this.data);
+  },
+  computed: {
+    ...mapGetters(["clientData"])
   },
   methods: {
     addService() {

@@ -9,6 +9,12 @@
 @mixin balFont {
   font-family: "Baloo Thambi 2";
 }
+@mixin absoluteCenter($topPX, $leftPx, $position) {
+  position: $position;
+  left: $topPX;
+  top: $leftPx;
+  transform: translate(-50%, -50%);
+}
 @mixin primary-btn() {
   padding: 3px 8px;
   padding: 5px 15px;

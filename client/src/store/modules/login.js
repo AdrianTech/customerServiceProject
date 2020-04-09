@@ -43,6 +43,7 @@ const actions = {
       commit("userResponse", res.data);
       commit("isLogged", true);
       dispatch("getClients");
+      dispatch("getServices");
     } catch (err) {
       console.log(err.response);
       dispatch("errHandler", err.response.data);

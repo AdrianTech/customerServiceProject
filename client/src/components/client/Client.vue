@@ -18,7 +18,7 @@
         <p>Send email</p>
       </div>
     </div>
-    <button class="addService">
+    <button class="addService" @click="addNewClient">
       <span>+</span>
     </button>
   </div>
@@ -42,10 +42,15 @@ export default {
   },
   methods: {
     clientDetails() {
-      const { _id, typeOfService, fullname, email, notes } = this;
+      const { _id } = this;
       this.$router.push({
         name: "ClientDetails",
-        params: { id: _id, typeOfService, fullname, email, notes }
+        params: { id: _id }
+      });
+    },
+    addNewClient() {
+      this.$router.push({
+        name: "Create Client Account"
       });
     },
     displayTimeCounter() {
