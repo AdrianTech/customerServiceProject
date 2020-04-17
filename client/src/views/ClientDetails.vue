@@ -28,59 +28,62 @@
       </div>
     </div>
     <h3>Active services ({{ data.typeOfService.length }})</h3>
-    <div class="test">
-      <div class="active-services" :class="[data.typeOfService.length < 2 ? extraWidth : '']">
-        <Service
-          v-for="service in data.typeOfService"
-          :key="service._id"
-          :clientId="id"
-          :service="service"
-        />
-      </div>
+    <div
+      v-if="data.typeOfService.length > 0"
+      class="active-services"
+      :class="[data.typeOfService.length < 2 ? extraWidth : '']"
+    >
+      <Service
+        v-for="service in data.typeOfService"
+        :key="service._id"
+        :clientId="id"
+        :service="service"
+      />
     </div>
     <button @click="addService" class="addService">
       <span>+</span>
     </button>
+    <AddNewServiceToClient :id="id" :show.sync="show" :update="checkShow" v-if="show" />
   </div>
 </template>
 
 <script>
 import Service from "@/components/services/Services";
 import { mapGetters } from "vuex";
+import AddNewServiceToClient from "../components/client/AddNewService";
 export default {
-  components: { Service },
+  components: { Service, AddNewServiceToClient },
   name: "ClientDetails",
   data() {
     const { id } = this.$route.params;
     return {
       extraWidth: "extraWidth",
       id,
-      data: null
+      data: null,
+      show: false
     };
   },
   mounted() {
     const ID = this.id;
-    const test = this.clientData.find(i => i._id === ID);
-    this.data = test;
-    // this.fullname = test.fullname;
-    // this.email = test.email;
-    // this.typeOfService = test.typeOfService;
-    // this.notes = test.notes;
-    console.log(this.data);
+    const findClient = this.clientData.find(i => i._id === ID);
+    this.data = findClient;
   },
   computed: {
     ...mapGetters(["clientData"])
   },
   methods: {
     addService() {
-      this.$router.push({
-        name: "Add New Service",
-        params: {
-          id: this.id,
-          service: this.typeOfService,
-          name: this.fullname
-        }
-      });
+      this.show = true;
+      // this.$router.push({
+      //   name: "Add New Service",
+      //   params: {
+      //     id: this.id
+      //   }
+      // });
+    },
+    checkShow(val) {
+      console.log(val);
+      this.show = val;
     }
   }
 };

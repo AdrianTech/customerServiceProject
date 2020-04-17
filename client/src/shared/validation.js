@@ -1,4 +1,5 @@
 const emailValid = /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/;
+const phoneValid = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s/0-9]*$/g;
 export const validationLogin = data => {
   let validInfo = {
     bool: true,
@@ -36,5 +37,32 @@ export const createNewServiceValid = data => {
       bool: false,
       msg: "Wrong type of value. Please, enter correct value"
     });
+  return validInfo;
+};
+export const createNewUserValid = ({ fullname, phone, email, clientArr }) => {
+  let validInfo = {
+    bool: true,
+    msg: "Ok"
+  };
+  const test = clientArr.filter(elem => elem.active && elem.months === 0);
+  if (test.length > 0) {
+    return (validInfo = {
+      bool: false,
+      msg: "You're checked option, but don't add a value"
+    });
+  }
+  if (!email.match(emailValid)) {
+    return (validInfo = {
+      bool: false,
+      msg: "Invalid email. Please, enter correct email"
+    });
+  }
+  if (!phone.match(phoneValid)) {
+    fullname;
+    return (validInfo = {
+      bool: false,
+      msg: "Ivalid phone number"
+    });
+  }
   return validInfo;
 };

@@ -43,4 +43,5 @@ const ClientSchema = new Schema<IClient>({
   notes: [NotesClientSubSchema]
 });
 
-export default ClientSchema;
+const ClientModel = mongoose.model("clients", ClientSchema);
+export default ClientModel;

@@ -12,12 +12,12 @@ dotenv.config();
 class App {
   public app: express.Application;
   public route: Routes = new Routes();
-  public secondRoute: Routes = new Routes();
+  public serviceRoute: Routes = new Routes();
   constructor() {
     this.app = express();
     this.config();
     this.route.routes(this.app);
-    this.secondRoute.routes(this.app);
+    this.serviceRoute.routes(this.app);
     this.dbSetup();
   }
 

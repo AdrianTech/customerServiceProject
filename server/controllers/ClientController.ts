@@ -1,28 +1,58 @@
-import mongoose from "mongoose";
-import ClientMoongooseModel from "../models/clientModel";
-const ClientModel = mongoose.model("clients", ClientMoongooseModel);
+import ClientModel from "../models/clientModel";
 import TimeHandler from "../utils/timeHandler";
-import { IServices } from "../types/types";
+import moment from "moment-timezone";
+import { IServices, ICompanyServices } from "../types/types";
 import { Request, Response } from "express";
 
 export default class ClientCotroller {
-  public addNewClient(req: Request, res: Response) {
-    const { typeOfService } = req.body;
-    typeOfService.forEach((item: IServices) => {
-      let time = new TimeHandler().timeChecker(item);
-      item.active = true;
-      return time;
+  public async addNewClient(req: Request, res: Response) {
+    const { fullname, email, clientArr, phone } = req.body;
+    clientArr.forEach((item: IServices) => {
+      new TimeHandler().timeChecker(item);
+      return item;
     });
-    let newClient = new ClientModel(req.body);
-    newClient.save((err, data) => {
-      if (err) {
-        res.json("Something went wrong");
-      }
-      res.json("New client added");
-    });
+    const newClient = {
+      fullname,
+      email,
+      typeOfService: clientArr,
+      phone,
+      notes: [],
+      registerDate: moment()
+        .tz("Europe/Warsaw")
+        .format()
+    };
+    try {
+      await new ClientModel(newClient).save();
+      const data = await ClientModel.find();
+      res.status(200).json({ msg: "New client added", data });
+    } catch (err) {
+      res.status(400).json("Something went wrong");
+    }
   }
   public async sendClientData(req: Request, res: Response) {
     const data = await ClientModel.find();
     res.status(200).json(data);
+  }
+  public async clientServiceUpdate(req: Request, res: Response) {
+    console.log(req.body.filtered);
+    const { id } = req.body;
+    const { filtered } = req.body;
+    filtered.forEach((i: any) => {
+      console.log(i);
+      new TimeHandler().timeChecker(i);
+      delete i.createdDate;
+      return i;
+    });
+    console.log(filtered);
+    try {
+      const response = await ClientModel.findOneAndUpdate(
+        { _id: id },
+        { $addToSet: { typeOfService: filtered } }
+      );
+      const updateClientData = await ClientModel.find();
+      res.status(200).json(updateClientData);
+    } catch (e) {
+      res.status(400).json("Something went wrong");
+    }
   }
 }

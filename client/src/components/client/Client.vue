@@ -2,7 +2,8 @@
   <div class="client">
     <div class="counter">
       <div class="counter-details">
-        <span>{{ displayTimeCounter() }}</span>
+        <span v-if="typeOfService.length > 0">{{ displayTimeCounter() }}</span>
+        <span class="empty" v-else>Empty</span>
       </div>
       <span class="more" v-if="typeOfService.length > 1">And {{ typeOfService.length - 1 }} more</span>
     </div>
@@ -14,7 +15,8 @@
     </div>
     <div class="actions">
       <div class="email-action">
-        <span class="material-icons">mail_outline</span>
+        <!-- <span class="material-icons">mail_outline</span> -->
+        <img src="../../assets/mail.png" alt="email" />
         <p>Send email</p>
       </div>
     </div>
@@ -30,7 +32,7 @@ export default {
   name: "Client",
   data() {
     return {
-      endTime: this.typeOfService[0].finishTime
+      endTime: this.typeOfService.length > 0 && this.typeOfService[0].finishTime
     };
   },
   props: {
@@ -78,6 +80,9 @@ export default {
       font-size: 13px;
     }
   }
+  img {
+    @include imgSize;
+  }
   .fullname {
     flex: 2;
     cursor: pointer;
@@ -99,6 +104,9 @@ export default {
     span {
       font-size: 15px;
       font-weight: 700;
+    }
+    .empty {
+      font-size: 15px;
     }
   }
 }

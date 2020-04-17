@@ -9,14 +9,15 @@ export class Routes {
   ServiceController: ServiceController = new ServiceController();
   private auth: Auth = new Auth();
   public routes(app: any): void {
-    const { addNewClient, sendClientData } = this.ClientController;
+    const { addNewClient, sendClientData, clientServiceUpdate } = this.ClientController;
     const { userLogin, logout } = this.UserController;
     const { createService, getServices } = this.ServiceController;
-    app.post("/createClient", addNewClient);
-    app.get("/getClients", sendClientData);
-    app.get("/getServices", getServices);
-    app.post("/createService", this.auth.checkToken, createService);
+    app.post("/createClient", this.auth.checkTokenPost, addNewClient);
+    app.get("/getClients", this.auth.checkTokenPost, sendClientData);
+    app.get("/getServices", this.auth.checkTokenPost, getServices);
+    app.post("/createService", this.auth.checkTokenPost, createService);
+    app.post("/clientServiceUpdate", this.auth.checkTokenPost, clientServiceUpdate);
     app.post("/loginUser", userLogin);
-    app.get("/logout", logout);
+    app.get("/logout", this.auth.checkTokenPost, logout);
   }
 }

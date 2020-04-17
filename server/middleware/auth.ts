@@ -4,11 +4,25 @@ import dotenv from "dotenv";
 dotenv.config();
 const KEY: string = <string>process.env.KEY;
 class Auth {
-  async checkToken(req: express.Request, res: express.Response, next: express.NextFunction) {
+  async checkTokenPost(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.method === "POST") {
+      if (Object.keys(req.body).length === 0) return res.status(400).json("Bad request");
+    }
     const auth = req.cookies.Auth;
     if (!auth) return res.status(401).json("Unauthorized");
     try {
-      const verify = await jwt.verify(auth, KEY);
+      await jwt.verify(auth, KEY);
+    } catch (err) {
+      return res.status(401).json("Unauthorized");
+    }
+    next();
+  }
+  async checkTokenParams(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (Object.keys(req.params).length === 0) return res.status(400).json("Bad request");
+    const auth = req.cookies.Auth;
+    if (!auth) return res.status(401).json("Unauthorized");
+    try {
+      await jwt.verify(auth, KEY);
     } catch (err) {
       return res.status(401).json("Unauthorized");
     }

@@ -6,7 +6,6 @@ import moment from "moment-timezone";
 
 export default class ServiceController {
   public async createService(req: Request, res: Response) {
-    if (req.body === "") return res.status(400).json(status);
     const { unitPrice, name } = req.body;
     const data = {
       unitPrice,

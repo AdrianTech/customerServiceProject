@@ -6,7 +6,7 @@ import CreateAccount from "../components/client/CreateClientAccount.vue";
 import CreateNewService from "../components/services/CreateNewService.vue";
 import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
-import AddNewService from "../components/services/AddNewService.vue";
+import AddNewService from "../components/client/AddNewService.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
