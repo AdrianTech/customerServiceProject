@@ -17,7 +17,6 @@
             :key="service._id"
             :service="service"
             :modal="showModalFunc"
-            @value="valueData"
           />
           <button @click="showModalFunc">OK</button>
         </div>
@@ -34,7 +33,6 @@ import { createNewUserValid } from "../../shared/validation";
 import ServicesChoice from "./ServicesChoice";
 // import router from "../../router/index";
 import Alert from "../events/Alert";
-let arr = [];
 export default {
   name: "CreateClientAccount",
   components: { Alert, ServicesChoice },
@@ -62,7 +60,7 @@ export default {
       this.servicesArr = JSON.parse(JSON.stringify(this.services));
     },
     submitData() {
-      this.organizeService(this.servicesArr);
+      this.client.clientArr = this.servicesArr.filter(({ active }) => active);
       const { msg, bool } = createNewUserValid(this.client);
       if (!bool) return this.errHandler(msg);
       this.createClient(this.client);
@@ -70,37 +68,6 @@ export default {
         this.client = { fullname: "", phone: "", email: "", clientArr: [] };
         this.setServicesArr();
       }
-      // setTimeout(() => {
-      //   router.push("/show-client-list");
-      // }, 4000);
-    },
-    organizeService(services) {
-      services.forEach(item => {
-        if (item.active) {
-          delete item.createdDate;
-          delete item.__v;
-          this.client.clientArr.push(item);
-          return item;
-        }
-      });
-    },
-    valueData(data) {
-      const { id } = data;
-      console.log(data);
-      this.services.filter(item => {
-        if (item._id === id) {
-          // item.months = months;
-          // item.active = checked;
-          delete item[("createdDate", "__v")];
-          arr.push(item);
-          return item;
-        }
-      });
-      let uniq = {};
-      const arrFiltered = arr.filter(
-        obj => !uniq[obj._id] && (uniq[obj._id] = true) && obj.active
-      );
-      this.client.clientArr = arrFiltered;
     },
     showModalFunc(e) {
       e.preventDefault();

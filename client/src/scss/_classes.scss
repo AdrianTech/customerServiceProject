@@ -7,12 +7,14 @@
   left: 0;
   display: flex;
   justify-content: center;
-  padding: 50px 30px;
+  padding: 50px 10px;
   z-index: 150;
+  border-radius: 10px;
   color: white;
-  // @media (min-width: 600px) {
-  //   width: 60%;
-  //   margin: 50px auto;
-  //   height: 70%;
-  // }
+  @media (min-width: 600px) {
+    // width: 60%;
+    padding: 50px 30px;
+    // margin: 50px auto;
+    // height: 70%;
+  }
 }

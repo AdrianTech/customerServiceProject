@@ -7,8 +7,10 @@ import { Request, Response } from "express";
 export default class ClientCotroller {
   public async addNewClient(req: Request, res: Response) {
     const { fullname, email, clientArr, phone } = req.body;
-    clientArr.forEach((item: IServices) => {
+    clientArr.forEach((item: any) => {
       new TimeHandler().timeChecker(item);
+      delete item.__v;
+      delete item.createdDate;
       return item;
     });
     const newClient = {
@@ -34,13 +36,12 @@ export default class ClientCotroller {
     res.status(200).json(data);
   }
   public async clientServiceUpdate(req: Request, res: Response) {
-    console.log(req.body.filtered);
     const { id } = req.body;
     const { filtered } = req.body;
     filtered.forEach((i: any) => {
-      console.log(i);
       new TimeHandler().timeChecker(i);
       delete i.createdDate;
+      delete i.__v;
       return i;
     });
     console.log(filtered);

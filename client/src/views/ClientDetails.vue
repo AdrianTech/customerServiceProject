@@ -43,7 +43,7 @@
     <button @click="addService" class="addService">
       <span>+</span>
     </button>
-    <AddNewServiceToClient :id="id" :show.sync="show" :update="checkShow" v-if="show" />
+    <AddNewServiceToClient :id="id" :show.sync="show" @update="checkShow" v-if="show" />
   </div>
 </template>
 
@@ -74,15 +74,8 @@ export default {
   methods: {
     addService() {
       this.show = true;
-      // this.$router.push({
-      //   name: "Add New Service",
-      //   params: {
-      //     id: this.id
-      //   }
-      // });
     },
     checkShow(val) {
-      console.log(val);
       this.show = val;
     }
   }

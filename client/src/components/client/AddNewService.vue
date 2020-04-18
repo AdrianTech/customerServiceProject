@@ -1,23 +1,31 @@
 <template>
   <div class="modal">
-    <form class="form" @submit.prevent="submitData">
+    <form class="form" @submit.prevent="submitData" v-if="servicesArr.length > 0">
       <h4>{{ client.fullname }}</h4>
-      <div class="list" v-for="service in servicesList" :key="service._id">
-        <div>
+      <div class="list" v-for="service in servicesArr" :key="service._id">
+        <div :class="{ active: service.active }">
+          <span
+            v-if="!service.active"
+            class="material-icons"
+            @click="changeValue(service._id)"
+          >check_box_outline_blank</span>
+          <span v-else class="material-icons" @click="changeValue(service._id)">check_box</span>
+          <label>{{service.name}}</label>
+          <label>Contract lenght:</label>
           <input
-            type="checkbox"
-            true-value="true"
-            false-value="false"
-            v-model.lazy="service.active"
+            v-model.number="service.months"
+            min="0"
+            max="36"
+            type="number"
+            placeholder="Min 1 month, max 36 months"
           />
-          <label for>{{ service.name }}</label>
         </div>
-        <label for>Contract Length</label>
-        <input type="number" min="0" max="36" v-model.lazy="service.months" :key="service._id" />
       </div>
       <button>Confirm</button>
       <Alert />
     </form>
+    <button class="exit" @click="exit">Exit</button>
+    <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
   </div>
 </template>
 
@@ -27,80 +35,82 @@ import Alert from "../events/Alert";
 export default {
   name: "AddNewService",
   components: { Alert },
-  props: ["id", "show"],
+  props: ["id"],
   data() {
-    // const { id } = this.$route.params;
     return {
       client: [],
-      servicesList: [],
-      buttonCheck: null
+      servicesArr: []
     };
   },
   mounted() {
-    this.test();
-    console.log("mounted", new Date());
-    // const findClient = this.clientData.filter(i => i._id === this.id);
-    // this.client = findClient[0];
-    // let filtered = this.services.filter(
-    //   i =>
-    //     !this.client.typeOfService.some(
-    //       a => i._id === a._id && i.active !== a.active
-    //     )
-    // );
-    // filtered.forEach(i => (i.months = 0));
-    // this.servicesList = filtered;
+    this.setServicesArr();
   },
   computed: {
     ...mapGetters(["services", "clientData", "eventInfo"])
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),
-    test() {
-      console.log("test", new Date());
+    exit() {
+      this.$emit("update", false);
+    },
+    changeValue(id) {
+      this.servicesArr.forEach(item => {
+        if (item._id === id) {
+          item.active = !item.active;
+        }
+      });
+    },
+    setServicesArr() {
+      const ary = JSON.parse(JSON.stringify(this.services));
       const findClient = this.clientData.filter(i => i._id === this.id);
       this.client = findClient[0];
-      let filtered = this.services.filter(
+      this.servicesArr = ary.filter(
         i =>
           !this.client.typeOfService.some(
             a => i._id === a._id && i.active !== a.active
           )
       );
-      filtered.forEach(i => (i.months = 0));
-      this.servicesList = filtered;
     },
     submitData() {
-      const { servicesList, id } = this;
-      let valid = 0;
-      const filtered = servicesList.filter(i => {
-        if (i.active === "true") {
-          i.active = Boolean(i.active);
-          i.months = +i.months;
-          return i;
-        } else if (i.months === 0) valid++;
-      });
-      console.log(valid);
-      if (valid == servicesList.length || filtered.length === 0)
+      const { id } = this;
+      const filtered = this.servicesArr.filter(
+        ({ active, months }) => active && months > 0
+      );
+      if (filtered.length === 0)
         return this.errHandler(
-          "Check at least one field and set contract length"
+          "Please, check at least one service and choose number of months"
         );
-      // const { active, name, unitPrice, months } = filtered[0];
       const data = {
         filtered,
         id
       };
       this.addNewServiceToClient(data);
       this.client = [];
-      this.test();
-      this.$emit("update", false);
+      this.servicesArr = [];
+      this.setServicesArr();
+      setTimeout(() => {
+        this.exit();
+      }, 3500);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.exit {
+  position: absolute;
+  bottom: 0;
+}
+.active {
+  background-color: white;
+  color: black;
+}
 @media (min-width: 500px) {
 }
 @media (min-width: 768px) {
+  .modal {
+    width: 50%;
+  }
 }
 @media (min-width: 1000px) {
 }
