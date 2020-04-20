@@ -1,6 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { Routes } from "./routes/routes";
+// import { Routes } from "./routes/routes";
+import ClientRoute from "./routes/clients";
+import UserRoute from "./routes/user";
+import ServiceRoute from "./routes/service";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import path from "path";
@@ -11,12 +14,16 @@ dotenv.config();
 
 class App {
   public app: express.Application;
-  public route: Routes = new Routes();
-  public serviceRoute: Routes = new Routes();
+  // public route: Routes = new Routes();
+  public clientRoute: ClientRoute = new ClientRoute();
+  public userRoute: UserRoute = new UserRoute();
+  public serviceRoute: ServiceRoute = new ServiceRoute();
   constructor() {
     this.app = express();
     this.config();
-    this.route.routes(this.app);
+    // this.route.routes(this.app);
+    this.clientRoute.routes(this.app);
+    this.userRoute.routes(this.app);
     this.serviceRoute.routes(this.app);
     this.dbSetup();
   }
@@ -30,7 +37,6 @@ class App {
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*"), next();
     });
-    // this.app.use(helmet.hidePoweredBy());
   }
 
   private dbSetup(): void {

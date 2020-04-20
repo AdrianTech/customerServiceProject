@@ -22,8 +22,7 @@ export default {
   data() {
     return {
       name: "",
-      unitPrice: "",
-      values: 0
+      unitPrice: ""
     };
   },
   computed: {
@@ -38,8 +37,9 @@ export default {
         unitPrice
       };
       const { msg, bool } = createNewServiceValid(data);
-      if (!bool) return this.errHandler(msg);
+      if (!bool) return this.errHandler({ msg, status: 400 });
       this.createService(data);
+      Object.assign(this.$data, { name: "", unitPrice: "" });
     }
   }
 };

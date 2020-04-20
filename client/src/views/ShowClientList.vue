@@ -6,6 +6,9 @@
       <span>Actions</span>
     </div>
     <Client v-bind="client" v-for="client in clientData" :key="client._id"></Client>
+    <button class="addService" @click="addNewClient">
+      <span>+</span>
+    </button>
   </div>
 </template>
 
@@ -18,6 +21,13 @@ export default {
   },
   computed: {
     ...mapGetters(["clientData"])
+  },
+  methods: {
+    addNewClient() {
+      this.$router.push({
+        name: "Create Client Account"
+      });
+    }
   }
 };
 </script>

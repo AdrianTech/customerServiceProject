@@ -1,6 +1,6 @@
 <template >
   <div class="alert" v-if="eventInfo.bool">
-    <h3>{{eventInfo.message}}</h3>
+    <h3>{{eventInfo.msg}}</h3>
   </div>
 </template>
 

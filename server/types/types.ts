@@ -6,6 +6,8 @@ export type IServices = {
   finishTime: string;
   active: Boolean;
   extendTimes: Number;
+  createdDate?: string;
+  __v?: any;
 };
 export type INotes = {
   date: string;
@@ -24,7 +26,7 @@ export interface IUser extends mongoose.Document {
 }
 export type ICompanyServices = {
   name: string;
-  values: Array<number>;
   createdDate: string;
   unitPrice: number;
+  __v: number;
 };

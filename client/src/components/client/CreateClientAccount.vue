@@ -62,12 +62,10 @@ export default {
     submitData() {
       this.client.clientArr = this.servicesArr.filter(({ active }) => active);
       const { msg, bool } = createNewUserValid(this.client);
-      if (!bool) return this.errHandler(msg);
+      if (!bool) return this.errHandler({ msg, status: 400 });
       this.createClient(this.client);
-      if (!this.eventInfo.bool) {
-        this.client = { fullname: "", phone: "", email: "", clientArr: [] };
-        this.setServicesArr();
-      }
+      this.client = { fullname: "", phone: "", email: "", clientArr: [] };
+      this.setServicesArr();
     },
     showModalFunc(e) {
       e.preventDefault();

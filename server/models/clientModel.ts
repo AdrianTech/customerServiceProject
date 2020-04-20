@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IClient } from "../types/types";
+import { IClient, INotes } from "../types/types";
 const Schema = mongoose.Schema;
 const ArrayClientSubSchema = new Schema({
   name: String,
@@ -12,7 +12,7 @@ const ArrayClientSubSchema = new Schema({
     default: 0
   }
 });
-const NotesClientSubSchema = new Schema({
+const NotesClientSubSchema = new Schema<INotes>({
   date: String,
   body: {
     type: String

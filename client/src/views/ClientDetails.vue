@@ -13,7 +13,7 @@
           <span class="material-icons">phone</span> 675 555 234
         </div>
         <div class="item">
-          <button>Show me notes</button>
+          <button @click="clientNotes">Show me notes</button>
         </div>
       </div>
       <div class="actions">
@@ -77,6 +77,12 @@ export default {
     },
     checkShow(val) {
       this.show = val;
+    },
+    clientNotes() {
+      this.$router.push({
+        name: "ClientNotes",
+        params: { id: this.id }
+      });
     }
   }
 };

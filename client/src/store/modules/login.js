@@ -5,7 +5,8 @@ const state = {
   user: null,
   info: {
     bool: false,
-    message: ""
+    msg: "",
+    status: 0
   },
   isLogged: false
 };
@@ -18,15 +19,18 @@ const getters = {
 
 const mutations = {
   userResponse: (state, payload) => (state.user = payload),
-  errUserResponse: (state, payload) => {
+  errUserResponse: (state, obj) => {
+    console.log(obj);
     state.info = {
       bool: true,
-      message: payload
+      msg: obj.msg,
+      status: obj.status
     };
     setTimeout(() => {
       state.info = {
         bool: false,
-        message: ""
+        message: "",
+        status: 0
       };
     }, 3000);
   },
@@ -45,8 +49,11 @@ const actions = {
       dispatch("getClients");
       dispatch("getServices");
     } catch (err) {
-      console.log(err.response);
-      dispatch("errHandler", err.response.data);
+      const error = {
+        msg: err.response.data,
+        status: 400
+      };
+      dispatch("errHandler", error);
       commit("isLogged", false);
     }
   },

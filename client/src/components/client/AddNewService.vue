@@ -62,7 +62,9 @@ export default {
     },
     setServicesArr() {
       const ary = JSON.parse(JSON.stringify(this.services));
+      console.log(ary);
       const findClient = this.clientData.filter(i => i._id === this.id);
+      console.log(findClient);
       this.client = findClient[0];
       this.servicesArr = ary.filter(
         i =>
@@ -70,6 +72,7 @@ export default {
             a => i._id === a._id && i.active !== a.active
           )
       );
+      console.log(this.servicesArr);
     },
     submitData() {
       const { id } = this;
@@ -77,21 +80,21 @@ export default {
         ({ active, months }) => active && months > 0
       );
       if (filtered.length === 0)
-        return this.errHandler(
-          "Please, check at least one service and choose number of months"
-        );
+        return this.errHandler({
+          msg: "Please, check at least one service and choose number of months",
+          status: 400
+        });
       const data = {
         filtered,
         id
       };
+      data;
       this.addNewServiceToClient(data);
-      this.client = [];
-      this.servicesArr = [];
-      this.setServicesArr();
       setTimeout(() => {
-        this.exit();
-      }, 3500);
+        this.setServicesArr();
+      }, 500);
     }
+    // }
   }
 };
 </script>

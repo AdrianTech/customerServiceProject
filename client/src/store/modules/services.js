@@ -12,12 +12,13 @@ const mutations = {
   serviceData: (state, payload) => (state.services = payload)
 };
 const actions = {
-  async createService({ commit }, data) {
+  async createService({ commit, dispatch }, data) {
     try {
       const res = await axios.post("/createService", data);
       commit("serviceData", res.data);
-    } catch (err) {
-      console.log(err.response);
+      dispatch("errHandler", { msg: "Service added", status: 200 });
+    } catch ({ response }) {
+      dispatch("errHandler", { msg: response.data, status: 200 });
     }
   },
   async getServices({ commit }) {

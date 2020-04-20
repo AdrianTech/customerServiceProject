@@ -24,19 +24,30 @@ const actions = {
     try {
       const res = await axios.post("/createClient", data);
       commit("setClientsData", res.data.data);
-      dispatch("errHandler", res.data.msg);
+      dispatch("errHandler", { msg: res.data.msg, status: 200 });
     } catch (err) {
-      dispatch("errHandler", err.response.data);
+      dispatch("errHandler", { msg: err.response.data, status: 400 });
     }
   },
   async addNewServiceToClient({ commit, dispatch }, data) {
-    console.log(data);
+    // console.log(data);
     try {
       const res = await axios.post("/clientServiceUpdate", data);
       commit("setClientsData", res.data);
-      dispatch("errHandler", "Service added");
+      dispatch("errHandler", { msg: "Service added", status: 200 });
     } catch (err) {
-      dispatch("errHandler", err.reponse.data);
+      dispatch("errHandler", { msg: err.reponse.data, status: 400 });
+    }
+  },
+  async createNote({ commit, dispatch }, data) {
+    console.log(data);
+    if (data.length < 10) return;
+    try {
+      const res = await axios.post("/createNote", data);
+      commit("setClientsData", res.data);
+      dispatch("errHandler", { msg: "Service added", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: err.reponse.data, status: 400 });
     }
   }
 };

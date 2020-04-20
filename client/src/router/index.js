@@ -7,6 +7,7 @@ import CreateNewService from "../components/services/CreateNewService.vue";
 import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
 import AddNewService from "../components/client/AddNewService.vue";
+import ClientNotes from "../components/client/ClientNotes.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -54,6 +55,12 @@ const routes = [
     name: "Create Client Account",
     props: { default: true },
     component: CreateAccount
+  },
+  {
+    path: "/client-notes/:id",
+    name: "ClientNotes",
+    props: { default: true },
+    component: ClientNotes
   }
 ];
 
