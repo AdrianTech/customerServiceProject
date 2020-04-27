@@ -15,14 +15,10 @@
     </div>
     <div class="actions">
       <div class="email-action">
-        <!-- <span class="material-icons">mail_outline</span> -->
         <img src="../../assets/mail.png" alt="email" />
         <p>Send email</p>
       </div>
     </div>
-    <!-- <button class="addService" @click="addNewClient">
-      <span>+</span>
-    </button>-->
   </div>
 </template>
 
@@ -50,11 +46,6 @@ export default {
         params: { id: _id }
       });
     },
-    // addNewClient() {
-    //   this.$router.push({
-    //     name: "Create Client Account"
-    //   });
-    // },
     displayTimeCounter() {
       return timeCounter(this.endTime);
     }
@@ -69,7 +60,8 @@ export default {
   font-size: 14px;
   align-items: center;
   border-bottom: 1px solid $dark-blue;
-  padding: 7px 0;
+  font: 15px $openSans;
+  padding: 5px 0;
   &:first-child {
     border-top: 1px solid $dark-blue;
   }
@@ -97,6 +89,8 @@ export default {
     .email-action {
       p {
         font-size: 13px;
+        position: relative;
+        bottom: 6px;
       }
     }
   }
@@ -112,7 +106,6 @@ export default {
 }
 @media (min-width: 500px) {
   .client {
-    font-size: 17px;
     .more {
       font-size: 14px;
     }
@@ -125,10 +118,13 @@ export default {
 }
 @media (min-width: 768px) {
   .client {
-    font-size: 20px;
-    padding: 10px 0;
+    font-size: 21px;
+    // padding: 10px 0;
     .more {
       font-size: 15px;
+    }
+    .actions .email-action p {
+      font-size: 14px;
     }
     .counter-details {
       span {

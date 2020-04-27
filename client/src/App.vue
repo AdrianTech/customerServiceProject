@@ -2,22 +2,25 @@
   <div id="app">
     <Header v-if="isLogged" />
     <router-view />
+    <Alert />
   </div>
 </template>
 
 <script>
 import Header from "../src/components/Header";
 import { mapGetters, mapActions } from "vuex";
+import Alert from "../src/components/events/Alert";
 export default {
   components: {
-    Header
+    Header,
+    Alert
   },
   computed: {
     ...mapGetters(["isLogged"])
   },
   methods: {
     ...mapActions(["getClients", "loginUser"])
-  },
+  }
 };
 </script>
 

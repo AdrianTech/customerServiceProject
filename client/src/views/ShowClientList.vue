@@ -2,7 +2,7 @@
   <div class="client-list">
     <div class="desc-list">
       <span>Counter</span>
-      <span class="fullname">Fullname</span>
+      <span class="fullname">Client name</span>
       <span>Actions</span>
     </div>
     <Client v-bind="client" v-for="client in clientData" :key="client._id"></Client>
@@ -39,6 +39,9 @@ export default {
   border-bottom: 1px solid #7c7c7c;
   padding-top: 80px;
   padding-bottom: 10px;
+  color: $dark-blue;
+  font-family: $balFont;
+  font-weight: 700;
   span {
     flex: 1;
   }
@@ -50,6 +53,7 @@ export default {
   .client-list {
     max-width: 968px;
     margin: auto;
+    font-size: 21px;
   }
 }
 </style>

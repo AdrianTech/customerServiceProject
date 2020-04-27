@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Services list component tests snapshot 1`] = `
+<div
+  class="servicesList"
+>
+  <button>
+    Services list
+  </button>
+   
+  <!---->
+</div>
+`;

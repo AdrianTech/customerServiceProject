@@ -20,7 +20,6 @@ const getters = {
 const mutations = {
   userResponse: (state, payload) => (state.user = payload),
   errUserResponse: (state, obj) => {
-    console.log(obj);
     state.info = {
       bool: true,
       msg: obj.msg,
@@ -44,10 +43,11 @@ const actions = {
   async loginUser({ commit, dispatch }, data) {
     try {
       const res = await axios.post("/loginUser", data);
-      commit("userResponse", res.data);
-      commit("isLogged", true);
-      dispatch("getClients");
-      dispatch("getServices");
+      [
+        ["userResponse", res.data],
+        ["isLogged", true]
+      ].forEach(i => commit(i[0], i[1]));
+      ["getClients", "getServices"].forEach(i => dispatch(i));
     } catch (err) {
       const error = {
         msg: err.response.data,
@@ -61,9 +61,12 @@ const actions = {
   logoutUser({ commit, dispatch }) {
     try {
       axios.get("/logout");
-      commit("clearUser", null);
-      commit("isLogged", false);
+      [
+        ["clearUser", null],
+        ["isLogged", false]
+      ].forEach(i => commit(i[0], i[1]));
       dispatch("resetClientsArray");
+      dispatch("errHandler", { msg: "You've been logged out", status: 200 });
       if (router.history.current.path !== "/") router.push("/");
     } catch (err) {
       console.log(err.response);

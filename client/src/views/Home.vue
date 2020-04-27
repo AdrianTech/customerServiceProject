@@ -3,7 +3,7 @@
     <Login v-if="!isLogged" />
     <template v-else>
       <h1>Welcome to this project</h1>
-      <router-link to="/show-client-list">Show me client List</router-link>
+      <router-link to="/client-list">Show me client List</router-link>
       <h3>OR</h3>
       <router-link to="/create-service">Create a new service</router-link>
     </template>

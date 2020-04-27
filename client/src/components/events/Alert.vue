@@ -1,5 +1,5 @@
 <template >
-  <div class="alert" v-if="eventInfo.bool">
+  <div class="alert" :class="eventInfo.status === 400 ? 'fail': null" v-if="eventInfo.bool">
     <h3>{{eventInfo.msg}}</h3>
   </div>
 </template>
@@ -8,6 +8,11 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Alert",
+  data() {
+    return {
+      type: "Alert"
+    };
+  },
   computed: {
     ...mapGetters(["eventInfo"])
   },
@@ -19,9 +24,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.alert {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  background-color: #fff;
+  border: 2px solid green;
+  padding: 10px;
+  z-index: 200;
+}
+.fail {
+  border: 2px solid red;
+  color: red;
+}
 @media (min-width: 500px) {
 }
 @media (min-width: 768px) {
+  .alert {
+    padding: 10px 25px;
+  }
 }
 @media (min-width: 1000px) {
 }

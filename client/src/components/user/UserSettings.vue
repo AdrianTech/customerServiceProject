@@ -1,18 +1,17 @@
 <template>
-  <div class="settings">
-    <router-link to="/your-settings">Your settings</router-link>
+  <div class="userSettings">
+    <h3>Hello!</h3>
+    <h2>{{userData.email}}</h2>
+    <h4>You have {{clientData.length}}{{clientData.length > 1 ? " clients" : " client"}}</h4>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-// import UserSettings from "../components/user/UserSettings";
 export default {
-  name: "Settings",
-  // components: {UserSettings
-  // },
+  name: "UserSettings",
   computed: {
-    ...mapGetters([""])
+    ...mapGetters(["userData", "clientData"])
   },
   methods: {
     ...mapActions([""])
@@ -21,12 +20,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.settings {
-  padding-top: 80px;
+.userSettings {
+  padding-top: $topPadding;
   text-align: center;
-}
-a {
-  @include primary-link;
 }
 @media (min-width: 500px) {
 }

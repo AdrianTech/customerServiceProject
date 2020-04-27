@@ -22,7 +22,7 @@
         </div>
       </div>
       <button>Confirm</button>
-      <Alert />
+      <!-- <Alert /> -->
     </form>
     <button class="exit" @click="exit">Exit</button>
     <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
@@ -31,10 +31,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Alert from "../events/Alert";
+// import Alert from "../events/Alert";
+import { setClientData } from "../../shared/sharedFunctions";
 export default {
   name: "AddNewService",
-  components: { Alert },
+  // components: { Alert },
   props: ["id"],
   data() {
     return {
@@ -44,6 +45,11 @@ export default {
   },
   mounted() {
     this.setServicesArr();
+  },
+  watch: {
+    clientData() {
+      this.setServicesArr();
+    }
   },
   computed: {
     ...mapGetters(["services", "clientData", "eventInfo"])
@@ -61,18 +67,15 @@ export default {
       });
     },
     setServicesArr() {
-      const ary = JSON.parse(JSON.stringify(this.services));
-      console.log(ary);
-      const findClient = this.clientData.filter(i => i._id === this.id);
-      console.log(findClient);
-      this.client = findClient[0];
+      let { id, clientData, services } = this;
+      const ary = JSON.parse(JSON.stringify(services));
+      this.client = setClientData(id, clientData);
       this.servicesArr = ary.filter(
         i =>
           !this.client.typeOfService.some(
             a => i._id === a._id && i.active !== a.active
           )
       );
-      console.log(this.servicesArr);
     },
     submitData() {
       const { id } = this;
@@ -88,11 +91,7 @@ export default {
         filtered,
         id
       };
-      data;
       this.addNewServiceToClient(data);
-      setTimeout(() => {
-        this.setServicesArr();
-      }, 500);
     }
     // }
   }

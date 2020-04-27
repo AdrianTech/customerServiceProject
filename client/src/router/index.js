@@ -8,6 +8,7 @@ import Settings from "../views/Settings.vue";
 import ClientDetails from "../views/ClientDetails.vue";
 import AddNewService from "../components/client/AddNewService.vue";
 import ClientNotes from "../components/client/ClientNotes.vue";
+import UserSettings from "../components/user/UserSettings.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -19,7 +20,7 @@ const routes = [
     component: Home
   },
   {
-    path: "/show-client-list",
+    path: "/client-list",
     name: "Client-List",
     component: ClientList
     // route level code-splitting
@@ -61,6 +62,12 @@ const routes = [
     name: "ClientNotes",
     props: { default: true },
     component: ClientNotes
+  },
+  {
+    path: "/your-settings",
+    name: "UserSettings",
+    props: { default: true },
+    component: UserSettings
   }
 ];
 

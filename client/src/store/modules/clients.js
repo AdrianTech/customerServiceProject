@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router/index";
 
 const state = {
   clients: []
@@ -20,7 +21,6 @@ const actions = {
     commit("setClientsData", []);
   },
   async createClient({ commit, dispatch }, data) {
-    console.log(data);
     try {
       const res = await axios.post("/createClient", data);
       commit("setClientsData", res.data.data);
@@ -30,7 +30,6 @@ const actions = {
     }
   },
   async addNewServiceToClient({ commit, dispatch }, data) {
-    // console.log(data);
     try {
       const res = await axios.post("/clientServiceUpdate", data);
       commit("setClientsData", res.data);
@@ -40,12 +39,31 @@ const actions = {
     }
   },
   async createNote({ commit, dispatch }, data) {
-    console.log(data);
-    if (data.length < 10) return;
+    if (data.body.length < 1)
+      return dispatch("errHandler", { msg: "Please, enter a message", status: 400 });
     try {
       const res = await axios.post("/createNote", data);
       commit("setClientsData", res.data);
       dispatch("errHandler", { msg: "Service added", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: err.reponse.data, status: 400 });
+    }
+  },
+  async removeNote({ commit, dispatch }, data) {
+    try {
+      const res = await axios.post("/deleteNote", data);
+      commit("setClientsData", res.data);
+      dispatch("errHandler", { msg: "Note removed", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: err.reponse.data, status: 400 });
+    }
+  },
+  async deleteClient({ commit, dispatch }, id) {
+    try {
+      const res = await axios.delete("/deleteClient", { params: { id } });
+      commit("setClientsData", res.data);
+      dispatch("errHandler", { msg: "Client deleted", status: 200 });
+      router.push("/client-list");
     } catch (err) {
       dispatch("errHandler", { msg: err.reponse.data, status: 400 });
     }

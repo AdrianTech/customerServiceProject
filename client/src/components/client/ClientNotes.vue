@@ -1,15 +1,21 @@
 <template>
-  <div class="clientNotes" v-if="data !== null">
-    <h2>{{ data.fullname }}</h2>
-    <button @click="addNote">Add note</button>
+  <div class="clientNotes" v-if="client !== null">
+    <h2>{{ client.fullname }}</h2>
+    <button @click="addNote">{{showAddNote ? "Hide form" : "Add a note"}}</button>
     <form @submit.prevent="submitNote" class="form" v-if="showAddNote">
       <label>Add text</label>
       <textarea cols="30" rows="10" v-model.trim="body"></textarea>
-      <button>Create a note</button>
+      <button :disabled="body.length === 0">Create a note</button>
     </form>
-    <div class="notes-list">
-      <div class="note" v-for="note in data.notes" :key="note._id">
-        <p>{{ note.body }}</p>
+    <div class="notes-list" v-if="!showAddNote">
+      <div class="note" v-for="note in client.notes" :key="note._id">
+        <div class="inside">
+          <span>
+            Added: {{note.date}}
+            <span class="material-icons" @click="deleteNote(note._id)">delete</span>
+          </span>
+          <p>{{ note.body }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -17,14 +23,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { setClientData } from "../../shared/sharedFunctions";
+import moment from "moment-timezone";
 export default {
   name: "ClientNotes",
-  components: {},
   data() {
     const { id } = this.$route.params;
     return {
       id,
-      data: null,
+      client: null,
       showAddNote: false,
       body: ""
     };
@@ -33,24 +40,37 @@ export default {
     this.setValues();
   },
   computed: {
-    ...mapGetters(["clientData"])
-    // watch: () => {
-    //   const findClient = this.clientData.find(i => i._id === this.id);
-    //   this.data = findClient;
-    // }
+    ...mapGetters(["clientData", "eventInfo"])
+  },
+  watch: {
+    clientData() {
+      this.setValues();
+      this.showAddNote = false;
+    }
   },
   methods: {
-    ...mapActions(["createNote"]),
+    ...mapActions(["createNote", "removeNote"]),
     submitNote() {
       const { body, id } = this;
       this.createNote({ body, id });
-      setTimeout(() => {
-        this.setValues();
-      }, 500);
+    },
+    deleteNote(messageID) {
+      const confirm = window.confirm("Delete this note?");
+      const data = {
+        messageID,
+        id: this.id
+      };
+      if (confirm) this.removeNote(data);
     },
     setValues() {
-      const findClient = this.clientData.find(i => i._id === this.id);
-      this.data = findClient;
+      const guess = moment.tz.guess();
+      this.client = setClientData(this.id, this.clientData);
+      this.client.notes.forEach(i => {
+        i.date = moment(i.date)
+          .clone()
+          .tz(guess)
+          .format("LLL");
+      });
       this.body = "";
     },
     addNote() {
@@ -73,6 +93,8 @@ export default {
     border: none;
     textarea {
       border: 2px solid $db-light;
+      font-size: 17px;
+      padding: 5px;
     }
     label {
       font-size: 20px;
@@ -80,6 +102,43 @@ export default {
       color: $dark-blue;
     }
   }
+}
+.note {
+  border-top: 1px solid $db-light;
+  border-bottom: 1px solid $db-light;
+  padding: 5px 12px;
+  position: relative;
+  button {
+    font-size: 15px;
+    padding: 0 8px;
+    margin-left: 10px;
+  }
+  .inside {
+    p {
+      font-size: 17px;
+      padding: 8px;
+    }
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .material-icons {
+        font-size: 21px;
+        margin-left: 10px;
+        cursor: pointer;
+        color: #aa0505;
+        opacity: 0;
+        transition: opacity 0.4s;
+        will-change: opacity;
+      }
+      &:hover .material-icons {
+        opacity: 1;
+      }
+    }
+  }
+}
+.note + .note {
+  border-bottom: none;
 }
 .notes-list {
   margin-top: 30px;
@@ -90,6 +149,15 @@ export default {
 @media (min-width: 500px) {
 }
 @media (min-width: 768px) {
+  .note {
+    width: 60%;
+    margin: 0 auto;
+    .inside {
+      p {
+        font-size: 19px;
+      }
+    }
+  }
 }
 @media (min-width: 1000px) {
 }

@@ -3,6 +3,7 @@
     <div class="client-details">
       <div class="name">
         <h2>{{ data.fullname }}</h2>
+        <span class="material-icons removeClient" @click="removeClient(data._id)">highlight_off</span>
       </div>
       <div class="data">
         <div class="item">
@@ -49,8 +50,9 @@
 
 <script>
 import Service from "@/components/services/Services";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import AddNewServiceToClient from "../components/client/AddNewService";
+import { setClientData } from "../shared/sharedFunctions";
 export default {
   components: { Service, AddNewServiceToClient },
   name: "ClientDetails",
@@ -64,14 +66,18 @@ export default {
     };
   },
   mounted() {
-    const ID = this.id;
-    const findClient = this.clientData.find(i => i._id === ID);
-    this.data = findClient;
+    this.data = setClientData(this.id, this.clientData);
   },
   computed: {
     ...mapGetters(["clientData"])
   },
+  watch: {
+    clientData() {
+      this.data = setClientData(this.id, this.clientData);
+    }
+  },
   methods: {
+    ...mapActions(["deleteClient"]),
     addService() {
       this.show = true;
     },
@@ -83,6 +89,10 @@ export default {
         name: "ClientNotes",
         params: { id: this.id }
       });
+    },
+    removeClient(id) {
+      const confirm = window.confirm(`Remove ${this.data.fullname} ?`);
+      if (confirm) this.deleteClient(id);
     }
   }
 };
@@ -131,6 +141,25 @@ h3 {
   padding: 10px 0;
   text-align: center;
 }
+.name {
+  h2 {
+    display: inline-block;
+  }
+  .removeClient {
+    color: red;
+    font-size: 22px;
+    opacity: 0;
+    margin-left: 8px;
+    top: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.35s;
+    will-change: opacity;
+  }
+  &:hover .removeClient {
+    opacity: 1;
+  }
+}
 .actions {
   display: flex;
   margin: 10px auto;
@@ -154,6 +183,10 @@ h3 {
         font-size: 17px;
       }
     }
+  }
+  .name h2,
+  .name .removeClient {
+    font-size: 26px;
   }
   .active-services {
     grid-template-columns: repeat(auto-fit, minmax(250px, 300px));

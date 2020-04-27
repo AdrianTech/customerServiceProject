@@ -6,7 +6,7 @@
           <router-link to="/">Home</router-link>
         </li>
         <li>
-          <router-link to="/show-client-list">Client List</router-link>
+          <router-link to="/client-list">Client List</router-link>
         </li>
         <li>
           <router-link to="/settings">Settings</router-link>
@@ -78,12 +78,12 @@ nav {
 }
 @media (min-width: 500px) {
   nav ul a {
-    font-size: 15px;
+    font-size: 17px;
   }
 }
 @media (min-width: 768px) {
   nav ul a {
-    font-size: 18px;
+    font-size: 21px;
   }
 }
 </style>

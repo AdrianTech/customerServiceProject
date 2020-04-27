@@ -8,6 +8,7 @@ const UserModel = mongoose.model<IUser>("users", model);
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { cookieOptions } from "../utils/config";
 
 export default class UseController {
   public async userLogin(req: Request, res: Response) {
@@ -17,9 +18,6 @@ export default class UseController {
     const match = await bcrypt.compare(password, user.password);
     const payload = {
       user: user.id
-    };
-    let cookieOptions = {
-      maxAge: 1000 * 60 * 60 * 12
     };
     const auth = jwt.sign(payload, KEY, { expiresIn: "12h" });
     if (!match) return res.status(404).json("Wrong password or email");

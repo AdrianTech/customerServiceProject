@@ -61,9 +61,29 @@ export default class ClientCotroller {
         .tz("Europe/Warsaw")
         .format()
     };
-    console.log(data);
     try {
       await ClientModel.updateOne({ _id: id }, { $addToSet: { notes: data } });
+      const updateClientData = await ClientModel.find();
+      res.status(200).json(updateClientData);
+    } catch (e) {
+      res.status(400).json("Something went wrong");
+    }
+  }
+  public async deleteNote(req: Request, res: Response) {
+    const { id, messageID } = req.body;
+    try {
+      await ClientModel.update({ _id: id }, { $pull: { notes: { _id: messageID } } });
+      const updateClientData = await ClientModel.find();
+      res.status(200).json(updateClientData);
+    } catch (e) {
+      res.status(400).json("Something went wrong");
+    }
+  }
+  public async deleteClient(req: Request, res: Response) {
+    const { id } = req.query;
+    console.log(id);
+    try {
+      const response = await ClientModel.findOneAndDelete({ _id: id });
       const updateClientData = await ClientModel.find();
       res.status(200).json(updateClientData);
     } catch (e) {

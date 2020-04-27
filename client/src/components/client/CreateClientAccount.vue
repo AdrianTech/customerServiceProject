@@ -17,12 +17,17 @@
             :key="service._id"
             :service="service"
             :modal="showModalFunc"
+            @totalSum="totalFunc"
           />
+          <p>Total value: {{total.toFixed(2)}}</p>
           <button @click="showModalFunc">OK</button>
         </div>
       </div>
-      <button>Submit</button>
-      <Alert />
+      <button :disabled="!client.email">Submit</button>
+      <div class="total">
+        Total value of customer services:
+        <span>{{total.toFixed(2)}}</span>
+      </div>
     </form>
   </div>
 </template>
@@ -31,11 +36,9 @@
 import { mapGetters, mapActions } from "vuex";
 import { createNewUserValid } from "../../shared/validation";
 import ServicesChoice from "./ServicesChoice";
-// import router from "../../router/index";
-import Alert from "../events/Alert";
 export default {
   name: "CreateClientAccount",
-  components: { Alert, ServicesChoice },
+  components: { ServicesChoice },
   data() {
     return {
       client: {
@@ -45,7 +48,8 @@ export default {
         clientArr: []
       },
       servicesArr: [],
-      showModal: false
+      showModal: false,
+      total: 0
     };
   },
   mounted() {
@@ -58,6 +62,7 @@ export default {
     ...mapActions(["createClient", "errHandler"]),
     setServicesArr() {
       this.servicesArr = JSON.parse(JSON.stringify(this.services));
+      this.servicesArr.forEach(i => (i.total = 0));
     },
     submitData() {
       this.client.clientArr = this.servicesArr.filter(({ active }) => active);
@@ -70,6 +75,14 @@ export default {
     showModalFunc(e) {
       e.preventDefault();
       this.showModal = !this.showModal;
+    },
+    totalFunc() {
+      let value = 0;
+      this.servicesArr.forEach(i => {
+        if (i.active) value += i.total;
+        this.total - i.total;
+      });
+      this.total = value;
     }
   }
 };
@@ -83,9 +96,19 @@ export default {
   button {
     @include primary-btn;
   }
+  .total {
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    span {
+      margin-left: 5px;
+      font-size: 1.2em;
+    }
+  }
 }
 .center {
   width: 100%;
+  overflow: auto;
   button {
     margin-top: 40px;
     color: white;
@@ -96,8 +119,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     border: 1px solid #817f7f;
+    height: 90px;
     margin-bottom: 7px;
-    padding: 10px;
+    padding: 5px 10px;
     width: 100%;
     border-radius: 7px;
   }
@@ -108,7 +132,11 @@ export default {
   .center {
     .serviceSection {
       padding: 10px 15px;
+      height: 80px;
     }
+  }
+  .createClient form {
+    width: 65%;
   }
 }
 @media (min-width: 1000px) {
