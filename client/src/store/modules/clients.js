@@ -39,8 +39,7 @@ const actions = {
     }
   },
   async createNote({ commit, dispatch }, data) {
-    if (data.body.length < 1)
-      return dispatch("errHandler", { msg: "Please, enter a message", status: 400 });
+    if (data.body.length < 1) return dispatch("errHandler", { msg: "Please, enter a message", status: 400 });
     try {
       const res = await axios.post("/createNote", data);
       commit("setClientsData", res.data);
@@ -64,6 +63,15 @@ const actions = {
       commit("setClientsData", res.data);
       dispatch("errHandler", { msg: "Client deleted", status: 200 });
       router.push("/client-list");
+    } catch (err) {
+      dispatch("errHandler", { msg: err.reponse.data, status: 400 });
+    }
+  },
+  async updateClient({ commit, dispatch }, data) {
+    try {
+      const res = await axios.put("/updateClient", data);
+      commit("setClientsData", res.data);
+      dispatch("errHandler", { msg: "Client dupdated", status: 200 });
     } catch (err) {
       dispatch("errHandler", { msg: err.reponse.data, status: 400 });
     }

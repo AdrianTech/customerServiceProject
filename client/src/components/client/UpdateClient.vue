@@ -43,7 +43,7 @@ export default {
   //   ...mapGetters([""])
   // },
   methods: {
-    ...mapActions(["errHandler"]),
+    ...mapActions(["errHandler", "updateClient"]),
     showInput(name) {
       if (name === "fullname") this.obj.fullname = !this.obj.fullname;
       if (name === "phone") this.obj.phone = !this.obj.phone;
@@ -55,14 +55,16 @@ export default {
     },
     confirm() {
       const { fullname, email, phone } = this;
+      const { _id } = this.data;
       const data = {
         fullname,
         email,
-        phone
+        phone,
+        id: _id
       };
       const { msg, bool, value } = updateDataValid(data);
       if (!bool) return this.errHandler({ msg, status: 400 });
-      console.log(value);
+      this.updateClient(value);
     }
   }
 };

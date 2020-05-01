@@ -44,9 +44,8 @@ export default class ClientCotroller {
       delete i.__v;
       return i;
     });
-    console.log(filtered);
     try {
-      await ClientModel.findOneAndUpdate({ _id: id }, { $addToSet: { typeOfService: filtered } });
+      await ClientModel.updateOne({ _id: id }, { $addToSet: { typeOfService: filtered } });
       const updateClientData = await ClientModel.find();
       res.status(200).json(updateClientData);
     } catch (e) {
@@ -81,9 +80,18 @@ export default class ClientCotroller {
   }
   public async deleteClient(req: Request, res: Response) {
     const { id } = req.query;
-    console.log(id);
     try {
-      const response = await ClientModel.findOneAndDelete({ _id: id });
+      await ClientModel.findOneAndDelete({ _id: id });
+      const updateClientData = await ClientModel.find();
+      res.status(200).json(updateClientData);
+    } catch (e) {
+      res.status(400).json("Something went wrong");
+    }
+  }
+  public async updateClient(req: Request, res: Response) {
+    const { id } = req.body;
+    try {
+      await ClientModel.updateOne({ _id: id }, { $set: req.body });
       const updateClientData = await ClientModel.find();
       res.status(200).json(updateClientData);
     } catch (e) {

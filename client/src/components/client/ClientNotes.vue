@@ -131,9 +131,9 @@ export default {
         transition: opacity 0.4s;
         will-change: opacity;
       }
-      &:hover .material-icons {
-        opacity: 1;
-      }
+    }
+    &:hover .material-icons {
+      opacity: 1;
     }
   }
 }

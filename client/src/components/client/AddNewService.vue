@@ -30,7 +30,7 @@
           <span>{{service.total.toFixed(2)}}</span>
         </div>
       </div>
-      <button class="modal-btn">Confirm</button>
+      <button :disabled="total === 0" class="modal-btn">Confirm</button>
     </form>
     <p>Total services value: {{total.toFixed(2)}}</p>
     <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
@@ -121,6 +121,9 @@ export default {
 }
 form {
   @include form;
+  h3 {
+    margin-bottom: 15px;
+  }
 }
 .list {
   width: 100%;

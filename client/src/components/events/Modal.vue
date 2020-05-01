@@ -16,10 +16,9 @@ export default {
     close(e) {
       const target = e.target.classList[0];
       console.log(target);
-      if (target === "modalWindow" || target === "btn")
-        return this.openModal(false);
+      if (target === "modalWindow" || target === "btn") this.openModal(false);
       if ((this.double && target === "modalWindow") || target === "btn")
-        return this.openModal("double");
+        this.openModal("double");
     }
   },
   destroyed() {

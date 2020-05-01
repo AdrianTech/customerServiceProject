@@ -5,15 +5,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-// import UserSettings from "../components/user/UserSettings";
+import { mapActions } from "vuex";
 export default {
   name: "Settings",
-  // components: {UserSettings
+  // computed: {
+  //   ...mapGetters([""])
   // },
-  computed: {
-    ...mapGetters([""])
-  },
   methods: {
     ...mapActions([""])
   }
