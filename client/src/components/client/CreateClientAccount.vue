@@ -8,27 +8,26 @@
       <label>Phone</label>
       <input v-model.trim="client.phone" type="text" />
       <label>Choose Services (optional)</label>
-      <button @click="showModalFunc">Show services list</button>
-      <div class="modal" v-if="showModal">
-        <div class="center">
-          <ServicesChoice
-            class="serviceSection"
-            v-for="service in servicesArr"
-            :key="service._id"
-            :service="service"
-            :modal="showModalFunc"
-            @totalSum="totalFunc"
-          />
-          <p>Total value: {{total.toFixed(2)}}</p>
-          <button @click="showModalFunc">OK</button>
-        </div>
-      </div>
-      <button :disabled="!client.email">Submit</button>
+      <button class="btn" @click.prevent="openModal(true)">Show services list</button>
+      <button class="btn" :disabled="!client.email">Submit</button>
       <div class="total">
         Total value of customer services:
         <span>{{total.toFixed(2)}}</span>
       </div>
     </form>
+    <Modal v-if="isOpen">
+      <div class="center">
+        <ServicesChoice
+          class="serviceSection"
+          v-for="service in servicesArr"
+          :key="service._id"
+          :service="service"
+          @totalSum="totalFunc"
+        />
+        <p>Total value: {{total.toFixed(2)}}</p>
+        <button @click.prevent="openModal(false)" class="modal-btn">I choosen</button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -36,9 +35,10 @@
 import { mapGetters, mapActions } from "vuex";
 import { createNewUserValid } from "../../shared/validation";
 import ServicesChoice from "./ServicesChoice";
+import Modal from "../events/Modal";
 export default {
   name: "CreateClientAccount",
-  components: { ServicesChoice },
+  components: { Modal, ServicesChoice },
   data() {
     return {
       client: {
@@ -56,10 +56,10 @@ export default {
     this.setServicesArr();
   },
   computed: {
-    ...mapGetters(["eventInfo", "services"])
+    ...mapGetters(["eventInfo", "services", "isOpen"])
   },
   methods: {
-    ...mapActions(["createClient", "errHandler"]),
+    ...mapActions(["createClient", "errHandler", "openModal"]),
     setServicesArr() {
       this.servicesArr = JSON.parse(JSON.stringify(this.services));
       this.servicesArr.forEach(i => (i.total = 0));
@@ -71,10 +71,6 @@ export default {
       this.createClient(this.client);
       this.client = { fullname: "", phone: "", email: "", clientArr: [] };
       this.setServicesArr();
-    },
-    showModalFunc(e) {
-      e.preventDefault();
-      this.showModal = !this.showModal;
     },
     totalFunc() {
       let value = 0;
@@ -90,10 +86,13 @@ export default {
 
 <style lang="scss" scoped>
 .createClient {
+  height: 100vh;
   .form {
-    height: auto;
+    height: 100%;
+    padding-top: 80px;
+    position: relative;
   }
-  button {
+  .btn {
     @include primary-btn;
   }
   .total {
@@ -107,19 +106,21 @@ export default {
   }
 }
 .center {
-  width: 100%;
-  overflow: auto;
-  button {
-    margin-top: 40px;
-    color: white;
-    border: 1px solid white;
+  @include inside(100%, 100%);
+  // button {
+  //   // margin-top: 40px;
+  //   color: white;
+  //   border: 1px solid white;
+  // }
+  p {
+    margin-top: 8px;
   }
   .serviceSection {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #817f7f;
-    height: 90px;
+    height: 77px;
     margin-bottom: 7px;
     padding: 5px 10px;
     width: 100%;
@@ -127,16 +128,17 @@ export default {
   }
 }
 @media (min-width: 500px) {
+  .center {
+    @include inside(85%, 80%);
+  }
 }
 @media (min-width: 768px) {
   .center {
+    @include inside(60%, 80%);
     .serviceSection {
       padding: 10px 15px;
       height: 80px;
     }
-  }
-  .createClient form {
-    width: 65%;
   }
 }
 @media (min-width: 1000px) {

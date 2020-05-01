@@ -48,13 +48,14 @@ export default {
   position: relative;
 }
 .active {
-  background-color: white;
-  color: black;
+  @include active;
 }
 label,
 input {
   font-size: 15px;
-  margin: 7px 0;
+  margin: 7px 0 11px 0;
+  border-radius: 7px;
+  padding: 3px 6px;
 }
 label {
   text-align: center;
@@ -65,9 +66,9 @@ label {
   display: flex;
   justify-content: center;
   bottom: 0;
-  font-size: 13px;
+  font-size: 12px;
   width: 90%;
-  margin: 0 auto;
+  margin: 3px auto;
   span:first-child {
     margin-right: 10px;
   }
@@ -77,8 +78,9 @@ label {
 }
 
 input {
-  width: 30%;
+  width: 25%;
   font-weight: 700;
+  border: 1px solid $db-light;
 }
 @media (min-width: 500px) {
   input {

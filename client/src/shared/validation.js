@@ -66,3 +66,28 @@ export const createNewUserValid = ({ fullname, phone, email, clientArr }) => {
   }
   return validInfo;
 };
+
+export const updateDataValid = data => {
+  let validInfo = {
+    bool: true,
+    msg: "Ok"
+  };
+  const { email } = data;
+  const testData = Object.values(data).filter(([v]) => v);
+  const filtered = Object.entries(data).filter(([k, v]) => v && k);
+  const value = Object.fromEntries(filtered);
+  if (testData.length === 0) {
+    return (validInfo = {
+      bool: false,
+      msg: "Empty fields. Please, fill at least one field"
+    });
+  }
+  if (email.length > 0 && !email.match(emailValid)) {
+    return (validInfo = {
+      bool: false,
+      msg: "Invalid email. Please, enter correct email"
+    });
+  }
+  validInfo.value = value;
+  return validInfo;
+};

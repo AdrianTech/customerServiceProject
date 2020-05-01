@@ -6,7 +6,6 @@
       <label>Unit Price</label>
       <input v-model.number.trim="unitPrice" value="unitPrice" type="text" />
       <button @click.prevent="serviceHandler">Confirm</button>
-      <Alert />
     </form>
     <ServicesList />
   </section>
@@ -16,9 +15,8 @@
 import { mapGetters, mapActions } from "vuex";
 import { createNewServiceValid } from "@/shared/validation.js";
 import ServicesList from "./ServicesList";
-import Alert from "../events/Alert.vue";
 export default {
-  components: { Alert, ServicesList },
+  components: { ServicesList },
   data() {
     return {
       name: "",
@@ -67,4 +65,3 @@ button {
 @media (min-width: 1000px) {
 }
 </style>
-//

@@ -4,6 +4,10 @@
       <div class="name">
         <h2>{{ data.fullname }}</h2>
         <span class="material-icons removeClient" @click="removeClient(data._id)">highlight_off</span>
+        <Modal v-if="double">
+          <UpdateClient :data="data" @update="updateForm" />
+        </Modal>
+        <span @click="openModal('double')" class="material-icons removeClient">update</span>
       </div>
       <div class="data">
         <div class="item">
@@ -15,16 +19,6 @@
         </div>
         <div class="item">
           <button @click="clientNotes">Show me notes</button>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="send-email">
-          <span class="material-icons">mail_outline</span>
-          <p>Send Email</p>
-        </div>
-        <div class="add-note">
-          <span class="material-icons">note_add</span>
-          <p>Add note</p>
         </div>
       </div>
     </div>
@@ -41,10 +35,12 @@
         :service="service"
       />
     </div>
-    <button @click="addService" class="addService">
+    <button @click="openModal(true)" class="addService">
       <span>+</span>
     </button>
-    <AddNewServiceToClient :id="id" :show.sync="show" @update="checkShow" v-if="show" />
+    <Modal v-if="isOpen">
+      <AddNewServiceToClient :id="id" />
+    </Modal>
   </div>
 </template>
 
@@ -52,9 +48,11 @@
 import Service from "@/components/services/Services";
 import { mapGetters, mapActions } from "vuex";
 import AddNewServiceToClient from "../components/client/AddNewService";
+import Modal from "../components/events/Modal";
+import UpdateClient from "../components/client/UpdateClient";
 import { setClientData } from "../shared/sharedFunctions";
 export default {
-  components: { Service, AddNewServiceToClient },
+  components: { Service, AddNewServiceToClient, UpdateClient, Modal },
   name: "ClientDetails",
   data() {
     const { id } = this.$route.params;
@@ -62,14 +60,15 @@ export default {
       extraWidth: "extraWidth",
       id,
       data: null,
-      show: false
+      show: false,
+      update: false
     };
   },
   mounted() {
     this.data = setClientData(this.id, this.clientData);
   },
   computed: {
-    ...mapGetters(["clientData"])
+    ...mapGetters(["clientData", "isOpen", "double"])
   },
   watch: {
     clientData() {
@@ -77,13 +76,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["deleteClient"]),
-    addService() {
-      this.show = true;
-    },
-    checkShow(val) {
-      this.show = val;
-    },
+    ...mapActions(["deleteClient", "openModal"]),
     clientNotes() {
       this.$router.push({
         name: "ClientNotes",
@@ -93,6 +86,9 @@ export default {
     removeClient(id) {
       const confirm = window.confirm(`Remove ${this.data.fullname} ?`);
       if (confirm) this.deleteClient(id);
+    },
+    updateForm() {
+      this.update = !this.update;
     }
   }
 };
@@ -113,12 +109,14 @@ export default {
 }
 .data {
   display: flex;
-  padding: 10px;
+  padding: 15px 10px;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
   text-align: center;
   width: 100%;
+  border-bottom: 1px solid $db-light;
+  margin-bottom: 15px;
   .item {
     margin: 10px;
     font-size: 16px;
@@ -141,20 +139,22 @@ h3 {
   padding: 10px 0;
   text-align: center;
 }
-.name {
-  h2 {
-    display: inline-block;
-  }
-  .removeClient {
-    color: red;
-    font-size: 22px;
-    opacity: 0;
-    margin-left: 8px;
-    top: 4px;
-    position: relative;
-    cursor: pointer;
-    transition: opacity 0.35s;
-    will-change: opacity;
+.client-details {
+  .name {
+    h2 {
+      display: inline-block;
+    }
+    .removeClient {
+      color: red;
+      font-size: 22px;
+      opacity: 0;
+      margin-left: 8px;
+      top: 4px;
+      position: relative;
+      cursor: pointer;
+      transition: opacity 0.35s;
+      will-change: opacity;
+    }
   }
   &:hover .removeClient {
     opacity: 1;
@@ -184,8 +184,8 @@ h3 {
       }
     }
   }
-  .name h2,
-  .name .removeClient {
+  .client-details .name h2,
+  .client-details .name .removeClient {
     font-size: 26px;
   }
   .active-services {

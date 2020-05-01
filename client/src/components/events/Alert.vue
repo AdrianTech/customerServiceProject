@@ -25,13 +25,14 @@ export default {
 
 <style lang="scss" scoped>
 .alert {
-  position: absolute;
+  position: fixed;
   bottom: 2%;
   left: 2%;
   background-color: #fff;
   border: 2px solid green;
   padding: 10px;
   z-index: 200;
+  border-radius: 8px;
 }
 .fail {
   border: 2px solid red;
@@ -45,5 +46,9 @@ export default {
   }
 }
 @media (min-width: 1000px) {
+  .alert {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 </style>

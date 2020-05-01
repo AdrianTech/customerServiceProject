@@ -5,25 +5,19 @@
     <label for>Your password</label>
     <input type="password" name="password" v-model="password" />
     <button class="btn-confirm">Log in</button>
-    <!-- <Alert /> -->
   </form>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions} from "vuex";
 import { validationLogin } from "@/shared/validation";
-// import Alert from "@/components/events/Alert";
 export default {
   name: "Login",
-  // components: { Alert },
   data() {
     return {
       email: "",
       password: ""
     };
-  },
-  computed: {
-    ...mapGetters(["eventInfo"])
   },
   methods: {
     ...mapActions(["loginUser", "errHandler"]),

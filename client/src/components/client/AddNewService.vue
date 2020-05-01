@@ -1,46 +1,53 @@
 <template>
-  <div class="modal">
-    <form class="form" @submit.prevent="submitData" v-if="servicesArr.length > 0">
-      <h4>{{ client.fullname }}</h4>
-      <div class="list" v-for="service in servicesArr" :key="service._id">
-        <div :class="{ active: service.active }">
-          <span
-            v-if="!service.active"
-            class="material-icons"
-            @click="changeValue(service._id)"
-          >check_box_outline_blank</span>
-          <span v-else class="material-icons" @click="changeValue(service._id)">check_box</span>
-          <label>{{service.name}}</label>
-          <label>Contract lenght:</label>
-          <input
-            v-model.number="service.months"
-            min="0"
-            max="36"
-            type="number"
-            placeholder="Min 1 month, max 36 months"
-          />
+  <div class="inside">
+    <form @submit.prevent="submitData" v-if="servicesArr.length > 0">
+      <h3>{{ client.fullname }}</h3>
+      <div
+        class="list"
+        v-for="service in servicesArr"
+        :key="service._id"
+        :class="{ active: service.active }"
+      >
+        <span
+          v-if="!service.active"
+          class="material-icons"
+          @click="changeValue(service._id)"
+        >check_box_outline_blank</span>
+        <span v-else class="material-icons" @click="changeValue(service._id)">check_box</span>
+        <label>{{service.name}}</label>
+        <label>Contract lenght:</label>
+        <input
+          @change="setTotal(service._id)"
+          v-model.number.lazy="service.months"
+          min="0"
+          max="36"
+          type="number"
+          placeholder="Min 1 month, max 36 months"
+        />
+        <div class="total-item">
+          Unit price:
+          <span>{{service.unitPrice}}</span> Total:
+          <span>{{service.total.toFixed(2)}}</span>
         </div>
       </div>
-      <button>Confirm</button>
-      <!-- <Alert /> -->
+      <button class="modal-btn">Confirm</button>
     </form>
-    <button class="exit" @click="exit">Exit</button>
+    <p>Total services value: {{total.toFixed(2)}}</p>
     <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-// import Alert from "../events/Alert";
 import { setClientData } from "../../shared/sharedFunctions";
 export default {
   name: "AddNewService",
-  // components: { Alert },
   props: ["id"],
   data() {
     return {
       client: [],
-      servicesArr: []
+      servicesArr: [],
+      total: 0
     };
   },
   mounted() {
@@ -56,15 +63,22 @@ export default {
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),
-    exit() {
-      this.$emit("update", false);
-    },
     changeValue(id) {
       this.servicesArr.forEach(item => {
         if (item._id === id) {
           item.active = !item.active;
         }
       });
+      this.setTotal();
+    },
+    setTotal(id) {
+      let value = 0;
+      this.servicesArr.forEach(i => {
+        if (i._id === id) i.total = i.unitPrice * i.months;
+        if (i.active) value += i.total;
+        this.total - i.total;
+      });
+      this.total = value;
     },
     setServicesArr() {
       let { id, clientData, services } = this;
@@ -76,6 +90,7 @@ export default {
             a => i._id === a._id && i.active !== a.active
           )
       );
+      this.servicesArr.forEach(i => (i.total = 0));
     },
     submitData() {
       const { id } = this;
@@ -93,27 +108,84 @@ export default {
       };
       this.addNewServiceToClient(data);
     }
-    // }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.exit {
-  position: absolute;
-  bottom: 0;
+.inside {
+  @include inside(100%, 100%);
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px;
+}
+form {
+  @include form;
+}
+.list {
+  width: 100%;
+  margin: 7px 0;
+  height: 80px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 5px 0;
+  text-align: center;
+  border: 1px solid white;
+  border-radius: 8px;
+  position: relative;
+  .total-item {
+    position: absolute;
+    bottom: 2px;
+    margin-top: 5px;
+    font-size: 13px;
+    span {
+      margin-right: 10px;
+    }
+    &:nth-child(2) {
+      font-weight: 700;
+    }
+  }
+  span {
+    flex: 0.3;
+  }
+  input {
+    flex: 0.5;
+    border: 1px solid $db-light;
+    border-radius: 6px;
+    padding: 6px;
+    margin: 0 5px;
+    font-size: 15px;
+  }
+  label {
+    flex: 1;
+  }
 }
 .active {
-  background-color: white;
-  color: black;
+  background-color: #fff;
+  color: #000;
 }
 @media (min-width: 500px) {
+  .inside {
+    @include inside(75%, 80%);
+  }
 }
 @media (min-width: 768px) {
-  .modal {
-    width: 50%;
+  .list {
+    // height: 85px;
+    font-size: 17px;
+  }
+  .inside {
+    @include inside(60%, 80%);
   }
 }
 @media (min-width: 1000px) {
+  .list {
+    font-size: 19px;
+    input {
+      font-size: 17px;
+    }
+  }
 }
 </style>
