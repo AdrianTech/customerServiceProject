@@ -4,10 +4,10 @@
       <div class="name">
         <h2>{{ data.fullname }}</h2>
         <span class="material-icons removeClient" @click="removeClient(data._id)">highlight_off</span>
-        <Modal v-if="double">
+        <Modal v-if="updateClient.open" :modalID="updateClient.id">
           <UpdateClient :data="data" @update="updateForm" />
         </Modal>
-        <span @click="openModal('double')" class="material-icons removeClient">update</span>
+        <span @click="openModal(updateClient.id)" class="material-icons removeClient">update</span>
       </div>
       <div class="data">
         <div class="item">
@@ -28,31 +28,31 @@
       class="active-services"
       :class="[data.typeOfService.length < 2 ? extraWidth : '']"
     >
-      <Service
+      <Services
         v-for="service in data.typeOfService"
         :key="service._id"
         :clientId="id"
         :service="service"
       />
     </div>
-    <button @click="openModal(true)" class="addService">
+    <button @click="openModal(modals.addClientService.id)" class="addService">
       <span>+</span>
     </button>
-    <Modal v-if="isOpen">
+    <Modal v-if="modals.addClientService.open" :modalID="modals.addClientService.id">
       <AddNewServiceToClient :id="id" />
     </Modal>
   </div>
 </template>
 
 <script>
-import Service from "@/components/services/Services";
+import Services from "@/components/client/ClientServices";
 import { mapGetters, mapActions } from "vuex";
 import AddNewServiceToClient from "../components/client/AddNewService";
 import Modal from "../components/events/Modal";
 import UpdateClient from "../components/client/UpdateClient";
 import { setClientData } from "../shared/sharedFunctions";
 export default {
-  components: { Service, AddNewServiceToClient, UpdateClient, Modal },
+  components: { Services, AddNewServiceToClient, UpdateClient, Modal },
   name: "ClientDetails",
   data() {
     const { id } = this.$route.params;
@@ -61,14 +61,18 @@ export default {
       id,
       data: null,
       show: false,
-      update: false
+      update: false,
+      obj: {}
     };
   },
   mounted() {
     this.data = setClientData(this.id, this.clientData);
   },
   computed: {
-    ...mapGetters(["clientData", "isOpen", "double"])
+    ...mapGetters(["clientData", "modals"]),
+    updateClient() {
+      return this.modals.updateClient;
+    }
   },
   watch: {
     clientData() {

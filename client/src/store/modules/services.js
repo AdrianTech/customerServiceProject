@@ -18,15 +18,33 @@ const actions = {
       commit("serviceData", res.data);
       dispatch("errHandler", { msg: "Service added", status: 200 });
     } catch ({ response }) {
-      dispatch("errHandler", { msg: response.data, status: 200 });
+      dispatch("errHandler", { msg: response.data, status: 400 });
     }
   },
-  async getServices({ commit }) {
+  async getServices({ commit, dispatch }) {
     try {
       const res = await axios.get("/getServices");
       commit("serviceData", res.data);
     } catch (err) {
-      console.log(err);
+      dispatch("errHandler", { msg: "Error, try again", status: 400 });
+    }
+  },
+  async deleteService({ commit, dispatch }, id) {
+    try {
+      const res = await axios.delete("/removeService", { params: { id } });
+      commit("serviceData", res.data);
+      dispatch("errHandler", { msg: "Service deleted", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: "Error, try again", status: 400 });
+    }
+  },
+  async updateService({ commit, dispatch }, data) {
+    try {
+      const res = await axios.put("/updateService", data);
+      commit("serviceData", res.data);
+      dispatch("errHandler", { msg: "Service updated", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: "Error, try again", status: 400 });
     }
   }
 };

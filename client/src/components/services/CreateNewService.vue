@@ -3,41 +3,42 @@
     <form class="form">
       <label>Name of service</label>
       <input v-model.trim="name" value="name" type="text" />
-      <label>Unit Price</label>
+      <label>Unit Price (monthly)</label>
       <input v-model.number.trim="unitPrice" value="unitPrice" type="text" />
-      <button @click.prevent="serviceHandler">Confirm</button>
+      <label>Default number of months</label>
+      <input min="0" max="36" v-model.number.trim="months" type="number" />
+      <button @click.prevent="serviceHandler" class="modal-btn">Confirm</button>
     </form>
-    <ServicesList />
   </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { createNewServiceValid } from "@/shared/validation.js";
-import ServicesList from "./ServicesList";
 export default {
-  components: { ServicesList },
   data() {
     return {
       name: "",
-      unitPrice: ""
+      unitPrice: "",
+      months: 0
     };
   },
   computed: {
-    ...mapGetters(["services", "eventInfo"])
+    ...mapGetters(["services"])
   },
   methods: {
     ...mapActions(["errHandler", "createService"]),
     serviceHandler() {
-      const { name, unitPrice } = this;
+      const { name, unitPrice, months } = this;
       const data = {
         name,
-        unitPrice
+        unitPrice,
+        months
       };
       const { msg, bool } = createNewServiceValid(data);
       if (!bool) return this.errHandler({ msg, status: 400 });
       this.createService(data);
-      Object.assign(this.$data, { name: "", unitPrice: "" });
+      Object.assign(this.$data, { name: "", unitPrice: "", months: 0 });
     }
   }
 };
@@ -45,23 +46,34 @@ export default {
 
 <style lang="scss" scoped>
 .createNewService {
-  padding-top: 80px;
-  width: 100%;
-  min-height: 100%;
-  position: relative;
+  @include inside(100%, 100%);
 }
 button {
-  @include primary-btn;
-  max-width: 150px;
+  max-width: 250px;
+  margin: 20px auto;
 }
 @media (min-width: 500px) {
+  .createNewService {
+    @include inside(80%, 90%);
+    form {
+      width: 60%;
+    }
+  }
 }
 @media (min-width: 768px) {
   .createNewService {
-    width: 75%;
-    margin: auto;
+    @include inside(70%, 90%);
+    form {
+      width: 50%;
+      height: auto;
+    }
   }
 }
 @media (min-width: 1000px) {
+  .createNewService {
+    form {
+      width: 40%;
+    }
+  }
 }
 </style>

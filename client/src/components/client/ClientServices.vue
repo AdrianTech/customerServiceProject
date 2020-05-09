@@ -30,7 +30,7 @@ import moment from "moment-timezone";
 moment.locale("en-gb");
 import timeCounter from "@/shared/TimeCounter";
 export default {
-  name: "Service",
+  name: "ClientServices",
   props: ["service", "clientId"],
   data() {
     return {

@@ -39,9 +39,6 @@ export default {
       }
     };
   },
-  // computed: {
-  //   ...mapGetters([""])
-  // },
   methods: {
     ...mapActions(["errHandler", "updateClient"]),
     showInput(name) {
@@ -49,10 +46,10 @@ export default {
       if (name === "phone") this.obj.phone = !this.obj.phone;
       if (name === "email") this.obj.email = !this.obj.email;
     },
-    closeWindowFunc(e) {
-      const target = e.target.classList[0];
-      if (target === "modalWindow" || target === "close") this.$emit("update");
-    },
+    // closeWindowFunc(e) {
+    //   const target = e.target.classList[0];
+    //   if (target === "modalWindow" || target === "close") this.$emit("update");
+    // },
     confirm() {
       const { fullname, email, phone } = this;
       const { _id } = this.data;

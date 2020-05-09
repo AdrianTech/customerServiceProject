@@ -9,7 +9,7 @@ import ClientDetails from "../views/ClientDetails.vue";
 import AddNewService from "../components/client/AddNewService.vue";
 import ClientNotes from "../components/client/ClientNotes.vue";
 import UserSettings from "../components/user/UserSettings.vue";
-// import UpdateClient from "../components/client/UpdateClient.vue";
+import Services from "../views/Services.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -69,13 +69,13 @@ const routes = [
     name: "UserSettings",
     props: { default: true },
     component: UserSettings
+  },
+  {
+    path: "/services",
+    name: "Services",
+    props: { default: true },
+    component: Services
   }
-  // {
-  //   path: "/updateClient",
-  //   name: "UpdateClient",
-  //   props: { default: true },
-  //   component: UpdateClient
-  // }
 ];
 
 const router = new VueRouter({

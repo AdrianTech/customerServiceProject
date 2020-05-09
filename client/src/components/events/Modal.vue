@@ -6,23 +6,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  computed: {
-    ...mapGetters(["isOpen", "double"])
-  },
+  props: ["modalID"],
   methods: {
     ...mapActions(["openModal"]),
     close(e) {
       const target = e.target.classList[0];
-      console.log(target);
-      if (target === "modalWindow" || target === "btn") this.openModal(false);
-      if ((this.double && target === "modalWindow") || target === "btn")
-        this.openModal("double");
+      if (target === "modalWindow" || target === "btn")
+        this.openModal(this.modalID);
     }
-  },
-  destroyed() {
-    this.openModal(false);
   }
 };
 </script>

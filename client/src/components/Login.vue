@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapActions} from "vuex";
+import { mapActions } from "vuex";
 import { validationLogin } from "@/shared/validation";
 export default {
   name: "Login",
@@ -70,7 +70,7 @@ export default {
   @include primary-btn;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 500px) {
   .form {
     width: 80%;
   }

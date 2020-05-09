@@ -23,7 +23,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "ServicesChoice",
-  props: ["service", "modal", "totalSum"],
+  props: ["service", "totalSum"],
   computed: {
     ...mapGetters(["eventInfo"]),
     total() {

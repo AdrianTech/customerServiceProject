@@ -43,7 +43,7 @@ const actions = {
     try {
       const res = await axios.post("/createNote", data);
       commit("setClientsData", res.data);
-      dispatch("errHandler", { msg: "Service added", status: 200 });
+      dispatch("errHandler", { msg: "Note added", status: 200 });
     } catch (err) {
       dispatch("errHandler", { msg: err.reponse.data, status: 400 });
     }

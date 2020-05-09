@@ -69,7 +69,7 @@ export default {
           item.active = !item.active;
         }
       });
-      this.setTotal();
+      this.setTotal(id);
     },
     setTotal(id) {
       let value = 0;

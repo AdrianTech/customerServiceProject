@@ -117,5 +117,16 @@
   top: 2%;
   right: 2%;
   font-size: 27px;
+  z-index: 181;
   cursor: pointer;
+}
+@mixin item-list {
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  align-items: center;
+  > * {
+    font-family: $openSans;
+    font-size: 16px;
+  }
 }

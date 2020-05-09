@@ -8,14 +8,14 @@
       <label>Phone</label>
       <input v-model.trim="client.phone" type="text" />
       <label>Choose Services (optional)</label>
-      <button class="btn" @click.prevent="openModal(true)">Show services list</button>
+      <button class="btn" @click.prevent="openModal(modals.servicesList.id)">Show services list</button>
       <button class="btn" :disabled="!client.email">Submit</button>
       <div class="total">
         Total value of customer services:
         <span>{{total.toFixed(2)}}</span>
       </div>
     </form>
-    <Modal v-if="isOpen">
+    <Modal v-if="modals.servicesList.open" :modalID="modals.servicesList.id">
       <div class="center">
         <ServicesChoice
           class="serviceSection"
@@ -25,7 +25,7 @@
           @totalSum="totalFunc"
         />
         <p>Total value: {{total.toFixed(2)}}</p>
-        <button @click.prevent="openModal(false)" class="modal-btn">I choosen</button>
+        <button @click.prevent="openModal(modals.servicesList.id)" class="modal-btn">I choosen</button>
       </div>
     </Modal>
   </div>
@@ -56,7 +56,7 @@ export default {
     this.setServicesArr();
   },
   computed: {
-    ...mapGetters(["eventInfo", "services", "isOpen"])
+    ...mapGetters(["eventInfo", "services", "isOpen", "modals"])
   },
   methods: {
     ...mapActions(["createClient", "errHandler", "openModal"]),
@@ -107,11 +107,6 @@ export default {
 }
 .center {
   @include inside(100%, 100%);
-  // button {
-  //   // margin-top: 40px;
-  //   color: white;
-  //   border: 1px solid white;
-  // }
   p {
     margin-top: 8px;
   }
@@ -134,13 +129,19 @@ export default {
 }
 @media (min-width: 768px) {
   .center {
-    @include inside(60%, 80%);
+    @include inside(60%, 600px);
     .serviceSection {
       padding: 10px 15px;
       height: 80px;
     }
   }
+  .createClient .form {
+    width: 60%;
+  }
 }
 @media (min-width: 1000px) {
+  .createClient .form {
+    width: 50%;
+  }
 }
 </style>
