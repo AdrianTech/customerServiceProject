@@ -41,7 +41,6 @@ const mutations = {
 const actions = {
   openModal({ commit }, id) {
     const { modals } = state;
-    console.log(id);
     Object.entries(modals).forEach(([key, obj]) => {
       key;
       if (obj.id === id) obj.open = !obj.open;

@@ -72,8 +72,10 @@ const actions = {
       const res = await axios.put("/updateClient", data);
       commit("setClientsData", res.data);
       dispatch("errHandler", { msg: "Client dupdated", status: 200 });
+      return true;
     } catch (err) {
       dispatch("errHandler", { msg: err.reponse.data, status: 400 });
+      return false;
     }
   }
 };

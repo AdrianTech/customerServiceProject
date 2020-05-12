@@ -83,6 +83,7 @@ export default {
       clickedObj[0].value.name = "";
       clickedObj[1].value.unitPrice = 0.0;
       clickedObj[1].value.months = 0;
+      clickedObj.forEach(i => (i.state = false));
     },
     displayInput(name) {
       let { clickedObj } = this;

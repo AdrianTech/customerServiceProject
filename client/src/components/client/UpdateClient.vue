@@ -1,21 +1,21 @@
 <template>
   <div class="inside">
     <form>
-      <label @click="showInput('fullname')">
-        Change full name -
-        <span>{{data.fullname}}</span>
+      <label @click="showInput(formData[0].key)">
+        Change full name:
+        <span>[{{ data.fullname }}]</span>
       </label>
-      <input type="text" v-model.trim="fullname" v-if="obj.fullname" placeholder="change fullname" />
-      <label data-name="email" @click="showInput('email')">
-        Change email -
-        <span>{{data.email}}</span>
+      <input type="text" @change="formDataHelper" v-model.trim="fullname" v-if="formData[0].active" placeholder="change fullname" />
+      <label data-name="email" @click="showInput(formData[1].key)">
+        Change email:
+        <span>[{{ data.email }}]</span>
       </label>
-      <input type="text" v-model.trim="email" v-if="obj.email" placeholder="change email" />
-      <label data-name="phone" @click="showInput('phone')">
-        Change phone number -
-        <span>{{data.phone}}</span>
+      <input type="text" v-model.trim="email" @change="formDataHelper" v-if="formData[1].active" placeholder="change email" />
+      <label data-name="phone" @click="showInput(formData[2].key)">
+        Change phone number:
+        <span>[{{ data.phone }}]</span>
       </label>
-      <input type="text" v-model.trim="phone" v-if="obj.phone" placeholder="change phone number" />
+      <input type="text" v-model.trim="phone" @change="formDataHelper" v-if="formData[2].active" placeholder="change phone number" />
       <button @click.prevent="confirm" class="modal-btn">Confirm changes</button>
     </form>
   </div>
@@ -23,45 +23,69 @@
 
 <script>
 import { mapActions } from "vuex";
-import { updateDataValid } from "../../shared/validation";
+import { validateUpdateClient } from "../../shared/validate";
+import { clientUpdate } from "../../shared/formData";
+import clone from "lodash.clonedeep";
 export default {
   name: "UpdateClient",
-  props: ["data", "update"],
+  props: ["data"],
   data() {
     return {
-      fullname: "",
-      phone: "",
-      email: "",
-      obj: {
-        fullname: false,
-        phone: false,
-        email: false
-      }
+      formData: clone(clientUpdate),
+      finalData: {}
     };
+  },
+  computed: {
+    fullname: {
+      get() {
+        return this.formData[0].value.fullname;
+      },
+      set(value) {
+        return (this.formData[0].value.fullname = value);
+      }
+    },
+    email: {
+      get() {
+        return this.formData[1].value.email;
+      },
+      set(value) {
+        return (this.formData[1].value.email = value);
+      }
+    },
+    phone: {
+      get() {
+        return this.formData[2].value.phone;
+      },
+      set(value) {
+        return (this.formData[2].value.phone = value);
+      }
+    }
   },
   methods: {
     ...mapActions(["errHandler", "updateClient"]),
-    showInput(name) {
-      if (name === "fullname") this.obj.fullname = !this.obj.fullname;
-      if (name === "phone") this.obj.phone = !this.obj.phone;
-      if (name === "email") this.obj.email = !this.obj.email;
+    async confirm() {
+      let { finalData, errHandler } = this;
+      const isEmpty = Object.keys(finalData).length === 0 && finalData.constructor === Object;
+      if (isEmpty) return errHandler({ msg: "Nothing changed", status: 400 });
+      const { status, err } = await validateUpdateClient(finalData);
+      if (!status) return errHandler({ msg: err[0], status: 400 });
+      finalData.id = this.data._id;
+      const updated = await this.updateClient(finalData);
+      if (updated) {
+        this.formData = clone(clientUpdate);
+        this.finalData = {};
+      }
     },
-    // closeWindowFunc(e) {
-    //   const target = e.target.classList[0];
-    //   if (target === "modalWindow" || target === "close") this.$emit("update");
-    // },
-    confirm() {
-      const { fullname, email, phone } = this;
-      const { _id } = this.data;
-      const data = {
-        fullname,
-        email,
-        phone,
-        id: _id
-      };
-      const { msg, bool, value } = updateDataValid(data);
-      if (!bool) return this.errHandler({ msg, status: 400 });
-      this.updateClient(value);
+    showInput(key) {
+      const { formData } = this;
+      formData.forEach(i => (key === i.key ? (i.active = !i.active) : i));
+      this.formDataHelper();
+    },
+    formDataHelper() {
+      let { formData } = this;
+      let val = {};
+      formData.filter(i => i.active && Object.assign(val, i.value));
+      this.finalData = val;
     }
   }
 };
@@ -89,19 +113,20 @@ form {
   @include form;
   label {
     font-weight: 700;
+    span {
+      color: #d8d805;
+      margin-left: 7px;
+    }
     cursor: pointer;
     z-index: 1;
     &:hover {
       text-decoration: underline;
     }
-    span {
-      color: #09f109;
-    }
   }
   label,
   input {
     margin: 10px;
-    font-size: 17px;
+    font-size: 16px;
   }
   input {
     padding: 3px 10px;
@@ -124,6 +149,9 @@ form {
   }
   form input {
     width: 50%;
+  }
+  form label {
+    font-size: 19px;
   }
 }
 @media (min-width: 1000px) {
