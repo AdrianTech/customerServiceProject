@@ -44,7 +44,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
+  max-width: 100%;
+  min-width: 40%;
   height: 60%;
   font-size: 17px;
   padding: 15px;
@@ -72,12 +73,12 @@ export default {
 
 @media (min-width: 500px) {
   .form {
-    width: 80%;
+    // width: 70%;
   }
 }
 @media (min-width: 768px) {
   .form {
-    width: 50%;
+    // width: 50%;
     font-size: 18px;
     padding: 50px;
     border: 1px solid $db-light;

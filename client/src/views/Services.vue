@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h2>You have {{services.length}} services</h2>
+    <h2>You have {{services.length === 1 ? `${services.length} service` :`${services.length} services`}}</h2>
     <div class="services">
       <ServicesList v-for="service in services" :key="service._id" :service="service" />
     </div>

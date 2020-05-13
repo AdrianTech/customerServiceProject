@@ -19,7 +19,10 @@
       </li>
       <li v-if="DisplayCounter !== '0'">{{DisplayCounter()}} days left</li>
       <li :style="{color: 'red'}" v-else>{{DisplayCounter()}} day left</li>
-      <li class="service-actions">Extend this service</li>
+      <li @click="openModal(modalID)" class="service-actions">Extend this service</li>
+      <Modal v-if="open" :modalID="modalID">
+        <ExtendService />
+      </Modal>
       <li class="service-actions">Close</li>
     </ul>
   </div>
@@ -29,9 +32,13 @@
 import moment from "moment-timezone";
 moment.locale("en-gb");
 import timeCounter from "@/shared/TimeCounter";
+import Modal from "../events/Modal";
+import ExtendService from "./ExtendService";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ClientServices",
   props: ["service", "clientId"],
+  components: { ExtendService, Modal },
   data() {
     return {
       name: this.service && this.service.name,
@@ -42,6 +49,13 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["modals"]),
+    modalID() {
+      return this.modals.extendService.id;
+    },
+    open() {
+      return this.modals.extendService.open;
+    },
     changeTime() {
       const guess = moment.tz.guess();
       const end = moment(this.finishTime)
@@ -59,6 +73,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["openModal"]),
     DisplayCounter() {
       return timeCounter(this.finishTime);
     }

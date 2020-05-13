@@ -27,6 +27,10 @@ const state = {
     updateService: {
       id: 7,
       open: false
+    },
+    extendService: {
+      id: 8,
+      open: false
     }
   }
 };

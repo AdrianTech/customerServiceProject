@@ -5,17 +5,35 @@
         Change full name:
         <span>[{{ data.fullname }}]</span>
       </label>
-      <input type="text" @change="formDataHelper" v-model.trim="fullname" v-if="formData[0].active" placeholder="change fullname" />
+      <input
+        type="text"
+        @change="formDataHelper"
+        v-model.trim="fullname"
+        v-if="formData[0].active"
+        placeholder="change fullname"
+      />
       <label data-name="email" @click="showInput(formData[1].key)">
         Change email:
         <span>[{{ data.email }}]</span>
       </label>
-      <input type="text" v-model.trim="email" @change="formDataHelper" v-if="formData[1].active" placeholder="change email" />
+      <input
+        type="text"
+        v-model.trim="email"
+        @change="formDataHelper"
+        v-if="formData[1].active"
+        placeholder="change email"
+      />
       <label data-name="phone" @click="showInput(formData[2].key)">
         Change phone number:
         <span>[{{ data.phone }}]</span>
       </label>
-      <input type="text" v-model.trim="phone" @change="formDataHelper" v-if="formData[2].active" placeholder="change phone number" />
+      <input
+        type="text"
+        v-model.trim="phone"
+        @change="formDataHelper"
+        v-if="formData[2].active"
+        placeholder="change phone number"
+      />
       <button @click.prevent="confirm" class="modal-btn">Confirm changes</button>
     </form>
   </div>
@@ -65,7 +83,8 @@ export default {
     ...mapActions(["errHandler", "updateClient"]),
     async confirm() {
       let { finalData, errHandler } = this;
-      const isEmpty = Object.keys(finalData).length === 0 && finalData.constructor === Object;
+      const isEmpty =
+        Object.keys(finalData).length === 0 && finalData.constructor === Object;
       if (isEmpty) return errHandler({ msg: "Nothing changed", status: 400 });
       const { status, err } = await validateUpdateClient(finalData);
       if (!status) return errHandler({ msg: err[0], status: 400 });

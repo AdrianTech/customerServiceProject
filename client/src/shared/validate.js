@@ -12,6 +12,7 @@ export const validateUpdateServices = data => {
   return schema.validate(data).catch(e => e.errors);
 };
 export const validateUpdateClient = async data => {
+  console.log(data);
   let schema = yup.object().shape({
     fullname: yup
       .string("Value must be a string")
@@ -19,8 +20,8 @@ export const validateUpdateClient = async data => {
       .max(25, "Full name may contain max 25 characters"),
     email: yup
       .string()
-      .email("Incorrect email")
-      .min(4),
+      .min(8, "Email must contain at least 8 characters")
+      .email("Incorrect email"),
     phone: yup
       .string()
       .min(9, "Incorrect phone number")
