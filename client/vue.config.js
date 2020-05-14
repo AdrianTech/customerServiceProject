@@ -1,10 +1,6 @@
 module.exports = {
   devServer: {
-    proxy: "http://localhost:7777",
-    overlay: {
-      warnings: true,
-      errors: true
-    }
+    proxy: "http://localhost:7777"
   },
   css: {
     loaderOptions: {

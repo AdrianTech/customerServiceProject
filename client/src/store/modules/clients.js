@@ -77,6 +77,17 @@ const actions = {
       dispatch("errHandler", { msg: err.reponse.data, status: 400 });
       return false;
     }
+  },
+  async extendService({ commit, dispatch }, data) {
+    if (data.value === 0 || typeof this.value === "string") return this.errHandler({ msg: "Value must be at least 1", status: 400 });
+    console.log(data);
+    try {
+      const res = await axios.put("/extendService", data);
+      commit("setClientsData", res.data);
+      dispatch("errHandler", { msg: "Service updated", status: 200 });
+    } catch (err) {
+      dispatch("errHandler", { msg: "Error, try again", status: 400 });
+    }
   }
 };
 

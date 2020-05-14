@@ -3,25 +3,25 @@
     <ul>
       <li>
         <span>Name</span>
-        <span>{{name}}</span>
+        <span>{{ name }}</span>
       </li>
       <li>
         <span>Start</span>
-        <span>{{changeTime.start}}</span>
+        <span>{{ changeTime.start }}</span>
       </li>
       <li>
         <span>Finish</span>
-        <span>{{changeTime.end}}</span>
+        <span>{{ changeTime.end }}</span>
       </li>
       <li>
         <span>Extended</span>
-        <span>{{extendTimes}}</span>
+        <span>{{ extendTimes }}</span>
       </li>
-      <li v-if="DisplayCounter !== '0'">{{DisplayCounter()}} days left</li>
-      <li :style="{color: 'red'}" v-else>{{DisplayCounter()}} day left</li>
+      <li v-if="DisplayCounter !== '0'">{{ DisplayCounter() }} days left</li>
+      <li :style="{ color: 'red' }" v-else>{{ DisplayCounter() }} day left</li>
       <li @click="openModal(modalID)" class="service-actions">Extend this service</li>
       <Modal v-if="open" :modalID="modalID">
-        <ExtendService />
+        <ExtendService :service="service" :clientID="clientID" />
       </Modal>
       <li class="service-actions">Close</li>
     </ul>

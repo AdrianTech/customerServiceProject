@@ -98,4 +98,31 @@ export default class ClientCotroller {
       res.status(400).json("Something went wrong");
     }
   }
+  public async extendService(req: Request, res: Response) {
+    const { clientID, serviceID, value } = req.body;
+    // let client: any;
+    // client = await ClientModel.findOne({ _id: clientID });
+    ClientModel.findOne({ _id: clientID })
+      .then(async (doc: any) => {
+        let find = doc.typeOfService.find((i: any) => i.id === serviceID);
+        console.log(find.name);
+        const time = moment(find.finishTime)
+          .add(value, "months")
+          .format();
+        find.finishTime = time;
+        find.extendTimes++;
+        console.log(time);
+        doc.save();
+        const data = await ClientModel.find();
+        res.status(200).json(data);
+      })
+      .catch(() => res.status(400));
+    // try {
+    //   const updateClientData = await ClientModel.find();
+    //   res.status(200).json(updateClientData);
+    // } catch (e) {
+    //   res.status(400).json("Something went wrong");
+    // }
+    // res.status(200);
+  }
 }

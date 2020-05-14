@@ -5,7 +5,7 @@ export default class ClientRouter {
   private ClientController: ClientController = new ClientController();
   private auth: Auth = new Auth();
   public routes(app: any): void {
-    const { addNewClient, sendClientData, clientServiceUpdate, createNote, deleteNote, deleteClient, updateClient } = this.ClientController;
+    const { addNewClient, sendClientData, clientServiceUpdate, createNote, deleteNote, deleteClient, updateClient, extendService } = this.ClientController;
     const { checkTokenPost } = this.auth;
     app.post("/createClient", checkTokenPost, addNewClient);
     app.get("/getClients", checkTokenPost, sendClientData);
@@ -14,5 +14,6 @@ export default class ClientRouter {
     app.post("/deleteNote", checkTokenPost, deleteNote);
     app.delete("/deleteClient", checkTokenPost, deleteClient);
     app.put("/updateClient", checkTokenPost, updateClient);
+    app.put("/extendService", checkTokenPost, extendService);
   }
 }

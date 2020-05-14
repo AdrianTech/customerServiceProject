@@ -32,7 +32,8 @@ const state = {
       id: 8,
       open: false
     }
-  }
+  },
+  obj: []
 };
 
 const getters = {
@@ -45,6 +46,12 @@ const mutations = {
 const actions = {
   openModal({ commit }, id) {
     const { modals } = state;
+    // let open = false;
+    // state.obj.forEach(i => {
+    //   console.log(i);
+    //   if (i.id === id) i.open = !i.open;
+    //   else if (i === undefined) state.obj.push({ id, open: !open });
+    // });
     Object.entries(modals).forEach(([key, obj]) => {
       key;
       if (obj.id === id) obj.open = !obj.open;
