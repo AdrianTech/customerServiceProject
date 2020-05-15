@@ -113,7 +113,7 @@ export default {
 }
 .itemList {
   flex-direction: column;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   label {
     cursor: pointer;
     span {

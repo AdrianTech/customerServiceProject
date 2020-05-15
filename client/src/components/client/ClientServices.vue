@@ -19,8 +19,8 @@
       </li>
       <li v-if="DisplayCounter !== '0'">{{ DisplayCounter() }} days left</li>
       <li :style="{ color: 'red' }" v-else>{{ DisplayCounter() }} day left</li>
-      <li @click="openModal(modalID)" class="service-actions">Extend this service</li>
-      <Modal v-if="open" :modalID="modalID">
+      <li @click="openModal(service._id)" class="service-actions">Extend this service</li>
+      <Modal v-if="open" :modalID="service._id">
         <ExtendService :service="service" :clientID="clientID" />
       </Modal>
       <li class="service-actions">Close</li>
@@ -42,19 +42,22 @@ export default {
   data() {
     return {
       name: this.service && this.service.name,
-      finishTime: this.service && this.service.finishTime,
+      // finishTime: this.service && this.service.finishTime,
       startTime: this.service && this.service.startTime,
-      extendTimes: this.service && this.service.extendTimes,
+      // extendTimes: this.service && this.service.extendTimes,
       clientID: this.clientId
     };
   },
   computed: {
-    ...mapGetters(["modals"]),
-    modalID() {
-      return this.modals.extendService.id;
-    },
+    ...mapGetters(["modals", "modals"]),
     open() {
-      return this.modals.extendService.open;
+      return this.modals.find(i => this.service._id === i.id && i.open);
+    },
+    extendTimes() {
+      return this.service && this.service.extendTimes;
+    },
+    finishTime() {
+      return this.service && this.service.finishTime;
     },
     changeTime() {
       const guess = moment.tz.guess();

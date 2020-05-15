@@ -8,14 +8,14 @@
       <label>Phone</label>
       <input v-model.trim="client.phone" type="text" />
       <label>Choose Services (optional)</label>
-      <button class="btn" @click.prevent="openModal(modals.servicesList.id)">Show services list</button>
+      <button class="btn" @click.prevent="openModal(modalID)">Show services list</button>
       <button class="btn" :disabled="!client.email">Submit</button>
       <div class="total">
         Total value of customer services:
         <span>{{total.toFixed(2)}}</span>
       </div>
     </form>
-    <Modal v-if="modals.servicesList.open" :modalID="modals.servicesList.id">
+    <Modal v-if="open" :modalID="modalID">
       <div class="center">
         <ServicesChoice
           class="serviceSection"
@@ -25,7 +25,7 @@
           @totalSum="totalFunc"
         />
         <p>Total value: {{total.toFixed(2)}}</p>
-        <button @click.prevent="openModal(modals.servicesList.id)" class="modal-btn">I choosen</button>
+        <button @click.prevent="openModal(modalID)" class="modal-btn">I choosen</button>
       </div>
     </Modal>
   </div>
@@ -36,6 +36,7 @@ import { mapGetters, mapActions } from "vuex";
 import { createNewUserValid } from "../../shared/validation";
 import ServicesChoice from "./ServicesChoice";
 import Modal from "../events/Modal";
+import { findObj } from "../../shared/sharedFunctions";
 export default {
   name: "CreateClientAccount",
   components: { Modal, ServicesChoice },
@@ -48,15 +49,18 @@ export default {
         clientArr: []
       },
       servicesArr: [],
-      showModal: false,
-      total: 0
+      total: 0,
+      modalID: 931231032137
     };
   },
   mounted() {
     this.setServicesArr();
   },
   computed: {
-    ...mapGetters(["eventInfo", "services", "isOpen", "modals"])
+    ...mapGetters(["eventInfo", "services", "modals"]),
+    open() {
+      return findObj(this.modals, this.modalID);
+    }
   },
   methods: {
     ...mapActions(["createClient", "errHandler", "openModal"]),

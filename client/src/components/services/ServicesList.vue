@@ -17,16 +17,16 @@
       <span>{{ months }}</span>
     </h4>
     <div class="actions">
-      <button @click="openModal(updateID)">Update</button>
+      <button @click="openModal(update)">Update</button>
       <button @click="removeService">Remove</button>
     </div>
-    <button class="addService" @click="openModal(modalID)">
+    <button class="addService" @click="openModal(create)">
       <span>+</span>
     </button>
-    <Modal v-if="open" :modalID="modalID">
+    <Modal v-if="createOpen" :modalID="create">
       <CreateNewService />
     </Modal>
-    <Modal v-if="openUpdate" :modalID="updateID">
+    <Modal v-if="updateOpen" :modalID="update">
       <UpdateService :service="service" />
     </Modal>
   </div>
@@ -38,9 +38,16 @@ import moment from "moment-timezone";
 import CreateNewService from "../services/CreateNewService";
 import UpdateService from "../services/UpdateService";
 import Modal from "../events/Modal";
+import { findObj } from "../../shared/sharedFunctions.js";
 export default {
   name: "ServicesList",
   props: ["service"],
+  data() {
+    return {
+      update: 1231321321545,
+      create: 32142423424324
+    };
+  },
   components: { CreateNewService, Modal, UpdateService },
   computed: {
     ...mapGetters(["services", "modals"]),
@@ -62,11 +69,11 @@ export default {
     open() {
       return this.modals.servicesManage.open;
     },
-    openUpdate() {
-      return this.modals.updateService.open;
+    createOpen() {
+      return findObj(this.modals, this.create);
     },
-    updateID() {
-      return this.modals.updateService.id;
+    updateOpen() {
+      return findObj(this.modals, this.update);
     }
   },
   methods: {
@@ -96,7 +103,7 @@ export default {
 h3 span,
 h4 span {
   color: #030fc0;
-  font-weight: 900;
+  font-weight: 700;
   margin-left: 15px;
 }
 .actions {

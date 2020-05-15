@@ -1,39 +1,5 @@
 const state = {
-  modals: {
-    updateClient: {
-      id: 1,
-      open: false
-    },
-    addClientService: {
-      id: 2,
-      open: false
-    },
-    servicesList: {
-      id: 3,
-      open: false
-    },
-    showEmail: {
-      id: 4,
-      open: false
-    },
-    sendEmail: {
-      id: 5,
-      open: false
-    },
-    servicesManage: {
-      id: 6,
-      open: false
-    },
-    updateService: {
-      id: 7,
-      open: false
-    },
-    extendService: {
-      id: 8,
-      open: false
-    }
-  },
-  obj: []
+  modals: []
 };
 
 const getters = {
@@ -41,22 +7,21 @@ const getters = {
 };
 
 const mutations = {
-  modalClose: (state, payload) => (state.modals = payload)
+  modalsHandler: (state, id) => {
+    let { modals } = state;
+    if (modals.length === 0) modals = [{ id, open: false }];
+    if (modals.length > 0) {
+      modals.forEach(i => {
+        if (i.id === id) i.open = !i.open;
+        if (i.id === id && !i.open) modals = [];
+      });
+    }
+    return (state.modals = modals);
+  }
 };
 const actions = {
   openModal({ commit }, id) {
-    const { modals } = state;
-    // let open = false;
-    // state.obj.forEach(i => {
-    //   console.log(i);
-    //   if (i.id === id) i.open = !i.open;
-    //   else if (i === undefined) state.obj.push({ id, open: !open });
-    // });
-    Object.entries(modals).forEach(([key, obj]) => {
-      key;
-      if (obj.id === id) obj.open = !obj.open;
-    });
-    commit("modalClose", state.modals);
+    commit("modalsHandler", id);
   }
 };
 

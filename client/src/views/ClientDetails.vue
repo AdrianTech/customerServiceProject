@@ -4,10 +4,10 @@
       <div class="name">
         <h2>{{ data.fullname }}</h2>
         <span class="material-icons removeClient" @click="removeClient(data._id)">highlight_off</span>
-        <Modal v-if="updateClient.open" :modalID="updateClient.id">
+        <Modal v-if="updateOpen" :modalID="updateID">
           <UpdateClient :data="data" @update="updateForm" />
         </Modal>
-        <span @click="openModal(updateClient.id)" class="material-icons removeClient">update</span>
+        <span @click="openModal(updateID)" class="material-icons removeClient">update</span>
       </div>
       <div class="data">
         <div class="item">
@@ -35,10 +35,10 @@
         :service="service"
       />
     </div>
-    <button @click="openModal(modals.addClientService.id)" class="addService">
+    <button @click="openModal(addServiceID)" class="addService">
       <span>+</span>
     </button>
-    <Modal v-if="modals.addClientService.open" :modalID="modals.addClientService.id">
+    <Modal v-if="addServiceOpen" :modalID="addServiceID">
       <AddNewServiceToClient :id="id" />
     </Modal>
   </div>
@@ -50,7 +50,7 @@ import { mapGetters, mapActions } from "vuex";
 import AddNewServiceToClient from "../components/client/AddNewService";
 import Modal from "../components/events/Modal";
 import UpdateClient from "../components/client/UpdateClient";
-import { setClientData } from "../shared/sharedFunctions";
+import { setClientData, findObj } from "../shared/sharedFunctions";
 export default {
   components: { Services, AddNewServiceToClient, UpdateClient, Modal },
   name: "ClientDetails",
@@ -60,9 +60,11 @@ export default {
       extraWidth: "extraWidth",
       id,
       data: null,
-      show: false,
-      update: false,
-      obj: {}
+      // show: false,
+      // update: false,
+      addServiceID: 14,
+      updateID: 15
+      // obj: {}
     };
   },
   mounted() {
@@ -70,8 +72,11 @@ export default {
   },
   computed: {
     ...mapGetters(["clientData", "modals"]),
-    updateClient() {
-      return this.modals.updateClient;
+    addServiceOpen() {
+      return findObj(this.modals, this.addServiceID);
+    },
+    updateOpen() {
+      return findObj(this.modals, this.updateID);
     }
   },
   watch: {
