@@ -10,7 +10,7 @@
         <span @click="openModal(updateID)" class="material-icons removeClient">update</span>
       </div>
       <div class="data">
-        <div class="item">
+        <div class="item pointer" @click="openModal(emailID)">
           <span class="material-icons">mail_outline</span>
           {{data.email}}
         </div>
@@ -41,6 +41,9 @@
     <Modal v-if="addServiceOpen" :modalID="addServiceID">
       <AddNewServiceToClient :id="id" />
     </Modal>
+    <Modal v-if="emailOpen" :modalID="emailID">
+      <SendEmail :clientID="id" :name="data.fullname" :email="data.email" />
+    </Modal>
   </div>
 </template>
 
@@ -50,9 +53,16 @@ import { mapGetters, mapActions } from "vuex";
 import AddNewServiceToClient from "../components/client/AddNewService";
 import Modal from "../components/events/Modal";
 import UpdateClient from "../components/client/UpdateClient";
-import { setClientData, findObj } from "../shared/sharedFunctions";
+import SendEmail from "../components/client/SendEmail";
+import { setClientData, findObj, generateID } from "../shared/sharedFunctions";
 export default {
-  components: { Services, AddNewServiceToClient, UpdateClient, Modal },
+  components: {
+    Services,
+    AddNewServiceToClient,
+    UpdateClient,
+    Modal,
+    SendEmail
+  },
   name: "ClientDetails",
   data() {
     const { id } = this.$route.params;
@@ -60,11 +70,9 @@ export default {
       extraWidth: "extraWidth",
       id,
       data: null,
-      // show: false,
-      // update: false,
-      addServiceID: 14,
-      updateID: 15
-      // obj: {}
+      addServiceID: generateID(),
+      updateID: generateID(),
+      emailID: generateID()
     };
   },
   mounted() {
@@ -77,6 +85,9 @@ export default {
     },
     updateOpen() {
       return findObj(this.modals, this.updateID);
+    },
+    emailOpen() {
+      return findObj(this.modals, this.emailID);
     }
   },
   watch: {
@@ -115,6 +126,9 @@ export default {
   grid-gap: 15px 5px;
   padding-top: 15px;
   justify-content: space-evenly;
+}
+.pointer {
+  cursor: pointer;
 }
 .data {
   display: flex;
@@ -199,12 +213,7 @@ h3 {
   }
   .active-services {
     grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
-    // width: 80%;
-    // margin: auto;
   }
-  // .client-details {
-  //   // width: 80%;
-  // }
   .extra-width {
     width: 60%;
   }

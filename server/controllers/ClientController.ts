@@ -19,9 +19,7 @@ export default class ClientCotroller {
       typeOfService: clientArr,
       phone,
       notes: [],
-      registerDate: moment()
-        .tz("Europe/Warsaw")
-        .format()
+      registerDate: moment().format()
     };
     try {
       await new ClientModel(newClient).save();
@@ -56,9 +54,7 @@ export default class ClientCotroller {
     const { id, body } = req.body;
     const data = {
       body,
-      date: moment()
-        .tz("Europe/Warsaw")
-        .format()
+      date: moment().format()
     };
     try {
       await ClientModel.updateOne({ _id: id }, { $addToSet: { notes: data } });
@@ -113,6 +109,15 @@ export default class ClientCotroller {
       res.status(200).json(data);
     } catch (e) {
       return res.status(400).json("Error");
+    }
+  }
+  public async sendEmail(req: Request, res: Response) {
+    const { message, email, clientID } = req.body;
+    console.log(req.body);
+    try {
+      res.status(200).json("ok");
+    } catch (e) {
+      res.status(400).json("Something went wrong");
     }
   }
 }

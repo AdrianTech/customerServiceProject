@@ -80,13 +80,22 @@ const actions = {
   },
   async extendService({ commit, dispatch }, data) {
     if (data.value === 0 || typeof this.value === "string") return this.errHandler({ msg: "Value must be at least 1", status: 400 });
-    console.log(data);
     try {
       const res = await axios.put("/extendService", data);
       commit("setClientsData", res.data);
       dispatch("errHandler", { msg: "Service updated", status: 200 });
     } catch (err) {
       dispatch("errHandler", { msg: "Error, try again", status: 400 });
+    }
+  },
+  async sendEmail({ dispatch }, data) {
+    try {
+      await axios.post("/sendEmail", data);
+      dispatch("errHandler", { msg: "Email sent", status: 200 });
+      return true;
+    } catch (err) {
+      dispatch("errHandler", { msg: "Error, try again", status: 400 });
+      return false;
     }
   }
 };

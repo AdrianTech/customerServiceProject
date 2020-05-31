@@ -15,20 +15,35 @@
     </div>
     <div class="actions">
       <div class="email-action">
-        <img src="../../assets/mail.png" alt="email" />
+        <button @click="openModal(id)">
+          <img src="../../assets/mail.png" alt="email" />
+        </button>
         <p>Send email</p>
       </div>
+      <Modal v-if="open" :modalID="id">
+        <SendEmail :clientID="_id" :name="fullname" :email="email" />
+      </Modal>
     </div>
   </div>
 </template>
 
 <script>
 import timeCounter from "@/shared/TimeCounter";
+import { mapActions, mapGetters } from "vuex";
+import { findObj } from "../../shared/sharedFunctions.js";
+import Modal from "../events/Modal";
+import SendEmail from "./SendEmail";
 export default {
   name: "Client",
+  components: {
+    Modal,
+    SendEmail
+  },
   data() {
     return {
-      endTime: this.typeOfService.length > 0 && this.typeOfService[0].finishTime
+      endTime:
+        this.typeOfService.length > 0 && this.typeOfService[0].finishTime,
+      id: 87123139239
     };
   },
   props: {
@@ -38,7 +53,17 @@ export default {
     email: String,
     notes: Array
   },
+  mounted() {
+    console.log(this.email);
+  },
+  computed: {
+    ...mapGetters(["modals"]),
+    open() {
+      return findObj(this.modals, this.id);
+    }
+  },
   methods: {
+    ...mapActions(["openModal"]),
     clientDetails() {
       const { _id } = this;
       this.$router.push({
@@ -87,6 +112,10 @@ export default {
     flex: 1;
     cursor: pointer;
     .email-action {
+      button {
+        background-color: transparent;
+        border: none;
+      }
       p {
         font-size: 13px;
         position: relative;

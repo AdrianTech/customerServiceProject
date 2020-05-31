@@ -38,9 +38,7 @@ class App {
 
   private dbSetup(): void {
     const DBSetup: string = <string>process.env.DB_SETUP;
-    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true }, () =>
-      console.log("DB ready...")
-    );
+    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true }, () => console.log("DB ready..."));
   }
 }
 

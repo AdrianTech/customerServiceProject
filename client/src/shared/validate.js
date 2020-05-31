@@ -12,7 +12,6 @@ export const validateUpdateServices = data => {
   return schema.validate(data).catch(e => e.errors);
 };
 export const validateUpdateClient = async data => {
-  console.log(data);
   let schema = yup.object().shape({
     fullname: yup
       .string("Value must be a string")

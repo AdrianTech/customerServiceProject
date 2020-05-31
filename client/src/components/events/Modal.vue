@@ -13,6 +13,7 @@ export default {
     ...mapActions(["openModal"]),
     close(e) {
       const target = e.target.classList[0];
+      console.log(target);
       if (target === "modalWindow" || target === "btn")
         this.openModal(this.modalID);
     }

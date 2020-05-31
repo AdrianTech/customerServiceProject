@@ -42,14 +42,12 @@ export default {
   data() {
     return {
       name: this.service && this.service.name,
-      // finishTime: this.service && this.service.finishTime,
       startTime: this.service && this.service.startTime,
-      // extendTimes: this.service && this.service.extendTimes,
       clientID: this.clientId
     };
   },
   computed: {
-    ...mapGetters(["modals", "modals"]),
+    ...mapGetters(["modals"]),
     open() {
       return this.modals.find(i => this.service._id === i.id && i.open);
     },
