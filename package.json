@@ -2,18 +2,17 @@
   "name": "cls",
   "version": "1.0.0",
   "description": "Client management system",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "client": "npm run serve --prefix client",
-    "server": "nodemon server/server.ts --ignore client",
+    "server": "nodemon server/app.ts --ignore client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "node build/server.js",
-    "build": "tsc"
+    "start": "node app.js",
+    "build": "tsc -b"
   },
   "author": "Adriantech",
   "license": "ISC",
   "dependencies": {
-    "@types/helmet": "0.0.45",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -28,6 +27,7 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
+    "@types/helmet": "0.0.45",
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/dotenv": "^8.2.0",

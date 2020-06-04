@@ -3,7 +3,7 @@
     "sourceMap": true,
     "target": "ESNEXT",
     "module": "commonjs",
-    "outDir": "./build",
+    "outDir": "./server/build",
     "baseUrl": "./server",
     "moduleResolution": "node",
     "strict": true,

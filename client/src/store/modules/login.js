@@ -69,7 +69,11 @@ const actions = {
       dispatch("errHandler", { msg: "You've been logged out", status: 200 });
       if (router.history.current.path !== "/") router.push("/");
     } catch (err) {
-      console.log(err.response);
+      const error = {
+        msg: err.response.data,
+        status: 400
+      };
+      dispatch("errHandler", error);
     }
   }
 };

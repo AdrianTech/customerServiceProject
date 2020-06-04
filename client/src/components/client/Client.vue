@@ -41,8 +41,7 @@ export default {
   },
   data() {
     return {
-      endTime:
-        this.typeOfService.length > 0 && this.typeOfService[0].finishTime,
+      endTime: this.typeOfService.length > 0 && this.typeOfService[0].finishTime,
       id: 87123139239
     };
   },
@@ -52,9 +51,6 @@ export default {
     fullname: String,
     email: String,
     notes: Array
-  },
-  mounted() {
-    console.log(this.email);
   },
   computed: {
     ...mapGetters(["modals"]),

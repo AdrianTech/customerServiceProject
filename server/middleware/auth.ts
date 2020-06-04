@@ -5,6 +5,12 @@ dotenv.config();
 const KEY: string = <string>process.env.KEY;
 class Auth {
   async checkTokenPost(req: express.Request, res: express.Response, next: express.NextFunction) {
+    // if (req.secure) {
+    //   // request was via https, so do no special handling
+    // } else {
+    //   // request was via http, so redirect to https
+    //   res.redirect("https://" + req.headers.host + req.url);
+    // }
     if (req.method === "POST") {
       if (Object.keys(req.body).length === 0) return res.status(400).json("Bad request");
     }

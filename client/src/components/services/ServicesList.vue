@@ -17,7 +17,7 @@
       <span>{{ months }}</span>
     </h4>
     <div class="actions">
-      <button @click="openModal(update)">Update</button>
+      <button @click="openModal(id)">Update</button>
       <button @click="removeService">Remove</button>
     </div>
     <button class="addService" @click="openModal(create)">
@@ -26,7 +26,7 @@
     <Modal v-if="createOpen" :modalID="create">
       <CreateNewService />
     </Modal>
-    <Modal v-if="updateOpen" :modalID="update">
+    <Modal v-if="updateOpen" :modalID="id">
       <UpdateService :service="service" />
     </Modal>
   </div>
@@ -44,7 +44,6 @@ export default {
   props: ["service"],
   data() {
     return {
-      update: 1231321321545,
       create: 32142423424324
     };
   },
@@ -63,17 +62,11 @@ export default {
     months() {
       return this.service.months;
     },
-    modalID() {
-      return this.modals.servicesManage.id;
-    },
-    open() {
-      return this.modals.servicesManage.open;
-    },
     createOpen() {
       return findObj(this.modals, this.create);
     },
     updateOpen() {
-      return findObj(this.modals, this.update);
+      return findObj(this.modals, this.id);
     }
   },
   methods: {
