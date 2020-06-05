@@ -7,6 +7,7 @@ export type IServices = {
   active: Boolean;
   extendTimes: Number;
   createdDate?: string;
+  closed?: string;
   __v?: any;
 };
 export type INotes = {
@@ -18,6 +19,7 @@ export type IClient = {
   email: string;
   typeOfService: Array<IServices>;
   notes: Array<INotes>;
+  servicesHistory?: Array<IServices>;
 };
 
 export interface IUser extends mongoose.Document {

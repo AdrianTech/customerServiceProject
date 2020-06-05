@@ -10,7 +10,8 @@ const ArrayClientSubSchema = new Schema({
   extendTimes: {
     type: Number,
     default: 0
-  }
+  },
+  closed: String
 });
 const NotesClientSubSchema = new Schema<INotes>({
   date: String,
@@ -40,7 +41,8 @@ const ClientSchema = new Schema<IClient>({
     trim: true
   },
   typeOfService: [ArrayClientSubSchema],
-  notes: [NotesClientSubSchema]
+  notes: [NotesClientSubSchema],
+  servicesHistory: [ArrayClientSubSchema]
 });
 
 const ClientModel = mongoose.model("clients", ClientSchema);

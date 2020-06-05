@@ -23,7 +23,7 @@
       <Modal v-if="open" :modalID="service._id">
         <ExtendService :service="service" :clientID="clientID" />
       </Modal>
-      <li class="service-actions">Close</li>
+      <li class="service-actions" @click="closeService({serviceID:service._id, clientID})">Close</li>
     </ul>
   </div>
 </template>
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["openModal"]),
+    ...mapActions(["openModal", "closeService"]),
     DisplayCounter() {
       return timeCounter(this.finishTime);
     }
