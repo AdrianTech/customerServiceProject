@@ -22,7 +22,14 @@
         </div>
       </div>
     </div>
-    <h3>Active services ({{ data.typeOfService.length }})</h3>
+    <div class="services-header">
+      <h3>Active services ({{ data.typeOfService.length }})</h3>
+      <button
+        v-if="data.servicesHistory.length > 0"
+        class="btn-history"
+        @click="openModal(history)"
+      >Client's history</button>
+    </div>
     <div
       v-if="data.typeOfService.length > 0"
       class="active-services"
@@ -44,6 +51,9 @@
     <Modal v-if="emailOpen" :modalID="emailID">
       <SendEmail :clientID="id" :name="data.fullname" :email="data.email" />
     </Modal>
+    <Modal v-if="consumerHistory" :modalID="history">
+      <ConsumerHistory :history="data.servicesHistory" :clientName="data.fullname" />
+    </Modal>
   </div>
 </template>
 
@@ -54,6 +64,7 @@ import AddNewServiceToClient from "../components/client/AddNewService";
 import Modal from "../components/events/Modal";
 import UpdateClient from "../components/client/UpdateClient";
 import SendEmail from "../components/client/SendEmail";
+import ConsumerHistory from "../components/client/ConsumerHistory";
 import { setClientData, findObj, generateID } from "../shared/sharedFunctions";
 export default {
   components: {
@@ -61,7 +72,8 @@ export default {
     AddNewServiceToClient,
     UpdateClient,
     Modal,
-    SendEmail
+    SendEmail,
+    ConsumerHistory
   },
   name: "ClientDetails",
   data() {
@@ -72,7 +84,8 @@ export default {
       data: null,
       addServiceID: generateID(),
       updateID: generateID(),
-      emailID: generateID()
+      emailID: generateID(),
+      history: generateID()
     };
   },
   mounted() {
@@ -88,6 +101,9 @@ export default {
     },
     emailOpen() {
       return findObj(this.modals, this.emailID);
+    },
+    consumerHistory() {
+      return findObj(this.modals, this.history);
     }
   },
   watch: {
@@ -127,6 +143,20 @@ export default {
   padding-top: 15px;
   justify-content: space-evenly;
 }
+.services-header {
+  display: flex;
+  justify-content: center;
+  .btn-history {
+    background-color: transparent;
+    border: 1px solid $dark-blue;
+    border-radius: 7px;
+    padding: 4px 10px;
+    margin-left: 10px;
+  }
+  h3 {
+    font-size: 17px;
+  }
+}
 .pointer {
   cursor: pointer;
 }
@@ -153,7 +183,6 @@ export default {
   }
 }
 .name,
-.active-services,
 h3 {
   text-align: center;
 }
@@ -197,6 +226,9 @@ h3 {
   .dashboard-details {
     width: 80%;
     margin: auto;
+  }
+  .services-header h3 {
+    font-size: 21px;
   }
   .data {
     flex-direction: row;

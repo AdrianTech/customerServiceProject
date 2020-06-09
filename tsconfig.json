@@ -9,7 +9,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
-  },
-  "include": ["server/**/*.ts"],
-  "exclude": ["node_modules"]
+  }
+  // "include": ["server/**/*.ts"],
+  // "exclude": ["node_modules"]
 }

@@ -1,5 +1,6 @@
 import ClientModel from "../../models/clientModel";
 import TimeHandler from "../../utils/timeHandler";
+import emailHandler from "../../utils/emailHandler";
 import moment from "moment-timezone";
 import { IServices } from "../../types/types";
 import { Request, Response } from "express";
@@ -33,23 +34,6 @@ export default class ClientCotroller {
     const data = await ClientModel.find();
     res.status(200).json(data);
   }
-  // public async clientServiceUpdate(req: Request, res: Response) {
-  //   const { id } = req.body;
-  //   const { filtered } = req.body;
-  //   filtered.forEach((i: IServices) => {
-  //     new TimeHandler().timeChecker(i);
-  //     delete i.createdDate;
-  //     delete i.__v;
-  //     return i;
-  //   });
-  //   try {
-  //     await ClientModel.updateOne({ _id: id }, { $addToSet: { typeOfService: filtered } });
-  //     const updateClientData = await ClientModel.find();
-  //     res.status(200).json(updateClientData);
-  //   } catch (e) {
-  //     res.status(400).json("Something went wrong");
-  //   }
-  // }
   public async createNote(req: Request, res: Response) {
     const { id, body } = req.body;
     const data = {
@@ -94,29 +78,13 @@ export default class ClientCotroller {
       res.status(400).json("Something went wrong");
     }
   }
-  // public async extendService(req: Request, res: Response) {
-  //   const { clientID, serviceID, value } = req.body;
-  //   try {
-  //     const doc: any = await ClientModel.findOne({ _id: clientID });
-  //     const find = doc.typeOfService.find((i: any) => i.id === serviceID);
-  //     const time = moment(find.finishTime)
-  //       .add(value, "months")
-  //       .format();
-  //     find.finishTime = time;
-  //     find.extendTimes += 1;
-  //     await doc.save();
-  //     const data = await ClientModel.find();
-  //     res.status(200).json(data);
-  //   } catch (e) {
-  //     return res.status(400).json("Error");
-  //   }
-  // }
   public async sendEmail(req: Request, res: Response) {
-    // const { message, email, clientID } = req.body;
+    const { message, email } = req.body;
     try {
-      res.status(200).json("ok");
+      await emailHandler.sendEmailToClient({ message, email });
+      res.status(200).json("Email sent");
     } catch (e) {
-      res.status(400).json("Something went wrong");
+      res.status(400).json("Email wasn't sent. Check the email name");
     }
   }
 }
