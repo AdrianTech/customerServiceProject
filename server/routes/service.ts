@@ -7,7 +7,7 @@ export default class ClientRouter {
   public routes(app: any): void {
     const { createService, getServices, deleteService, updateService } = this.ServiceController;
     const { checkTokenPost } = this.auth;
-    app.get("/getServices", checkTokenPost, getServices);
+    app.get("/services", checkTokenPost, getServices);
     app.post("/createService", checkTokenPost, createService);
     app.delete("/removeService", checkTokenPost, deleteService);
     app.put("/updateService", checkTokenPost, updateService);

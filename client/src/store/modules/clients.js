@@ -14,7 +14,7 @@ const mutations = {
 };
 const actions = {
   async getClients({ commit }) {
-    const res = await axios.get("/getClients");
+    const res = await axios.get("/clients");
     commit("setClientsData", res.data);
   },
 

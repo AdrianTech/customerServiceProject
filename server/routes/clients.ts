@@ -10,7 +10,7 @@ export default class ClientRouter {
     const { addNewClient, sendClientData, createNote, deleteNote, deleteClient, updateClient, sendEmail } = this.ClientController;
     const { clientServiceUpdate, extendService, closeService } = this.Services;
     const { checkTokenPost } = this.auth;
-    app.get("/getClients", checkTokenPost, sendClientData);
+    app.get("/clients", checkTokenPost, sendClientData);
     app.post("/createClient", checkTokenPost, addNewClient);
     app.post("/clientServiceUpdate", checkTokenPost, clientServiceUpdate);
     app.post("/createNote", checkTokenPost, createNote);

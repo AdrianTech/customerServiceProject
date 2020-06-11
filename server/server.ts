@@ -8,6 +8,7 @@ import helmet from "helmet";
 import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { Request, Response } from "express";
 mongoose.set("useCreateIndex", true);
 dotenv.config();
 
@@ -23,6 +24,7 @@ class App {
     this.userRoute.routes(this.app);
     this.serviceRoute.routes(this.app);
     this.dbSetup();
+    this.handleWrongRequest();
   }
 
   private config(): void {
@@ -33,6 +35,11 @@ class App {
     this.app.use(express.static(path.join(__dirname, "public")));
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*"), next();
+    });
+  }
+  private handleWrongRequest(): void {
+    this.app.all("*", (req: Request, res: Response) => {
+      res.redirect("/");
     });
   }
 

@@ -42,7 +42,7 @@ const actions = {
   },
   async loginUser({ commit, dispatch }, data) {
     try {
-      const res = await axios.post("/loginUser", data);
+      const res = await axios.post("/login", data);
       [
         ["userResponse", res.data],
         ["isLogged", true]

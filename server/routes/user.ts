@@ -7,7 +7,7 @@ export default class ClientRouter {
   public routes(app: any): void {
     const { userLogin, logout } = this.UserController;
     const { checkTokenPost } = this.auth;
-    app.post("/loginUser", userLogin);
+    app.post("/login", userLogin);
     app.get("/logout", checkTokenPost, logout);
   }
 }

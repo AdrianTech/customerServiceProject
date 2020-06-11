@@ -23,7 +23,7 @@ const actions = {
   },
   async getServices({ commit, dispatch }) {
     try {
-      const res = await axios.get("/getServices");
+      const res = await axios.get("/services");
       commit("serviceData", res.data);
     } catch (err) {
       dispatch("errHandler", { msg: "Error, try again", status: 400 });
