@@ -40,7 +40,7 @@ export default {
     this.setValues();
   },
   computed: {
-    ...mapGetters(["clientData", "eventInfo"])
+    ...mapGetters(["clientData", "eventInfo", "page"])
   },
   watch: {
     clientData() {
@@ -51,14 +51,15 @@ export default {
   methods: {
     ...mapActions(["createNote", "removeNote"]),
     submitNote() {
-      const { body, id } = this;
-      this.createNote({ body, id });
+      const { body, id, page } = this;
+      this.createNote({ body, id, page });
     },
     deleteNote(messageID) {
       const confirm = window.confirm("Delete this note?");
       const data = {
         messageID,
-        id: this.id
+        id: this.id,
+        page: this.page
       };
       if (confirm) this.removeNote(data);
     },

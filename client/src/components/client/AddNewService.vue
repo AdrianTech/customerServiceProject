@@ -1,5 +1,5 @@
 <template>
-  <div class="inside">
+  <div class="inside" v-if="clientData !== null">
     <form @submit.prevent="submitData" v-if="servicesArr.length > 0">
       <h3>{{ client.fullname }}</h3>
       <div
@@ -59,7 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["services", "clientData", "eventInfo"])
+    ...mapGetters(["services", "clientData", "eventInfo", "page"])
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),
@@ -93,7 +93,7 @@ export default {
       this.servicesArr.forEach(i => (i.total = 0));
     },
     submitData() {
-      const { id } = this;
+      const { id, page } = this;
       const filtered = this.servicesArr.filter(
         ({ active, months }) => active && months > 0
       );
@@ -104,7 +104,8 @@ export default {
         });
       const data = {
         filtered,
-        id
+        id,
+        page
       };
       this.addNewServiceToClient(data);
     }

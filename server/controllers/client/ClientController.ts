@@ -1,79 +1,84 @@
 import ClientModel from "../../models/clientModel";
 import TimeHandler from "../../utils/timeHandler";
 import emailHandler from "../../utils/emailHandler";
+import functions from "../../utils/functions";
+import queries from "../../utils/queries";
 import moment from "moment-timezone";
 import { IServices } from "../../types/types";
 import { Request, Response } from "express";
 
 export default class ClientCotroller {
   public async addNewClient(req: Request, res: Response) {
-    const { fullname, email, clientArr, phone } = req.body;
+    const { fullname, email, clientArr, phone, page } = req.body;
     clientArr.forEach((item: IServices) => {
       new TimeHandler().timeChecker(item);
       delete item.__v;
       delete item.createdDate;
       return item;
     });
+    const sorted = functions.sorted(clientArr);
     const newClient = {
       fullname,
       email,
-      typeOfService: clientArr,
+      typeOfService: sorted,
       phone,
       notes: [],
       registerDate: moment().format()
     };
     try {
       await new ClientModel(newClient).save();
-      const data = await ClientModel.find();
-      res.status(200).json({ msg: "New client added", data });
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (err) {
+      console.log(err);
       res.status(400).json("Something went wrong");
     }
   }
   public async sendClientData(req: Request, res: Response) {
-    const data = await ClientModel.find();
+    const { page } = req.query;
+    const data = await queries.getNumberOfClients(page);
     res.status(200).json(data);
   }
   public async createNote(req: Request, res: Response) {
-    const { id, body } = req.body;
+    const { id, body, page } = req.body;
     const data = {
       body,
       date: moment().format()
     };
     try {
       await ClientModel.updateOne({ _id: id }, { $addToSet: { notes: data } });
-      const updateClientData = await ClientModel.find();
-      res.status(200).json(updateClientData);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }
   }
   public async deleteNote(req: Request, res: Response) {
-    const { id, messageID } = req.body;
+    const { id, messageID, page } = req.body;
     try {
       await ClientModel.update({ _id: id }, { $pull: { notes: { _id: messageID } } });
-      const updateClientData = await ClientModel.find();
-      res.status(200).json(updateClientData);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }
   }
   public async deleteClient(req: Request, res: Response) {
-    const { id } = req.query;
+    const { id, page } = req.query;
     try {
       await ClientModel.findOneAndDelete({ _id: id });
-      const updateClientData = await ClientModel.find();
-      res.status(200).json(updateClientData);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }
   }
   public async updateClient(req: Request, res: Response) {
-    const { id } = req.body;
+    const { id, page } = req.body;
     try {
       await ClientModel.updateOne({ _id: id }, { $set: req.body });
-      const updateClientData = await ClientModel.find();
-      res.status(200).json(updateClientData);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }

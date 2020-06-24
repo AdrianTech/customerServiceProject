@@ -1,12 +1,13 @@
 import { IServices } from "../../types/types";
 import TimeHandler from "../../utils/timeHandler";
 import ClientModel from "../../models/clientModel";
+import functions from "../../utils/functions";
+import queries from "../../utils/queries";
 import { Request, Response } from "express";
 import moment from "moment-timezone";
 export default class Services {
   public async clientServiceUpdate(req: Request, res: Response) {
-    const { id } = req.body;
-    const { filtered } = req.body;
+    const { id, page, filtered } = req.body;
     filtered.forEach((i: IServices) => {
       new TimeHandler().timeChecker(i);
       delete i.createdDate;
@@ -14,15 +15,17 @@ export default class Services {
       return i;
     });
     try {
-      await ClientModel.updateOne({ _id: id }, { $addToSet: { typeOfService: filtered } });
-      const updateClientData = await ClientModel.find();
-      res.status(200).json(updateClientData);
+      const doc: any = await ClientModel.findOne({ _id: id });
+      doc.typeOfService = functions.sorted([...doc.typeOfService, ...filtered]);
+      await doc.save();
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }
   }
   public async extendService(req: Request, res: Response) {
-    const { clientID, serviceID, value } = req.body;
+    const { clientID, serviceID, value, page } = req.body;
     try {
       const doc: any = await ClientModel.findOne({ _id: clientID });
       const find = doc.typeOfService.find((i: any) => i.id === serviceID);
@@ -32,14 +35,14 @@ export default class Services {
       find.finishTime = time;
       find.extendTimes += 1;
       await doc.save();
-      const data = await ClientModel.find();
-      res.status(200).json(data);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       return res.status(400).json("Error");
     }
   }
   public async closeService(req: Request, res: Response) {
-    const { userid, serviceid } = req.query;
+    const { userid, serviceid, page } = req.query;
     // Note: pushing object with the same id might cause an error, when items will be map!
     try {
       const client: any = await ClientModel.findOne({ _id: userid });
@@ -49,8 +52,8 @@ export default class Services {
       client.servicesHistory.push(service);
       client.typeOfService = client.typeOfService.filter((i: any) => i.id !== serviceid);
       await client.save();
-      const data = await ClientModel.find();
-      res.status(200).json(data);
+      const response = await queries.getNumberOfClients(page);
+      res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }

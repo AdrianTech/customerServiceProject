@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+var CronJob = require("cron").CronJob;
 dotenv.config();
 type Params = {
   message: string;
@@ -31,7 +32,16 @@ class EmailHandler {
   }
 
   public async clientChecker() {
-    console.log("It's client checker");
+    var job = new CronJob(
+      "00 23 * * *",
+      () => {
+        this.sendEmailToClient({ message: "Its run at 23:00", email: "mojofw@gmail.com" });
+      },
+      null,
+      true,
+      "Europe/Warsaw"
+    );
+    job.start();
   }
 }
 

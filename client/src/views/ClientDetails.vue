@@ -1,9 +1,9 @@
 <template>
-  <div class="dashboard-details" v-if="data !== null">
+  <div class="dashboard-details" v-if="data !== null && data.typeOfService !== undefined">
     <div class="client-details">
       <div class="name">
         <h2>{{ data.fullname }}</h2>
-        <span class="material-icons removeClient" @click="removeClient(data._id)">highlight_off</span>
+        <span class="material-icons removeClient" @click="removeClient(id)">highlight_off</span>
         <Modal v-if="updateOpen" :modalID="updateID">
           <UpdateClient :data="data" @update="updateForm" />
         </Modal>

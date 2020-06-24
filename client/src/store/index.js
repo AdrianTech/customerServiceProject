@@ -3,7 +3,8 @@ import Vuex from "vuex";
 import clients from "./modules/clients";
 import login from "./modules/login";
 import services from "./modules/services";
-import utility from "./modules/utility";
+import modals from "./modules/modals";
+import pagination from "./modules/pagination";
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     clients,
     login,
     services,
-    utility
+    modals,
+    pagination
   }
 });

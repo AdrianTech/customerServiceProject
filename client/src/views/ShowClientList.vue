@@ -6,18 +6,21 @@
       <span>Actions</span>
     </div>
     <Client v-bind="client" v-for="client in clientData" :key="client._id"></Client>
-    <button class="addService" @click="addNewClient">
-      <span>+</span>
+    <Pagination />
+    <button class="btn-add" @click="addNewClient">
+      <img src="../assets/add.png" alt="add button" />
     </button>
   </div>
 </template>
 
 <script>
 import Client from "../components/client/Client";
+import Pagination from "../shared/pagination";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    Client
+    Client,
+    Pagination
   },
   computed: {
     ...mapGetters(["clientData"])

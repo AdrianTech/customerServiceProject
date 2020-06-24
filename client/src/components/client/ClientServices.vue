@@ -23,7 +23,10 @@
       <Modal v-if="open" :modalID="service._id">
         <ExtendService :service="service" :clientID="clientID" />
       </Modal>
-      <li class="service-actions" @click="closeService({serviceID:service._id, clientID})">Close</li>
+      <li
+        class="service-actions"
+        @click="closeService({serviceID:service._id, clientID, page})"
+      >Close</li>
     </ul>
   </div>
 </template>
@@ -47,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["modals"]),
+    ...mapGetters(["modals", "page"]),
     open() {
       return this.modals.find(i => this.service._id === i.id && i.open);
     },

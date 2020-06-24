@@ -1,5 +1,5 @@
 <template>
-  <div class="client">
+  <div class="client" v-if="typeOfService">
     <div class="counter">
       <div class="counter-details">
         <span v-if="typeOfService.length > 0">{{ displayTimeCounter() }}</span>
@@ -15,12 +15,12 @@
     </div>
     <div class="actions">
       <div class="email-action">
-        <button @click="openModal(id)">
+        <button @click="openModal(_id)">
           <img src="../../assets/mail.png" alt="email" />
         </button>
         <p>Send email</p>
       </div>
-      <Modal v-if="open" :modalID="id">
+      <Modal v-if="open" :modalID="_id">
         <SendEmail :clientID="_id" :name="fullname" :email="email" />
       </Modal>
     </div>
@@ -41,8 +41,7 @@ export default {
   },
   data() {
     return {
-      endTime: this.typeOfService.length > 0 && this.typeOfService[0].finishTime,
-      id: 87123139239
+      endTime: this.typeOfService.length > 0 && this.typeOfService[0].finishTime
     };
   },
   props: {
@@ -55,7 +54,7 @@ export default {
   computed: {
     ...mapGetters(["modals"]),
     open() {
-      return findObj(this.modals, this.id);
+      return findObj(this.modals, this._id);
     }
   },
   methods: {
