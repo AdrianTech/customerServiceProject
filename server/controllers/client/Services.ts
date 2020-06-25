@@ -34,6 +34,7 @@ export default class Services {
         .format();
       find.finishTime = time;
       find.extendTimes += 1;
+      doc.typeOfService = functions.sorted(doc.typeOfService);
       await doc.save();
       const response = await queries.getNumberOfClients(page);
       res.status(200).json(response);
@@ -51,6 +52,7 @@ export default class Services {
       service.active = false;
       client.servicesHistory.push(service);
       client.typeOfService = client.typeOfService.filter((i: any) => i.id !== serviceid);
+      client.typeOfService = functions.sorted(client.typeOfService);
       await client.save();
       const response = await queries.getNumberOfClients(page);
       res.status(200).json(response);

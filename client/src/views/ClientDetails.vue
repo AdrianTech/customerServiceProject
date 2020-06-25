@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-details" v-if="data !== null && data.typeOfService !== undefined">
+  <div class="dashboard-details" v-if="data !== null">
     <div class="client-details">
       <div class="name">
         <h2>{{ data.fullname }}</h2>

@@ -1,6 +1,6 @@
 <template>
   <div class="inside">
-    <h4>Extend for another {{ months === 1 ? `${months} month` : `${months} months` }} or more</h4>
+    <h4>Extend {{name}} for another {{ months === 1 ? `${months} month` : `${months} months` }}</h4>
     <div class="input">
       <input type="number" min="1" max="36" v-model.trim.number="months" />
       <button class="modal-btn" @click="extendService({ value, serviceID, clientID, page })">Extend</button>
@@ -15,7 +15,8 @@ export default {
   props: ["service", "clientID"],
   data() {
     return {
-      value: this.service.months
+      value: this.service.months,
+      name: this.service.name
     };
   },
   computed: {
