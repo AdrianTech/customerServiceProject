@@ -17,8 +17,8 @@ export default class Services {
     try {
       const doc: any = await ClientModel.findOne({ _id: id });
       doc.typeOfService = functions.sorted([...doc.typeOfService, ...filtered]);
-      await doc.save();
-      const response = await queries.getNumberOfClients(page);
+      const client = await doc.save();
+      const response = await queries.getNumberOfClients(page, client);
       res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
@@ -35,8 +35,8 @@ export default class Services {
       find.finishTime = time;
       find.extendTimes += 1;
       doc.typeOfService = functions.sorted(doc.typeOfService);
-      await doc.save();
-      const response = await queries.getNumberOfClients(page);
+      const client = await doc.save();
+      const response = await queries.getNumberOfClients(page, client);
       res.status(200).json(response);
     } catch (e) {
       return res.status(400).json("Error");
@@ -53,8 +53,8 @@ export default class Services {
       client.servicesHistory.push(service);
       client.typeOfService = client.typeOfService.filter((i: any) => i.id !== serviceid);
       client.typeOfService = functions.sorted(client.typeOfService);
-      await client.save();
-      const response = await queries.getNumberOfClients(page);
+      const clientData = await client.save();
+      const response = await queries.getNumberOfClients(page, clientData);
       res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");

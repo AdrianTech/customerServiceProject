@@ -8,11 +8,11 @@ export const Services = new Schema<ICompanyServices>({
   unitPrice: Number,
   months: {
     type: Number,
-    default: 0
+    default: 0,
   },
   active: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 export const ServicesModel = mongoose.model("services", Services);

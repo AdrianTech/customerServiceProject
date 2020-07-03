@@ -8,17 +8,20 @@ const state = {
     msg: "",
     status: 0
   },
-  isLogged: false
+  isLogged: false,
+  dataLoaded: false
 };
 
 const getters = {
   eventInfo: state => state.info,
   userData: state => state.user,
-  isLogged: state => state.isLogged
+  isLogged: state => state.isLogged,
+  dataLoaded: state => state.dataLoaded
 };
 
 const mutations = {
   userResponse: (state, payload) => (state.user = payload),
+  dataLoaded: (state, payload) => (state.dataLoaded = payload),
   errUserResponse: (state, obj) => {
     state.info = {
       bool: true,

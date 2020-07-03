@@ -50,6 +50,7 @@ export default {
     font-size: 15px;
     width: 100%;
     height: 30%;
+    border-radius: 7px;
   }
 }
 @media (min-width: 500px) {

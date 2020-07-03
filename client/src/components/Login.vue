@@ -40,10 +40,10 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
   max-width: 100%;
   min-width: 40%;
   height: 60%;
@@ -62,26 +62,23 @@ export default {
   input {
     padding: 7px;
     font-size: 19px;
-    border-radius: 7px;
-    border: 1px solid $dark-blue;
+    border: none;
+    border-bottom: 1px solid $dark-blue;
   }
 }
 .btn-confirm {
   max-width: 200px;
   @include primary-btn;
 }
-
-@media (min-width: 500px) {
-  .form {
-    // width: 70%;
-  }
-}
 @media (min-width: 768px) {
   .form {
-    // width: 50%;
     font-size: 18px;
     padding: 50px;
-    border: 1px solid $db-light;
+    border: 1px solid #18026842;
+    border-radius: 7px;
+    label {
+      font-size: 22px;
+    }
   }
 }
 </style>

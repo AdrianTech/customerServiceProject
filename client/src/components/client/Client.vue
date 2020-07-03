@@ -1,5 +1,5 @@
 <template>
-  <div class="client" v-if="typeOfService">
+  <div class="client" v-if="typeOfService && index < 10">
     <div class="counter">
       <div class="counter-details">
         <span v-if="typeOfService.length > 0">{{ displayTimeCounter() }}</span>
@@ -49,7 +49,8 @@ export default {
     typeOfService: Array,
     fullname: String,
     email: String,
-    notes: Array
+    notes: Array,
+    index: Number
   },
   computed: {
     ...mapGetters(["modals"]),

@@ -1,5 +1,5 @@
 <template>
-  <div class="inside" v-if="clientData !== null">
+  <div class="inside" v-if="client !== undefined">
     <form @submit.prevent="submitData" v-if="servicesArr.length > 0">
       <h3>{{ client.fullname }}</h3>
       <div
@@ -14,7 +14,7 @@
           @click="changeValue(service._id)"
         >check_box_outline_blank</span>
         <span v-else class="material-icons" @click="changeValue(service._id)">check_box</span>
-        <label>{{service.name}}</label>
+        <label>{{ service.name }}</label>
         <label>Contract lenght:</label>
         <input
           @change="setTotal(service._id)"
@@ -26,13 +26,13 @@
         />
         <div class="total-item">
           Unit price:
-          <span>{{service.unitPrice}}</span> Total:
-          <span>{{service.total.toFixed(2)}}</span>
+          <span>{{ service.unitPrice }}</span> Total:
+          <span>{{ service.total.toFixed(2) }}</span>
         </div>
       </div>
       <button :disabled="total === 0" class="modal-btn">Confirm</button>
     </form>
-    <p>Total services value: {{total.toFixed(2)}}</p>
+    <p>Total services value: {{ total.toFixed(2) }}</p>
     <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["services", "clientData", "eventInfo", "page"])
+    ...mapGetters(["services", "clientData", "eventInfo", "page", "dataLoaded"])
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),

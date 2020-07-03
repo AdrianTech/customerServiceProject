@@ -1,14 +1,21 @@
 <template>
   <div class="pagination">
     <div class="center">
-      <button @click="pagination('start')">Start</button>
-      <button @click="pagination('decrement')" :disabled="page === 1">
+      <button @click="paginationHandler('start', type)">Start</button>
+      <button
+        @click="paginationHandler('decrement', type)"
+        :disabled="type === 'client' && page === parseInt(1) || type === 'service' && current === 1"
+      >
         <span class="material-icons down">arrow_back</span>
       </button>
-      <button :disabled="page === meta.last_page" @click="pagination('increment')">
+      <h4>{{ type === 'client' ? meta.current_page : current }}</h4>
+      <button
+        :disabled="type === 'client' && page === meta.last_page || type === 'service' && current === serviceMeta.lastServicePage"
+        @click="paginationHandler('increment', type)"
+      >
         <span class="material-icons up">arrow_forward</span>
       </button>
-      <button @click="pagination('lastPage')">Last page</button>
+      <button @click="paginationHandler('lastPage', type)">Last page</button>
     </div>
   </div>
 </template>
@@ -16,11 +23,17 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Pagination",
+  props: ["page", "meta", "type"],
   computed: {
-    ...mapGetters(["page", "meta"])
+    ...mapGetters(["serviceMeta", "current"])
   },
   methods: {
-    ...mapActions(["pagination"])
+    ...mapActions(["pagination", "getClients", "servicePaginationHandler"]),
+    paginationHandler(method, type) {
+      if (type === "client") {
+        this.pagination(method);
+      } else this.servicePaginationHandler(method);
+    }
   }
 };
 </script>
@@ -39,8 +52,9 @@ export default {
     border-radius: 6px;
     margin: auto;
     padding: 3px 10px;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4);
     > * {
-      margin: 0 8px;
+      margin: 0 5px;
     }
   }
 }
@@ -50,8 +64,9 @@ span {
   cursor: pointer;
 }
 button:nth-child(2),
-button:nth-child(3) {
+button:nth-child(4) {
   border: none;
+  padding: 0;
 }
 button {
   border: 1px solid grey;
@@ -71,11 +86,12 @@ button {
   }
   .pagination .center {
     padding: 8px 13px;
-    * > {
-      margin: 0 11px;
+    h4 {
+      font-size: 23px;
+    }
+    > * {
+      margin: 0 14px;
     }
   }
-}
-@media (min-width: 1000px) {
 }
 </style>

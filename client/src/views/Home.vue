@@ -2,7 +2,7 @@
   <div class="welcome-page">
     <Login v-if="!isLogged" />
     <template v-else>
-      <h1>Welcome to this project</h1>
+      <h1>Couple of useful links:</h1>
       <router-link to="/services">Services List</router-link>
     </template>
   </div>
@@ -25,9 +25,9 @@ export default {
 <style lang="scss" scoped>
 .welcome-page {
   display: flex;
-  @include pt;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   height: 100%;
   h1 {
     text-align: center;

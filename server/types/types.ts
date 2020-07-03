@@ -8,6 +8,7 @@ export type IServices = {
   extendTimes: Number;
   createdDate?: string;
   closed?: string;
+  _id: any;
   __v?: any;
 };
 export type INotes = {

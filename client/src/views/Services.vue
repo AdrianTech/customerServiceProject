@@ -2,22 +2,21 @@
   <div class="wrapper">
     <h2>You have {{services.length === 1 ? `${services.length} service` :`${services.length} services`}}</h2>
     <div class="services">
-      <ServicesList v-for="service in services" :key="service._id" :service="service" />
+      <ServicesList v-for="service in servicesData" :key="service._id" :service="service" />
     </div>
+    <Pagination :meta="meta" :type="'service'" />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import ServicesList from "../components/services/ServicesList";
+import Pagination from "../shared/pagination";
 export default {
   name: "Services",
-  components: { ServicesList },
+  components: { ServicesList, Pagination },
   computed: {
-    ...mapGetters(["services"])
-  },
-  methods: {
-    ...mapActions([""])
+    ...mapGetters(["services", "meta", "servicesData"])
   }
 };
 </script>

@@ -11,7 +11,7 @@
       <button class="btn" @click.prevent="openModal(modalID)">Show services list</button>
       <button class="btn" :disabled="!client.email">Submit</button>
       <div class="total">
-        Total value of customer services:
+        Total value of selected services:
         <span>{{total.toFixed(2)}}</span>
       </div>
     </form>
@@ -92,9 +92,18 @@ export default {
 .createClient {
   height: 100vh;
   .form {
-    height: 100%;
+    height: 97%;
     padding-top: 80px;
-    position: relative;
+    margin: auto;
+    input {
+      border: none;
+      border-bottom: 1px solid $dark-blue;
+      border-radius: 0;
+      outline: none;
+    }
+    label {
+      font-weight: 700;
+    }
   }
   .btn {
     @include primary-btn;

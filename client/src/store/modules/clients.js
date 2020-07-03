@@ -3,24 +3,29 @@ import router from "../../router/index";
 
 const state = {
   clients: [],
-  meta: {}
+  meta: {},
 };
-
 const getters = {
-  clientData: state => state.clients,
-  meta: state => state.meta
+  clientData: (state) => state.clients,
+  meta: (state) => state.meta,
 };
 
 const mutations = {
   setClientsData: (state, payload) => (state.clients = payload),
-  setMeta: (state, payload) => (state.meta = payload)
+  setMeta: (state, payload) => (state.meta = payload),
 };
 const actions = {
   async getClients({ commit }) {
-    const { page } = this.state.pagination;
-    const res = await axios.get(`/clients?page=${page}`);
-    commit("setClientsData", res.data.clients);
-    commit("setMeta", res.data.meta);
+    try {
+      const { page } = this.state.pagination;
+      const res = await axios.get(`/clients?page=${page}`);
+      commit("setClientsData", res.data.clients);
+      commit("setMeta", res.data.meta);
+      commit("dataLoaded", true);
+    } catch (e) {
+      commit("isLogged", false);
+      commit("dataLoaded", false);
+    }
   },
 
   resetClientsArray({ commit }) {
@@ -37,7 +42,10 @@ const actions = {
       commit("setMeta", res.data.meta);
       dispatch("errHandler", { msg: "Client added", status: 200 });
     } catch (err) {
-      dispatch("errHandler", { msg: "Error ocurred. Check your data", status: 400 });
+      dispatch(
+        "errHandler",
+        { msg: "Error ocurred. Check your data", status: 400 },
+      );
     }
   },
 
@@ -46,13 +54,24 @@ const actions = {
       const res = await axios.post("/clientServiceUpdate", data);
       commit("setClientsData", res.data.clients);
       dispatch("errHandler", { msg: "Service added", status: 200 });
+      commit("dataLoaded", true);
+      return true;
     } catch (err) {
-      dispatch("errHandler", { msg: "Something went wrong. Try again", status: 400 });
+      dispatch(
+        "errHandler",
+        { msg: "Something went wrong. Try again", status: 400 },
+      );
+      return false;
     }
   },
 
   async createNote({ commit, dispatch }, data) {
-    if (data.body.length < 1) return dispatch("errHandler", { msg: "Please, enter a message", status: 400 });
+    if (data.body.length < 1) {
+      return dispatch(
+        "errHandler",
+        { msg: "Please, enter a message", status: 400 },
+      );
+    }
     try {
       const res = await axios.post("/createNote", data);
       commit("setClientsData", res.data.clients);
@@ -100,7 +119,9 @@ const actions = {
   },
 
   async extendService({ commit, dispatch }, data) {
-    if (data.value === 0 || typeof this.value === "string") return this.errHandler({ msg: "Value must be at least 1", status: 400 });
+    if (data.value === 0 || typeof this.value === "string") {
+      return this.errHandler({ msg: "Value must be at least 1", status: 400 });
+    }
     try {
       const res = await axios.put("/extendService", data);
       commit("setClientsData", res.data.clients);
@@ -126,20 +147,25 @@ const actions = {
     const { clientID, serviceID, page } = data;
     if (!confirm) return;
     try {
-      const res = await axios.put(`/clients/services/close?userid=${clientID}&serviceid=${serviceID}&page=${page}`);
-      dispatch("errHandler", { msg: "This service has been closed", status: 200 });
+      const res = await axios.put(
+        `/clients/services/close?userid=${clientID}&serviceid=${serviceID}&page=${page}`,
+      );
+      dispatch(
+        "errHandler",
+        { msg: "This service has been closed", status: 200 },
+      );
       commit("setClientsData", res.data.clients);
       return true;
     } catch (err) {
       dispatch("errHandler", { msg: "Error, try again", status: 400 });
       return false;
     }
-  }
+  },
 };
 
 export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

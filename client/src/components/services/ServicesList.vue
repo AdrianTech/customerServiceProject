@@ -20,8 +20,8 @@
       <button @click="openModal(id)">Update</button>
       <button @click="removeService">Remove</button>
     </div>
-    <button class="addService" @click="openModal(create)">
-      <span>+</span>
+    <button class="btn-add" @click="openModal(create)">
+      <img src="../../assets/add.png" alt="add button" />
     </button>
     <Modal v-if="createOpen" :modalID="create">
       <CreateNewService />

@@ -14,7 +14,7 @@ export default class ServiceController {
       months,
       createdDate: moment()
         .tz("Europe/Warsaw")
-        .format()
+        .format(),
     };
     const Services = new ServicesModel(data);
     try {

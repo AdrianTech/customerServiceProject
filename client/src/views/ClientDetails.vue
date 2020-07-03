@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-details" v-if="data !== null">
+  <div class="dashboard-details" v-if="data.typeOfService !== undefined">
     <div class="client-details">
       <div class="name">
         <h2>{{ data.fullname }}</h2>
@@ -12,11 +12,9 @@
       <div class="data">
         <div class="item pointer" @click="openModal(emailID)">
           <span class="material-icons">mail_outline</span>
-          {{data.email}}
+          {{ data.email }}
         </div>
-        <div class="item">
-          <span class="material-icons">phone</span> 675 555 234
-        </div>
+        <div class="item"><span class="material-icons">phone</span> 675 555 234</div>
         <div class="item">
           <button @click="clientNotes">Show me notes</button>
         </div>
@@ -24,26 +22,13 @@
     </div>
     <div class="services-header">
       <h3>Active services ({{ data.typeOfService.length }})</h3>
-      <button
-        v-if="data.servicesHistory.length > 0"
-        class="btn-history"
-        @click="openModal(history)"
-      >Client's history</button>
+      <button v-if="data.servicesHistory.length > 0" class="btn-history" @click="openModal(history)">Client's history</button>
     </div>
-    <div
-      v-if="data.typeOfService.length > 0"
-      class="active-services"
-      :class="[data.typeOfService.length < 2 ? extraWidth : '']"
-    >
-      <Services
-        v-for="service in data.typeOfService"
-        :key="service._id"
-        :clientId="id"
-        :service="service"
-      />
+    <div v-if="data.typeOfService.length > 0" class="active-services" :class="[data.typeOfService.length < 2 ? extraWidth : '']">
+      <Services v-for="service in data.typeOfService" :key="service._id" :clientId="id" :service="service" />
     </div>
-    <button @click="openModal(addServiceID)" class="addService">
-      <span>+</span>
+    <button @click="openModal(addServiceID)" class="btn-add">
+      <img src="../assets/add.png" alt="add button" />
     </button>
     <Modal v-if="addServiceOpen" :modalID="addServiceID">
       <AddNewServiceToClient :id="id" />
@@ -81,7 +66,7 @@ export default {
     return {
       extraWidth: "extraWidth",
       id,
-      data: null,
+      data: {},
       addServiceID: generateID(),
       updateID: generateID(),
       emailID: generateID(),
