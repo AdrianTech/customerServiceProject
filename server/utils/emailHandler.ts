@@ -1,22 +1,25 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import ClientModel from "../models/clientModel";
+import moment from "moment-timezone";
+import { IServices } from "../types/types";
 var CronJob = require("cron").CronJob;
 dotenv.config();
 type Params = {
-  message: string;
   email: string;
+  html: string;
 };
 
 class EmailHandler {
-  public async sendEmailToClient({ message, email }: Params): Promise<any> {
+  public async sendEmail({ email, html }: Params): Promise<any> {
     let transporter = nodemailer.createTransport({
       host: "mail41.mydevil.net",
       port: 587,
       secure: false,
       auth: {
         user: "customerservice@adriantech.eu",
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
     try {
       await transporter.sendMail({
@@ -24,7 +27,7 @@ class EmailHandler {
         to: email,
         subject: "Your service provider",
         text: "Hello",
-        html: `<b>${message}</b>`
+        html: html,
       });
     } catch (e) {
       return false;
@@ -33,15 +36,55 @@ class EmailHandler {
 
   public async clientChecker() {
     var job = new CronJob(
-      "00 23 * * *",
+      "00 19 * * *",
       () => {
-        this.sendEmailToClient({ message: "Its run at 23:00", email: "mojofw@gmail.com" });
+        this.clientDataHandler();
       },
       null,
       true,
       "Europe/Warsaw"
     );
     job.start();
+  }
+  public async clientDataHandler() {
+    let thirtyDays: any = [];
+    let sixtyDays: any = [];
+    const clients = await ClientModel.find();
+    let count: number;
+    clients.forEach((client: any) => {
+      client.typeOfService.forEach((service: IServices) => {
+        count = moment(service.finishTime).diff(new Date(), "days");
+        if (count < 30) {
+          thirtyDays.push({ clientName: client.fullname, when: moment(service.finishTime).format("LLL"), leftDays: count, name: service.name });
+        }
+        if (count < 60 && count > 30) {
+          sixtyDays.push({ clientName: client.fullname, when: moment(service.finishTime).format("LLL"), leftDays: count, name: service.name });
+        }
+      });
+    });
+    const html = this.arraysHandler(...[thirtyDays.sort((a: any, b: any) => a.leftDays - b.leftDays || <any>new Date(a.when) - <any>new Date(b.when)), sixtyDays.sort((a: any, b: any) => a.leftDays - b.leftDays || <any>new Date(a.when) - <any>new Date(b.when))]);
+    this.sendEmail({ email: "mojofw@gmail.com", html });
+  }
+  public arraysHandler(...arrays: any) {
+    let htmlArrays: Array<object> = [];
+    let result: string = "";
+    let count: number = 0;
+    arrays.forEach((i: any) => {
+      htmlArrays = i
+        .map(
+          (i: any) => `<div style="font-weight: 700; color:white; font-family: Tahoma;">
+      <h3 style="color:yellow">${i.clientName}</h3>
+      <p> Left Days: ${i.leftDays}</p>
+      <p> Date: ${i.when}</p>
+      <p> Service name: ${i.name}</p>
+      </div>`
+        )
+        .join("");
+      return (result += `<div style="background-color: #18191a; padding: 20px 40px;">
+      <h2 style="color: #aec9f5">These customers will end the following services within the next ${(count += 30)} days</h2>
+      ${htmlArrays}</div>`);
+    });
+    return result;
   }
 }
 

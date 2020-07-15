@@ -32,7 +32,6 @@ const mutations = {
     if (method === "lastPage") state.servicePage = serviceMeta.lastServicePage;
     if (method === "start") state.servicePage = 1;
     const start = state.servicePage * 6 - 6 || 0;
-    console.log(start, state.servicePage);
     const end = state.servicePage * 6;
     const lastServicePage = Math.ceil(services.length / 6);
     state.servicesData = services.slice(start, end);

@@ -15,7 +15,7 @@
       </li>
       <li>
         <span>Extended</span>
-        <span>{{ extendTimes }}</span>
+        <span>{{ extendTimes }} times</span>
       </li>
       <li v-if="DisplayCounter !== '0'">{{ DisplayCounter() }} days left</li>
       <li :style="{ color: 'red' }" v-else>{{ DisplayCounter() }} day left</li>

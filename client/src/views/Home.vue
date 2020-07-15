@@ -2,7 +2,7 @@
   <div class="welcome-page">
     <Login v-if="!isLogged" />
     <template v-else>
-      <h1>Couple of useful links:</h1>
+      <h1>Your features:</h1>
       <router-link to="/services">Services List</router-link>
     </template>
   </div>
@@ -27,7 +27,7 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  padding: $topPadding;
   height: 100%;
   h1 {
     text-align: center;

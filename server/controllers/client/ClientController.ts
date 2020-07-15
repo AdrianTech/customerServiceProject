@@ -23,7 +23,7 @@ export default class ClientCotroller {
       typeOfService: sorted,
       phone,
       notes: [],
-      registerDate: moment().format()
+      registerDate: moment().format(),
     };
     try {
       await new ClientModel(newClient).save();
@@ -43,7 +43,7 @@ export default class ClientCotroller {
     const { id, body, page } = req.body;
     const data = {
       body,
-      date: moment().format()
+      date: moment().format(),
     };
     try {
       await ClientModel.updateOne({ _id: id }, { $addToSet: { notes: data } });
@@ -85,8 +85,9 @@ export default class ClientCotroller {
   }
   public async sendEmail(req: Request, res: Response) {
     const { message, email } = req.body;
+    const html = `<h2>${message}</h2>`;
     try {
-      await emailHandler.sendEmailToClient({ message, email });
+      await emailHandler.sendEmail({ html, email });
       res.status(200).json("Email sent");
     } catch (e) {
       res.status(400).json("Email wasn't sent. Check the email name");

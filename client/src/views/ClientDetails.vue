@@ -14,7 +14,9 @@
           <span class="material-icons">mail_outline</span>
           {{ data.email }}
         </div>
-        <div class="item"><span class="material-icons">phone</span> 675 555 234</div>
+        <div class="item">
+          <span class="material-icons">phone</span> 675 555 234
+        </div>
         <div class="item">
           <button @click="clientNotes">Show me notes</button>
         </div>
@@ -22,10 +24,23 @@
     </div>
     <div class="services-header">
       <h3>Active services ({{ data.typeOfService.length }})</h3>
-      <button v-if="data.servicesHistory.length > 0" class="btn-history" @click="openModal(history)">Client's history</button>
+      <button
+        v-if="data.servicesHistory.length > 0"
+        class="btn-history"
+        @click="openModal(history)"
+      >Client's history</button>
     </div>
-    <div v-if="data.typeOfService.length > 0" class="active-services" :class="[data.typeOfService.length < 2 ? extraWidth : '']">
-      <Services v-for="service in data.typeOfService" :key="service._id" :clientId="id" :service="service" />
+    <div
+      v-if="data.typeOfService.length > 0"
+      class="active-services"
+      :class="[data.typeOfService.length < 2 ? extraWidth : '']"
+    >
+      <Services
+        v-for="service in data.typeOfService"
+        :key="service._id"
+        :clientId="id"
+        :service="service"
+      />
     </div>
     <button @click="openModal(addServiceID)" class="btn-add">
       <img src="../assets/add.png" alt="add button" />
@@ -120,10 +135,11 @@ export default {
   padding: 70px 12px 12px 12px;
   width: 100%;
   color: $dark-blue;
+  font-family: $openSans;
 }
 .active-services {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
   grid-gap: 15px 5px;
   padding-top: 15px;
   justify-content: space-evenly;
@@ -227,9 +243,6 @@ h3 {
   .client-details .name h2,
   .client-details .name .removeClient {
     font-size: 26px;
-  }
-  .active-services {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
   }
   .extra-width {
     width: 60%;

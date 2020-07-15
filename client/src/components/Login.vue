@@ -40,13 +40,8 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // transform: translate(-50%, -50%);
-  max-width: 100%;
-  min-width: 40%;
-  height: 60%;
+  // max-width: 100%;
+  // min-width: 40%;
   font-size: 17px;
   padding: 15px;
   > * {

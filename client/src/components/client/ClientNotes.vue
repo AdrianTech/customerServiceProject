@@ -1,11 +1,11 @@
 <template>
   <div class="clientNotes" v-if="client !== null">
     <h2>{{ client.fullname }}</h2>
-    <button @click="addNote">{{showAddNote ? "Hide form" : "Add a note"}}</button>
+    <button @click="addNote">{{showAddNote ? "Hide form" : "Add note"}}</button>
     <form @submit.prevent="submitNote" class="form" v-if="showAddNote">
       <label>Add text</label>
-      <textarea cols="30" rows="10" v-model.trim="body"></textarea>
-      <button :disabled="body.length === 0">Create a note</button>
+      <textarea v-model.trim="body"></textarea>
+      <button :disabled="body.length === 0">Create note</button>
     </form>
     <div class="notes-list" v-if="!showAddNote">
       <div class="note" v-for="note in client.notes" :key="note._id">
@@ -92,10 +92,12 @@ export default {
   .form {
     top: 55%;
     border: none;
+    width: 100%;
     textarea {
       border: 2px solid $db-light;
       font-size: 17px;
       padding: 5px;
+      height: 150px;
     }
     label {
       font-size: 20px;
@@ -148,8 +150,18 @@ export default {
   justify-content: center;
 }
 @media (min-width: 500px) {
+  .clientNotes .form {
+    width: 80%;
+    margin: auto;
+  }
 }
 @media (min-width: 768px) {
+  .clientNotes .form {
+    width: 60%;
+    textarea {
+      height: 200px;
+    }
+  }
   .note {
     width: 60%;
     margin: 0 auto;
@@ -159,7 +171,5 @@ export default {
       }
     }
   }
-}
-@media (min-width: 1000px) {
 }
 </style>

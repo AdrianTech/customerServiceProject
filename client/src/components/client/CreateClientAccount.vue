@@ -17,13 +17,15 @@
     </form>
     <Modal v-if="open" :modalID="modalID">
       <div class="center">
-        <ServicesChoice
-          class="serviceSection"
-          v-for="service in servicesArr"
-          :key="service._id"
-          :service="service"
-          @totalSum="totalFunc"
-        />
+        <div class="overflow">
+          <ServicesChoice
+            class="serviceSection"
+            v-for="service in servicesArr"
+            :key="service._id"
+            :service="service"
+            @totalSum="totalFunc"
+          />
+        </div>
         <p>Total value: {{total.toFixed(2)}}</p>
         <button @click.prevent="openModal(modalID)" class="modal-btn">I choosen</button>
       </div>
@@ -120,15 +122,20 @@ export default {
 }
 .center {
   @include inside(100%, 100%);
+  padding: 10px;
   p {
     margin-top: 8px;
+  }
+  .overflow {
+    height: 100%;
+    overflow-y: auto;
   }
   .serviceSection {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #817f7f;
-    height: 77px;
+    min-height: 77px;
     margin-bottom: 7px;
     padding: 5px 10px;
     width: 100%;
@@ -139,10 +146,13 @@ export default {
   .center {
     @include inside(85%, 80%);
   }
+  .form {
+    width: 70%;
+  }
 }
 @media (min-width: 768px) {
   .center {
-    @include inside(60%, 600px);
+    @include inside(60%, 90%);
     .serviceSection {
       padding: 10px 15px;
       height: 80px;

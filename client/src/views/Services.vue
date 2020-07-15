@@ -5,18 +5,38 @@
       <ServicesList v-for="service in servicesData" :key="service._id" :service="service" />
     </div>
     <Pagination :meta="meta" :type="'service'" />
+    <button class="btn-add" @click="openModal(create)">
+      <img src="../assets/add.png" alt="add button" />
+    </button>
+    <Modal v-if="createOpen" :modalID="create">
+      <CreateNewService />
+    </Modal>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import ServicesList from "../components/services/ServicesList";
 import Pagination from "../shared/pagination";
+import Modal from "../components/events/Modal";
+import CreateNewService from "../components/services/CreateNewService";
+import { findObj } from "../shared/sharedFunctions.js";
 export default {
   name: "Services",
-  components: { ServicesList, Pagination },
+  data() {
+    return {
+      create: 32142423424324
+    };
+  },
+  components: { ServicesList, Pagination, Modal, CreateNewService },
   computed: {
-    ...mapGetters(["services", "meta", "servicesData"])
+    ...mapGetters(["services", "meta", "modals", "servicesData"]),
+    createOpen() {
+      return findObj(this.modals, this.create);
+    }
+  },
+  methods: {
+    ...mapActions(["openModal"])
   }
 };
 </script>

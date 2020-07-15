@@ -64,8 +64,8 @@ button {
   .createNewService {
     @include inside(70%, 90%);
     form {
-      width: 50%;
-      height: auto;
+      width: 60%;
+      height: 100%;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="inside" v-if="client !== undefined">
-    <form @submit.prevent="submitData" v-if="servicesArr.length > 0">
+    <form v-if="servicesArr.length > 0">
       <h3>{{ client.fullname }}</h3>
       <div
         class="list"
@@ -30,8 +30,8 @@
           <span>{{ service.total.toFixed(2) }}</span>
         </div>
       </div>
-      <button :disabled="total === 0" class="modal-btn">Confirm</button>
     </form>
+    <button @click="submitData" :disabled="total === 0" class="modal-btn">Confirm</button>
     <p>Total services value: {{ total.toFixed(2) }}</p>
     <h3 v-if="servicesArr.length === 0">Nothing to add</h3>
   </div>
@@ -129,7 +129,7 @@ form {
 .list {
   width: 100%;
   margin: 7px 0;
-  height: 80px;
+  min-height: 70px;
   font-size: 14px;
   display: flex;
   justify-content: space-evenly;
@@ -177,11 +177,10 @@ form {
 }
 @media (min-width: 768px) {
   .list {
-    // height: 85px;
     font-size: 17px;
   }
   .inside {
-    @include inside(60%, 80%);
+    @include inside(60%, 90%);
   }
 }
 @media (min-width: 1000px) {

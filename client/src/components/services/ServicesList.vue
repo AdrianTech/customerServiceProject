@@ -20,12 +20,6 @@
       <button @click="openModal(id)">Update</button>
       <button @click="removeService">Remove</button>
     </div>
-    <button class="btn-add" @click="openModal(create)">
-      <img src="../../assets/add.png" alt="add button" />
-    </button>
-    <Modal v-if="createOpen" :modalID="create">
-      <CreateNewService />
-    </Modal>
     <Modal v-if="updateOpen" :modalID="id">
       <UpdateService :service="service" />
     </Modal>
@@ -35,19 +29,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment-timezone";
-import CreateNewService from "../services/CreateNewService";
 import UpdateService from "../services/UpdateService";
 import Modal from "../events/Modal";
 import { findObj } from "../../shared/sharedFunctions.js";
 export default {
   name: "ServicesList",
   props: ["service"],
-  data() {
-    return {
-      create: 32142423424324
-    };
-  },
-  components: { CreateNewService, Modal, UpdateService },
+  components: { Modal, UpdateService },
   computed: {
     ...mapGetters(["services", "modals"]),
     id() {
@@ -61,9 +49,6 @@ export default {
     },
     months() {
       return this.service.months;
-    },
-    createOpen() {
-      return findObj(this.modals, this.create);
     },
     updateOpen() {
       return findObj(this.modals, this.id);
@@ -118,13 +103,9 @@ h4 span {
     }
   }
 }
-@media (min-width: 500px) {
-}
 @media (min-width: 768px) {
   .item-list > * {
     font-size: 18px;
   }
-}
-@media (min-width: 1000px) {
 }
 </style>
