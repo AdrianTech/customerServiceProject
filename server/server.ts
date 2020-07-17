@@ -9,7 +9,7 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
-import emailHandler from "./utils/emailHandler";
+// import emailHandler from "./utils/emailHandler";
 mongoose.set("useCreateIndex", true);
 dotenv.config();
 
@@ -46,8 +46,10 @@ class App {
 
   private dbSetup(): void {
     const DBSetup: string = <string>process.env.DB_SETUP;
-    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true }, () => emailHandler.clientChecker());
+    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true });
   }
 }
 
 export default new App().app;
+
+//() => emailHandler.clientChecker()
