@@ -15,13 +15,13 @@ export type INotes = {
   date: string;
   body: string;
 };
-export interface IClient extends mongoose.Document {
+export type IClient = {
   fullname: string;
   email: string;
   typeOfService: Array<IServices>;
   notes: Array<INotes>;
   servicesHistory?: Array<IServices>;
-}
+};
 
 export interface IUser extends mongoose.Document {
   password: string;

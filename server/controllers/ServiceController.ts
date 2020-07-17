@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Services } from "../models/servicesModel";
 import mongoose from "mongoose";
-import queries from "../utils/queries";
 const ServicesModel = mongoose.model("services", Services);
 import moment from "moment-timezone";
 
@@ -12,9 +11,7 @@ export default class ServiceController {
       unitPrice,
       name,
       months,
-      createdDate: moment()
-        .tz("Europe/Warsaw")
-        .format(),
+      createdDate: moment().tz("Europe/Warsaw").format(),
     };
     const Services = new ServicesModel(data);
     try {
@@ -47,15 +44,6 @@ export default class ServiceController {
       return res.status(200).json(data);
     } catch (e) {
       return res.status(400).json("Something went wrong");
-    }
-  }
-  public async testQueries(req: Request, res: Response) {
-    const { page } = req.query;
-    try {
-      const result = await queries.getNumberOfClients(page);
-      res.status(200).json(result);
-    } catch (e) {
-      res.status(400).json("Something went wrong");
     }
   }
 }

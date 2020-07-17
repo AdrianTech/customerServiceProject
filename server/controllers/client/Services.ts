@@ -29,9 +29,7 @@ export default class Services {
     try {
       const doc: any = await ClientModel.findOne({ _id: clientID });
       const find = doc.typeOfService.find((i: any) => i.id === serviceID);
-      const time = moment(find.finishTime)
-        .add(value, "months")
-        .format();
+      const time = moment(find.finishTime).add(value, "months").format();
       find.finishTime = time;
       find.extendTimes += 1;
       doc.typeOfService = functions.sorted(doc.typeOfService);

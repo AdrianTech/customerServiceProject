@@ -129,7 +129,7 @@ form {
 .list {
   width: 100%;
   margin: 7px 0;
-  min-height: 70px;
+  min-height: 80px;
   font-size: 14px;
   display: flex;
   justify-content: space-evenly;
