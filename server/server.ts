@@ -9,7 +9,6 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
-// import emailHandler from "./utils/emailHandler";
 mongoose.set("useCreateIndex", true);
 dotenv.config();
 
@@ -37,6 +36,11 @@ class App {
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*"), next();
     });
+    this.app.use((error: any, req: any, res: any, next: any) => {
+      console.error(error.stack);
+      res.status(500).send(error.stack);
+      next();
+    });
   }
   private handleWrongRequest(): void {
     this.app.all("*", (req: Request, res: Response) => {
@@ -51,5 +55,3 @@ class App {
 }
 
 export default new App().app;
-
-//() => emailHandler.clientChecker()
