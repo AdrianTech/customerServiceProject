@@ -36,11 +36,6 @@ class App {
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*"), next();
     });
-    this.app.use((error: any, req: any, res: any, next: any) => {
-      console.error(error.stack);
-      res.status(500).send(error.stack);
-      next();
-    });
   }
   private handleWrongRequest(): void {
     this.app.all("*", (req: Request, res: Response) => {

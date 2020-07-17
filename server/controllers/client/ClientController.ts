@@ -1,6 +1,6 @@
 import ClientModel from "../../models/clientModel";
 import TimeHandler from "../../utils/timeHandler";
-import emailHandler from "../../utils/emailHandler";
+// import emailHandler from "../../utils/emailHandler";
 import functions from "../../utils/functions";
 import queries from "../../utils/queries";
 import moment from "moment-timezone";
@@ -87,7 +87,7 @@ export default class ClientCotroller {
     const { message, email } = req.body;
     const html = `<h2>${message}</h2>`;
     try {
-      await emailHandler.sendEmail({ html, email });
+      // await emailHandler.sendEmail({ html, email });
       res.status(200).json("Email sent");
     } catch (e) {
       res.status(400).json("Email wasn't sent. Check the email name");
