@@ -2,9 +2,19 @@
   <div class="wrapper">
     <h2>You have {{services.length === 1 ? `${services.length} service` :`${services.length} services`}}</h2>
     <div class="services">
-      <ServicesList v-for="service in servicesData" :key="service._id" :service="service" />
+      <ServicesList
+        v-for="service in showServices"
+        :allServicesFunc="showAllServices"
+        :key="service._id"
+        :service="service"
+      />
     </div>
-    <Pagination :meta="meta" :type="'service'" />
+    <button v-if="from === search" class="btn-confirm" @click="showAllServices">Show services</button>
+    <Pagination
+      v-if="from === undefined"
+      :meta="serviceMeta"
+      :pagination="servicePaginationHandler"
+    />
     <button class="btn-add" @click="openModal(create)">
       <img src="../assets/add.png" alt="add button" />
     </button>
@@ -21,22 +31,47 @@ import Pagination from "../shared/pagination";
 import Modal from "../components/events/Modal";
 import CreateNewService from "../components/services/CreateNewService";
 import { findObj } from "../shared/sharedFunctions.js";
+import { search } from "../shared/variables";
 export default {
   name: "Services",
   data() {
+    const { id, from } = this.$route.params;
     return {
-      create: 32142423424324
+      create: 32142423424324,
+      showServices: [],
+      id,
+      from,
+      search
     };
+  },
+  mounted() {
+    this.setServicesList();
+  },
+  watch: {
+    servicesData() {
+      this.setServicesList();
+    }
   },
   components: { ServicesList, Pagination, Modal, CreateNewService },
   computed: {
-    ...mapGetters(["services", "meta", "modals", "servicesData"]),
+    ...mapGetters(["services", "modals", "servicesData", "serviceMeta"]),
     createOpen() {
       return findObj(this.modals, this.create);
     }
   },
   methods: {
-    ...mapActions(["openModal"])
+    ...mapActions(["openModal", "servicePaginationHandler"]),
+    setServicesList() {
+      this.from !== search
+        ? (this.showServices = this.servicesData)
+        : (this.showServices = this.services.filter(
+            item => item._id === this.id
+          ));
+    },
+    showAllServices() {
+      this.from = undefined;
+      this.setServicesList();
+    }
   }
 };
 </script>
@@ -64,7 +99,5 @@ export default {
   .services {
     grid-gap: 12px;
   }
-}
-@media (min-width: 1000px) {
 }
 </style>

@@ -16,8 +16,8 @@
         <span>[{{ data.phone }}]</span>
       </label>
       <input type="text" v-model.trim="phone" @change="formDataHelper" v-if="formData[2].active" placeholder="change phone number" />
-      <button @click.prevent="confirm" class="modal-btn">Confirm changes</button>
     </form>
+    <button @click.prevent="confirm" class="modal-btn">Confirm changes</button>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       formData: clone(clientUpdate),
-      finalData: {}
+      finalData: {},
     };
   },
   computed: {
@@ -42,7 +42,7 @@ export default {
       },
       set(value) {
         return (this.formData[0].value.fullname = value);
-      }
+      },
     },
     email: {
       get() {
@@ -50,7 +50,7 @@ export default {
       },
       set(value) {
         return (this.formData[1].value.email = value);
-      }
+      },
     },
     phone: {
       get() {
@@ -58,8 +58,8 @@ export default {
       },
       set(value) {
         return (this.formData[2].value.phone = value);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["errHandler", "updateClient"]),
@@ -78,7 +78,7 @@ export default {
     },
     showInput(key) {
       const { formData } = this;
-      formData.forEach(i => (key === i.key ? (i.active = !i.active) : i));
+      formData.forEach((i) => (key === i.key ? (i.active = !i.active) : i));
       this.formDataHelper();
     },
     formDataHelper() {
@@ -86,8 +86,8 @@ export default {
       let val = {};
       formData.filter(({ active, value }) => active && Object.assign(val, value));
       this.finalData = val;
-    }
-  }
+    },
+  },
 };
 </script>
 

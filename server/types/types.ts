@@ -26,6 +26,8 @@ export type IClient = {
 export interface IUser extends mongoose.Document {
   password: string;
   email: string;
+  role: string;
+  loginname: string;
 }
 export type ICompanyServices = {
   name: string;

@@ -3,7 +3,7 @@
     <label for>Your email</label>
     <input type="text" name="email" v-model="email" />
     <label for>Your password</label>
-    <input type="password" name="password" v-model="password" />
+    <input type="password" name="password" v-model="password" autocomplete="on" />
     <button class="btn-confirm">Log in</button>
   </form>
 </template>
@@ -35,13 +35,23 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@media (min-width: 480px) {
+  .form {
+    padding: 30px;
+    box-shadow: 0 0px 5px rgba(10, 1, 99, 0.5);
+  }
+}
+@media (min-width: 768px) {
+  .form {
+    padding: 75px;
+  }
+}
+</style>
 <style lang="scss">
 .form {
   display: flex;
   flex-direction: column;
-  // max-width: 100%;
-  // min-width: 40%;
   font-size: 17px;
   padding: 15px;
   > * {
@@ -58,18 +68,17 @@ export default {
     padding: 7px;
     font-size: 19px;
     border: none;
-    border-bottom: 1px solid $dark-blue;
+    border-bottom: 2px solid $dark-blue;
   }
 }
 .btn-confirm {
   max-width: 200px;
   @include primary-btn;
+  margin-top: 25px !important;
 }
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .form {
     font-size: 18px;
-    padding: 50px;
-    border: 1px solid #18026842;
     border-radius: 7px;
     label {
       font-size: 22px;

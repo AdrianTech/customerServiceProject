@@ -1,33 +1,57 @@
 <template>
   <div class="settings">
-    <router-link to="/your-settings">Your settings</router-link>
+    <h2>Hello {{userData.loginname}}</h2>
+    <div>
+      <router-link class="btn-settings" to="/your-settings">
+        <img src="../assets/settings_red.png" alt />
+        Your settings
+      </router-link>
+    </div>
+    <div>
+      <router-link class="btn-settings" to="/your-settings/create-user">
+        <img src="../assets/add.png" alt />Add new user
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "Settings",
-  // computed: {
-  //   ...mapGetters([""])
-  // },
-  methods: {
-    ...mapActions([""])
+  computed: {
+    ...mapGetters(["userData"])
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.settings,
+.btn-settings {
+  display: flex;
+  color: $dark-blue;
+  align-items: center;
+}
+.btn-settings {
+  @include primary-link;
+  img {
+    width: 30px;
+    margin-right: 12px;
+  }
+}
 .settings {
+  flex-direction: column;
+  margin-bottom: 20px;
   padding-top: 80px;
   text-align: center;
-}
-a {
-  @include primary-link;
+  > * {
+    margin: 10px 0;
+  }
 }
 @media (min-width: 500px) {
-}
-@media (min-width: 768px) {
+  .btn-settings {
+    transform: scale(1.15);
+  }
 }
 @media (min-width: 1000px) {
 }

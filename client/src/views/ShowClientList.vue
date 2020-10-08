@@ -5,8 +5,8 @@
       <span class="fullname">Client name</span>
       <span>Actions</span>
     </div>
-    <Client v-bind="client" v-for="(client, index) in clientData" :key="client._id" :index="index"></Client>
-    <Pagination :meta="meta" :page="page" :type="'client'" />
+    <Client v-bind="client" v-for="(client, index) in clientData" :key="client._id" :index="index" />
+    <Pagination :meta="meta" :pagination="getClients" />
     <button class="btn-add" @click="addNewClient">
       <img src="../assets/add.png" alt="add button" />
     </button>
@@ -23,10 +23,10 @@ export default {
     Pagination
   },
   computed: {
-    ...mapGetters(["clientData", "page", "meta"])
+    ...mapGetters(["clientData", "meta"])
   },
   methods: {
-    ...mapActions(["pagination"]),
+    ...mapActions(["pagination", "getClients"]),
     addNewClient() {
       this.$router.push({
         name: "Create Client Account"

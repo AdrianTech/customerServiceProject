@@ -42,7 +42,7 @@ import { mapGetters, mapActions } from "vuex";
 import { setClientData } from "../../shared/sharedFunctions";
 export default {
   name: "AddNewService",
-  props: ["id"],
+  props: ["id", "data"],
   data() {
     return {
       client: [],
@@ -59,7 +59,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["services", "clientData", "eventInfo", "page", "dataLoaded"])
+    ...mapGetters([
+      "services",
+      "clientData",
+      "eventInfo",
+      "currentClientsPage",
+      "dataLoaded"
+    ])
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),
@@ -81,9 +87,10 @@ export default {
       this.total = value;
     },
     setServicesArr() {
-      let { id, clientData, services } = this;
+      let { id, clientData, services, data } = this;
       const ary = JSON.parse(JSON.stringify(services));
-      this.client = setClientData(id, clientData);
+      const result = setClientData(id, clientData);
+      result === undefined ? (this.client = data) : (this.client = result);
       this.servicesArr = ary.filter(
         i =>
           !this.client.typeOfService.some(
@@ -93,7 +100,7 @@ export default {
       this.servicesArr.forEach(i => (i.total = 0));
     },
     submitData() {
-      const { id, page } = this;
+      const { id, currentClientsPage } = this;
       const filtered = this.servicesArr.filter(
         ({ active, months }) => active && months > 0
       );
@@ -105,7 +112,7 @@ export default {
       const data = {
         filtered,
         id,
-        page
+        currentClientsPage
       };
       this.addNewServiceToClient(data);
     }

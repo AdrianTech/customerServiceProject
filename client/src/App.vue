@@ -54,7 +54,6 @@ button {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // padding-top: 80px;
   color: #2c3e50;
   width: 100%;
   height: 100vh;

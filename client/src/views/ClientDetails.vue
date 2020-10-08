@@ -46,7 +46,7 @@
       <img src="../assets/add.png" alt="add button" />
     </button>
     <Modal v-if="addServiceOpen" :modalID="addServiceID">
-      <AddNewServiceToClient :id="id" />
+      <AddNewServiceToClient :id="id" :data="prop" />
     </Modal>
     <Modal v-if="emailOpen" :modalID="emailID">
       <SendEmail :clientID="id" :name="data.fullname" :email="data.email" />
@@ -77,10 +77,12 @@ export default {
   },
   name: "ClientDetails",
   data() {
-    const { id } = this.$route.params;
+    const { id, from, prop } = this.$route.params;
     return {
       extraWidth: "extraWidth",
       id,
+      from,
+      prop,
       data: {},
       addServiceID: generateID(),
       updateID: generateID(),
@@ -89,7 +91,9 @@ export default {
     };
   },
   mounted() {
-    this.data = setClientData(this.id, this.clientData);
+    this.from !== "search"
+      ? (this.data = setClientData(this.id, this.clientData))
+      : (this.data = this.prop);
   },
   computed: {
     ...mapGetters(["clientData", "modals"]),
@@ -116,7 +120,7 @@ export default {
     clientNotes() {
       this.$router.push({
         name: "ClientNotes",
-        params: { id: this.id }
+        params: { id: this.id, data: this.prop, from: this.from }
       });
     },
     removeClient(id) {

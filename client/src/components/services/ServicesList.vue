@@ -34,7 +34,7 @@ import Modal from "../events/Modal";
 import { findObj } from "../../shared/sharedFunctions.js";
 export default {
   name: "ServicesList",
-  props: ["service"],
+  props: ["service", "allServicesFunc"],
   components: { Modal, UpdateService },
   computed: {
     ...mapGetters(["services", "modals"]),
@@ -67,6 +67,7 @@ export default {
     removeService() {
       const confirm = window.confirm(`Remove ${this.name}`);
       if (confirm) this.deleteService(this.id);
+      this.allServicesFunc();
     }
   }
 };

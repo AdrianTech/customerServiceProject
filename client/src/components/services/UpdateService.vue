@@ -1,43 +1,45 @@
 <template>
-  <form class="inside" @submit.prevent="submitData" novalidate>
-    <h3>Update service data</h3>
-    <div class="itemList">
-      <label @click="displayInput('name')">
-        Change name
-        <span>[{{name}}]</span>
-      </label>
-      <input
-        type="text"
-        v-model.trim="clickedObj[0].value.name"
-        @change="test"
-        v-if="clickedObj[0].state"
-      />
-    </div>
-    <div class="itemList">
-      <label @click="displayInput('unitPrice')" for>
-        Change unit price
-        <span>[{{ unitPrice }}]</span>
-      </label>
-      <input
-        v-model.number.trim="clickedObj[1].value.unitPrice"
-        @change="test"
-        v-if="clickedObj[1].state"
-      />
-    </div>
-    <div class="itemList">
-      <label @click="displayInput('months')" for>
-        Set default months
-        <span>[{{months}}]</span>
-      </label>
-      <input
-        type="number"
-        v-model.number.trim="clickedObj[2].value.months"
-        @change="test"
-        v-if="clickedObj[2].state"
-      />
-    </div>
-    <button class="modal-btn">Confirm changes</button>
-  </form>
+  <div class="inside">
+    <form @submit.prevent="submitData" novalidate>
+      <h3>Update service data</h3>
+      <div class="itemList">
+        <label @click="displayInput('name')">
+          Change name
+          <span>[{{ name }}]</span>
+        </label>
+        <input
+          type="text"
+          v-model.trim="clickedObj[0].value.name"
+          @change="test"
+          v-if="clickedObj[0].state"
+        />
+      </div>
+      <div class="itemList">
+        <label @click="displayInput('unitPrice')" for>
+          Change unit price
+          <span>[{{ unitPrice }}]</span>
+        </label>
+        <input
+          v-model.number.trim="clickedObj[1].value.unitPrice"
+          @change="test"
+          v-if="clickedObj[1].state"
+        />
+      </div>
+      <div class="itemList">
+        <label @click="displayInput('months')" for>
+          Set default months
+          <span>[{{ months }}]</span>
+        </label>
+        <input
+          type="number"
+          v-model.number.trim="clickedObj[2].value.months"
+          @change="test"
+          v-if="clickedObj[2].state"
+        />
+      </div>
+      <button class="modal-btn">Confirm changes</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -78,7 +80,7 @@ export default {
       if (isEmpty) return errHandler({ msg: "Nothing changed", status: 400 });
       data.id = id;
       const valid = await validateUpdateServices(data);
-      if (valid.length > 0) errHandler({ msg: valid[0], status: 400 });
+      if (valid.length > 0) return errHandler({ msg: valid[0], status: 400 });
       updateService(data);
       clickedObj[0].value.name = "";
       clickedObj[1].value.unitPrice = 0.0;
@@ -110,10 +112,13 @@ export default {
   h3 {
     margin-bottom: 20px;
   }
+  form {
+    @include form;
+    overflow-x: hidden;
+  }
 }
 .itemList {
   flex-direction: column;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   label {
     cursor: pointer;
     span {

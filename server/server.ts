@@ -9,7 +9,7 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
-mongoose.set("useCreateIndex", true);
+mongoose.set("useFindAndModify", false);
 dotenv.config();
 
 class App {
@@ -45,7 +45,7 @@ class App {
 
   private dbSetup(): void {
     const DBSetup: string = <string>process.env.DB_SETUP;
-    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect(DBSetup, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
   }
 }
 

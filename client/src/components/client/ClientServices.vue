@@ -25,7 +25,7 @@
       </Modal>
       <li
         class="service-actions"
-        @click="closeService({serviceID:service._id, clientID, page})"
+        @click="closeService({serviceID:service._id, clientID, currentClientsPage})"
       >Close</li>
     </ul>
   </div>
@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["modals", "page"]),
+    ...mapGetters(["modals", "currentClientsPage"]),
     open() {
       return this.modals.find(i => this.service._id === i.id && i.open);
     },

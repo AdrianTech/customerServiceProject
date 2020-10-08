@@ -1,40 +1,41 @@
 <template>
   <div class="pagination">
     <div class="center">
-      <button @click="paginationHandler('start', type)">Start</button>
-      <button
-        @click="paginationHandler('decrement', type)"
-        :disabled="type === 'client' && page === parseInt(1) || type === 'service' && current === 1"
-      >
+      <button @click="paginationHandler()">Start</button>
+      <button :disabled="!meta.isPreviousPage" @click="paginationHandler(prevPage)">
         <span class="material-icons down">arrow_back</span>
       </button>
-      <h4>{{ type === 'client' ? meta.current_page : current }}</h4>
-      <button
-        :disabled="type === 'client' && page === meta.last_page || type === 'service' && current === serviceMeta.lastServicePage"
-        @click="paginationHandler('increment', type)"
-      >
+      <h4>{{ meta.current_page }}</h4>
+      <button :disabled="!meta.isNextPage" @click="paginationHandler(nextPage)">
         <span class="material-icons up">arrow_forward</span>
       </button>
-      <button @click="paginationHandler('lastPage', type)">Last page</button>
+      <button @click="paginationHandler(lastPage)">Last page</button>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Pagination",
-  props: ["page", "meta", "type"],
+  props: ["meta", "pagination"],
   computed: {
-    ...mapGetters(["serviceMeta", "current"])
+    lastPage() {
+      return this.meta.last_page;
+    },
+    prevPage() {
+      return this.meta.prev_page;
+    },
+    nextPage() {
+      return this.meta.next_page;
+    },
+    currentPage() {
+      return this.meta.current_page;
+    },
   },
   methods: {
-    ...mapActions(["pagination", "getClients", "servicePaginationHandler"]),
-    paginationHandler(method, type) {
-      if (type === "client") {
-        this.pagination(method);
-      } else this.servicePaginationHandler(method);
-    }
-  }
+    paginationHandler(value) {
+      this.pagination(value);
+    },
+  },
 };
 </script>
 
@@ -46,7 +47,7 @@ export default {
 }
 .pagination {
   width: 100%;
-  margin: 10px auto;
+  margin: 20px auto;
   .center {
     border: 2px solid $dark-blue;
     border-radius: 6px;

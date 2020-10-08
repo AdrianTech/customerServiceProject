@@ -14,6 +14,7 @@
     "lodash.clonedeep": "^4.5.0",
     "moment-timezone": "^0.5.28",
     "vue": "^2.6.11",
+    "vue-disable-autocomplete": "0.0.4",
     "vue-router": "^3.1.5",
     "vuex": "^3.1.2",
     "yup": "^0.28.5"

@@ -6,17 +6,17 @@ const state = {
   info: {
     bool: false,
     msg: "",
-    status: 0
+    status: 0,
   },
   isLogged: false,
-  dataLoaded: false
+  dataLoaded: false,
 };
 
 const getters = {
-  eventInfo: state => state.info,
-  userData: state => state.user,
-  isLogged: state => state.isLogged,
-  dataLoaded: state => state.dataLoaded
+  eventInfo: (state) => state.info,
+  userData: (state) => state.user,
+  isLogged: (state) => state.isLogged,
+  dataLoaded: (state) => state.dataLoaded,
 };
 
 const mutations = {
@@ -26,18 +26,18 @@ const mutations = {
     state.info = {
       bool: true,
       msg: obj.msg,
-      status: obj.status
+      status: obj.status,
     };
     setTimeout(() => {
       state.info = {
         bool: false,
         message: "",
-        status: 0
+        status: 0,
       };
     }, 3000);
   },
   isLogged: (state, payload) => (state.isLogged = payload),
-  clearUser: (state, payload) => (state.user = payload)
+  clearUser: (state, payload) => (state.user = payload),
 };
 const actions = {
   errHandler({ commit }, data) {
@@ -48,13 +48,13 @@ const actions = {
       const res = await axios.post("/login", data);
       [
         ["userResponse", res.data],
-        ["isLogged", true]
-      ].forEach(i => commit(i[0], i[1]));
-      ["getClients", "getServices"].forEach(i => dispatch(i));
+        ["isLogged", true],
+      ].forEach((i) => commit(i[0], i[1]));
+      ["getClients", "getServices"].forEach((i) => dispatch(i));
     } catch (err) {
       const error = {
         msg: err.response.data,
-        status: 400
+        status: 400,
       };
       dispatch("errHandler", error);
       commit("isLogged", false);
@@ -66,24 +66,36 @@ const actions = {
       axios.get("/logout");
       [
         ["clearUser", null],
-        ["isLogged", false]
-      ].forEach(i => commit(i[0], i[1]));
+        ["isLogged", false],
+        ["searchData", []],
+        ["serviceData", []],
+      ].forEach((i) => commit(i[0], i[1]));
       dispatch("resetClientsArray");
       dispatch("errHandler", { msg: "You've been logged out", status: 200 });
       if (router.history.current.path !== "/") router.push("/");
     } catch (err) {
       const error = {
         msg: err.response.data,
-        status: 400
+        status: 400,
       };
       dispatch("errHandler", error);
     }
-  }
+  },
+  async changeUserData({ commit, dispatch }, data) {
+    try {
+      const res = await axios.post("/user", data);
+      commit("userResponse", res.data);
+      return true;
+    } catch (err) {
+      dispatch("errHandler", "Something went wrong. Try again.");
+      return false;
+    }
+  },
 };
 
 export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

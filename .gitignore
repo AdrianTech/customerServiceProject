@@ -4,3 +4,5 @@ node_modules
 build
 .gitignore
 .vscode
+tests
+jest.config.js

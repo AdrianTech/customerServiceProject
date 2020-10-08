@@ -28,9 +28,11 @@ import moment from "moment-timezone";
 export default {
   name: "ClientNotes",
   data() {
-    const { id } = this.$route.params;
+    const { id, data, from } = this.$route.params;
     return {
       id,
+      data,
+      from,
       client: null,
       showAddNote: false,
       body: ""
@@ -40,10 +42,11 @@ export default {
     this.setValues();
   },
   computed: {
-    ...mapGetters(["clientData", "eventInfo", "page"])
+    ...mapGetters(["clientData", "eventInfo", "currentClientsPage"])
   },
   watch: {
     clientData() {
+      this.from = "";
       this.setValues();
       this.showAddNote = false;
     }
@@ -51,21 +54,23 @@ export default {
   methods: {
     ...mapActions(["createNote", "removeNote"]),
     submitNote() {
-      const { body, id, page } = this;
-      this.createNote({ body, id, page });
+      const { body, currentClientsPage, id } = this;
+      this.createNote({ body, id, currentClientsPage });
     },
     deleteNote(messageID) {
       const confirm = window.confirm("Delete this note?");
       const data = {
         messageID,
         id: this.id,
-        page: this.page
+        page: this.currentClientsPage
       };
       if (confirm) this.removeNote(data);
     },
     setValues() {
       const guess = moment.tz.guess();
-      this.client = setClientData(this.id, this.clientData);
+      this.from === "search"
+        ? (this.client = this.data)
+        : (this.client = setClientData(this.id, this.clientData));
       this.client.notes.forEach(i => {
         i.date = moment(i.date)
           .clone()

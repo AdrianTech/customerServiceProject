@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 import moment from "moment-timezone";
 export default class Services {
   public async clientServiceUpdate(req: Request, res: Response) {
-    const { id, page, filtered } = req.body;
+    const { id, currentClientsPage, filtered } = req.body;
     filtered.forEach((i: IServices) => {
       new TimeHandler().timeChecker(i);
       delete i.createdDate;
@@ -18,14 +18,14 @@ export default class Services {
       const doc: any = await ClientModel.findOne({ _id: id });
       doc.typeOfService = functions.sorted([...doc.typeOfService, ...filtered]);
       const client = await doc.save();
-      const response = await queries.getNumberOfClients(page, client);
+      const response = await queries.getNumberOfClients(currentClientsPage, client);
       res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");
     }
   }
   public async extendService(req: Request, res: Response) {
-    const { clientID, serviceID, value, page } = req.body;
+    const { clientID, serviceID, value, currentClientsPage } = req.body;
     try {
       const doc: any = await ClientModel.findOne({ _id: clientID });
       const find = doc.typeOfService.find((i: any) => i.id === serviceID);
@@ -34,14 +34,14 @@ export default class Services {
       find.extendTimes += 1;
       doc.typeOfService = functions.sorted(doc.typeOfService);
       const client = await doc.save();
-      const response = await queries.getNumberOfClients(page, client);
+      const response = await queries.getNumberOfClients(currentClientsPage, client);
       res.status(200).json(response);
     } catch (e) {
       return res.status(400).json("Error");
     }
   }
   public async closeService(req: Request, res: Response) {
-    const { userid, serviceid, page } = req.query;
+    const { userid, serviceid, currentClientsPage } = req.query;
     // Note: pushing object with the same id might cause an error, when items will be map!
     try {
       const client: any = await ClientModel.findOne({ _id: userid });
@@ -52,7 +52,7 @@ export default class Services {
       client.typeOfService = client.typeOfService.filter((i: any) => i.id !== serviceid);
       client.typeOfService = functions.sorted(client.typeOfService);
       const clientData = await client.save();
-      const response = await queries.getNumberOfClients(page, clientData);
+      const response = await queries.getNumberOfClients(currentClientsPage, clientData);
       res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");

@@ -6,13 +6,19 @@ const userModel = new Schema({
     type: String,
     required: true,
     trim: true,
-    unique: true
+    lowercase: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
-    trim: true
-  }
+    trim: true,
+  },
+  role: String,
+  loginname: {
+    type: String,
+    required: true,
+  },
 });
 
 export default userModel;
