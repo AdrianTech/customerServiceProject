@@ -18,18 +18,18 @@
 @mixin primary-btn() {
   padding: 3px 8px;
   padding: 5px 15px;
-  background-color: transparent;
+  background-color: $dark-blue;
   border: 1px solid $db-light;
   border-radius: 6px;
-  color: $dark-blue;
+  color: #fff;
   font-weight: 700;
   font-size: 16px;
   font-family: "Baloo Thambi 2";
   transition: 0.3s ease-in;
   outline: none;
   &:hover {
-    background-color: $dark-blue;
-    color: #fff;
+    background-color: transparent;
+    color: $dark-blue;
   }
   @media (min-width: 768px) {
     padding: 6px 16px;

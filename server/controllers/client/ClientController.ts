@@ -9,8 +9,10 @@ import { Request, Response } from "express";
 
 export default class ClientController {
   public async addNewClient(req: Request, res: Response) {
-    const { fullname, email, clientArr, phone, page } = req.body;
+    const { fullname, email, clientArr, phone, page, totalIncome } = req.body;
+    // let allMonths = 0;
     clientArr.forEach((item: IServices) => {
+      // allMonths += item.months;
       new TimeHandler().timeChecker(item);
       delete item.__v;
       delete item.createdDate;
@@ -20,6 +22,8 @@ export default class ClientController {
     const newClient = {
       fullname,
       email,
+      totalIncome,
+      // allMonths,
       typeOfService: sorted,
       phone,
       notes: [],

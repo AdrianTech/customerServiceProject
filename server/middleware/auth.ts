@@ -17,21 +17,16 @@ class Auth {
     const auth = req.cookies.Auth;
     if (!auth) return res.status(401).json("Unauthorized");
     try {
-      await jwt.verify(auth, KEY);
+      jwt.verify(auth, KEY);
     } catch (err) {
       return res.status(401).json("Unauthorized");
     }
     next();
   }
-  async checkTokenParams(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (Object.keys(req.params).length === 0) return res.status(400).json("Bad request");
+  async checkPermission(req: express.Request, res: express.Response, next: express.NextFunction) {
     const auth = req.cookies.Auth;
-    if (!auth) return res.status(401).json("Unauthorized");
-    try {
-      await jwt.verify(auth, KEY);
-    } catch (err) {
-      return res.status(401).json("Unauthorized");
-    }
+    const { role }: any = jwt.verify(auth, KEY);
+    if (role !== "admin") return res.status(403).json("Forbridden");
     next();
   }
 }

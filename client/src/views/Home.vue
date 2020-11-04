@@ -11,7 +11,7 @@
       <router-link to="/clients-list">
         <button>Get started</button>
       </router-link>
-      <router-link v-if="userData.role === admin" to="/settings">
+      <router-link to="/settings">
         <button>Check your settings</button>
       </router-link>
     </template>

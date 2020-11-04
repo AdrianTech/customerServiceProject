@@ -2,7 +2,7 @@
   <div class="client" v-if="typeOfService && index < 10">
     <div class="counter">
       <div class="counter-details">
-        <span v-if="typeOfService.length > 0">{{ displayTimeCounter() }}</span>
+        <span :style="{color: setColor}" v-if="typeOfService.length > 0">{{ daysCounter }}</span>
         <span class="empty" v-else>Empty</span>
       </div>
       <span class="more" v-if="typeOfService.length > 1">And {{ typeOfService.length - 1 }} more</span>
@@ -56,6 +56,19 @@ export default {
     ...mapGetters(["modals"]),
     open() {
       return findObj(this.modals, this._id);
+    },
+    setColor() {
+      let color = "#030f36";
+      if (this.daysCounter < 21) color = "#0f741d";
+      if (this.daysCounter <= 7 || this.daysCounter === "undone")
+        color = "#e70202";
+      return color;
+    },
+    daysCounter() {
+      let time = "undone";
+      const test = Math.sign(timeCounter(this.endTime));
+      if (test !== -1) time = timeCounter(this.endTime);
+      return time;
     }
   },
   methods: {
@@ -66,9 +79,6 @@ export default {
         name: "ClientDetails",
         params: { id: _id }
       });
-    },
-    displayTimeCounter() {
-      return timeCounter(this.endTime);
     }
   }
 };

@@ -48,7 +48,8 @@ export default {
         fullname: "",
         phone: "",
         email: "",
-        clientArr: []
+        clientArr: [],
+        totalIncome: 0
       },
       servicesArr: [],
       total: 0,
@@ -75,7 +76,13 @@ export default {
       const { msg, bool } = createNewUserValid(this.client);
       if (!bool) return this.errHandler({ msg, status: 400 });
       this.createClient(this.client);
-      this.client = { fullname: "", phone: "", email: "", clientArr: [] };
+      this.client = {
+        fullname: "",
+        phone: "",
+        email: "",
+        clientArr: [],
+        totalIncome: 0
+      };
       this.setServicesArr();
     },
     totalFunc() {
@@ -85,6 +92,7 @@ export default {
         this.total - i.total;
       });
       this.total = value;
+      this.client.totalIncome = +this.total.toFixed(2);
     }
   }
 };

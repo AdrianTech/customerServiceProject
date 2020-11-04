@@ -11,12 +11,20 @@ const userModel = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    default: "",
     trim: true,
   },
-  role: String,
+  role: {
+    type: String,
+    required: true,
+  },
   loginname: {
     type: String,
+    required: true,
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
     required: true,
   },
 });

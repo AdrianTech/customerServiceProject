@@ -57,3 +57,42 @@ export const validateUpdateUser = async (data) => {
     status,
   };
 };
+export const userValidation = async (data) => {
+  let schema = yup.object().shape({
+    loginname: yup
+      .string("Name must be a string")
+      .min(3, "Name must have at least 3 characters")
+      .max(25, "Name may contain max 25 characters")
+      .nullable()
+      .required("This field is required"),
+    email: yup
+      .string()
+      .min(5, "Email must contain at least 5 characters")
+      .email("Incorrect email")
+      .required("This field is required"),
+    role: yup.string().required(),
+  });
+  const err = await schema.validate(data, { abortEarly: false }).catch((e) => e.errors);
+  let status = true;
+  if (Array.isArray(err)) status = false;
+  return {
+    err,
+    status,
+  };
+};
+export const emailValidation = async (email) => {
+  let schema = yup.object().shape({
+    email: yup
+      .string()
+      .min(5, "Email must contain at least 5 characters")
+      .email("Incorrect email")
+      .required("This field is required"),
+  });
+  const err = await schema.validate(email, { abortEarly: false }).catch((e) => e.errors);
+  let status = true;
+  if (Array.isArray(err)) status = false;
+  return {
+    err,
+    status,
+  };
+};

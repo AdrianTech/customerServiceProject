@@ -1,11 +1,26 @@
 <template>
-  <form class="form" @submit.prevent="submitHandler">
-    <label for>Your email</label>
-    <input type="text" name="email" v-model="email" />
-    <label for>Your password</label>
-    <input type="password" name="password" v-model="password" autocomplete="on" />
-    <button class="btn-confirm">Log in</button>
-  </form>
+  <div class="wrapper">
+    <form v-if="!showForgotPassword" class="form">
+      <label for>Your email</label>
+      <input type="text" name="email" v-model="email" />
+      <label for>Your password</label>
+      <input type="password" name="password" v-model="password" autocomplete="on" />
+      <button @click.prevent="submitHandler" class="btn-confirm">Log in</button>
+      <button
+        class="btn-forgot"
+        @click.prevent="showForgotPassword = !showForgotPassword"
+      >Forgot password?</button>
+    </form>
+    <form v-if="showForgotPassword" class="form">
+      <label>Verify your email</label>
+      <input type="text" v-model.trim="forgotEmail" placeholder="Type your email..." />
+      <button @click.prevent="forgotPassword({email:forgotEmail})" class="btn-confirm">Send</button>
+      <button
+        class="btn-forgot"
+        @click.prevent="showForgotPassword = !showForgotPassword"
+      >Back to login form</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -16,11 +31,13 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      showForgotPassword: false,
+      forgotEmail: ""
     };
   },
   methods: {
-    ...mapActions(["loginUser", "errHandler"]),
+    ...mapActions(["loginUser", "errHandler", "forgotPassword"]),
     submitHandler() {
       const { email, password } = this;
       const data = {
@@ -28,7 +45,7 @@ export default {
         password
       };
       const { msg, bool } = validationLogin(data);
-      if (!bool) return this.errHandler(msg);
+      if (!bool) return this.errHandler({ msg, status: 400 });
       this.loginUser(data);
     }
   }
@@ -36,6 +53,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.form input {
+  border-radius: 0;
+}
+.btn-forgot {
+  background-color: transparent;
+  color: #1402b3;
+  border: none;
+  font-size: 15px;
+  outline: none;
+}
 @media (min-width: 480px) {
   .form {
     padding: 30px;
@@ -65,9 +92,10 @@ export default {
     margin: 10px;
   }
   input {
-    padding: 7px;
+    padding: 4px 7px;
     font-size: 19px;
     border: none;
+    border-radius: 5px;
     border-bottom: 2px solid $dark-blue;
   }
 }
@@ -82,6 +110,9 @@ export default {
     border-radius: 7px;
     label {
       font-size: 22px;
+    }
+    input {
+      padding: 7px;
     }
   }
 }

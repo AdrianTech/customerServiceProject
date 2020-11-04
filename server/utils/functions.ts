@@ -1,4 +1,4 @@
-import { IServices } from "../types/types";
+import { IServices, IUser } from "../types/types";
 import ClientModel from "../models/clientModel";
 import { ServicesModel } from "../models/servicesModel";
 class Functions {
@@ -35,6 +35,14 @@ class Functions {
     if (result.length === 0) throw "Not found";
     if (result.length > 10) throw "Too many results. Be more precise";
     return result;
+  }
+  public createEmailHtml(user: IUser, text: string): string {
+    return `
+    <div style="font-family: Tahoma">
+    <h3>${text}</h3>
+    <a href="http://localhost:8080/your-settings/set-password?id=${user._id}&name=${user.loginname}"><button style="padding: 12px; background-color: #03be1c; color: black; border: none; font-weight: 700;">Set your password</button></a>
+    </div>
+    `;
   }
 }
 

@@ -52,6 +52,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { validateUpdateUser } from "../../shared/validate";
+import { clearData } from "../../shared/sharedFunctions";
 export default {
   name: "UserSettings",
   data() {
@@ -106,7 +107,7 @@ export default {
         errHandler({ msg: "Your data has been changed", status: 200 });
       this.updated_data = {};
       this.isActive = false;
-      Object.keys(this.$data.user).forEach(i => (this.$data.user[i] = ""));
+      clearData(this.$data.user);
     }
   }
 };
@@ -129,10 +130,14 @@ input {
   border: none;
   height: 100%;
   outline: none;
+  font-weight: 700;
+  color: #2b0101;
+  font-size: 17px;
+  font-family: $openSans;
   text-align: center;
   font-size: 17px;
   &::placeholder {
-    color: #2e2e2e;
+    color: #666565;
     font-family: $openSans;
     font-size: 14px;
     font-weight: 700;

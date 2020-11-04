@@ -9,11 +9,13 @@ import ClientDetails from "../views/ClientDetails.vue";
 import AddNewService from "../components/client/AddNewService.vue";
 import ClientNotes from "../components/client/ClientNotes.vue";
 import UserSettings from "../components/user/UserSettings.vue";
-import AddNewUser from "../components/user/AddNewUser.vue";
+import AddNewUser from "../components/user/users_mgmt/AddNewUser.vue";
 import Services from "../views/Services.vue";
 import Search from "../views/Search.vue";
+import SetPassword from "../components/user/users_mgmt/SetPassword.vue";
+import Analytics from "../components/user/users_mgmt/Analitycs.vue";
 import store from "../store";
-import { visitor } from "../shared/variables";
+import { admin, visitor } from "../shared/variables";
 
 Vue.use(VueRouter);
 
@@ -78,6 +80,28 @@ const routes = [
     name: "AddNewUser",
     props: { default: true },
     component: AddNewUser,
+    beforeEnter(to, from, next) {
+      const { userData } = store.getters;
+      if (userData && userData.role === admin) {
+        next();
+      } else if (userData && userData.role === visitor) {
+        next({ name: "Setting Area" });
+      } else next({ name: "Home" });
+    },
+  },
+  {
+    path: "/analytics",
+    name: "Analytics",
+    props: { default: true },
+    component: Analytics,
+    beforeEnter(to, from, next) {
+      const { userData } = store.getters;
+      if (userData && userData.role === admin) {
+        next();
+      } else if (userData && userData.role === visitor) {
+        next({ name: "Setting Area" });
+      } else next({ name: "Home" });
+    },
   },
   {
     path: "/services-list",
@@ -91,6 +115,11 @@ const routes = [
     props: { default: true },
     component: Search,
   },
+  {
+    path: "/your-settings/set-password",
+    name: "SetPassword",
+    component: SetPassword,
+  },
 ];
 
 const router = new VueRouter({
@@ -99,9 +128,8 @@ const router = new VueRouter({
   routes,
 });
 router.beforeResolve((to, from, next) => {
-  const { isLogged, userData } = store.getters;
-  if (to.name !== "Home" && !isLogged) next({ name: "Home" });
-  if (to.name === "settings" || (to.name === "your-settings" && userData.role === visitor)) next({ name: "Home" });
+  const { isLogged } = store.getters;
+  if (to.name !== "Home" && to.name !== "SetPassword" && !isLogged) next({ name: "Home" });
   else next();
 });
 

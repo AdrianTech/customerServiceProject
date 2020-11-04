@@ -17,8 +17,7 @@
         <span>Extended</span>
         <span>{{ extendTimes }} times</span>
       </li>
-      <li v-if="DisplayCounter !== '0'">{{ DisplayCounter() }} days left</li>
-      <li :style="{ color: 'red' }" v-else>{{ DisplayCounter() }} day left</li>
+      <li>{{ daysCounter > 0 ? `${daysCounter} days left` : `${daysCounter} days late` }}</li>
       <li @click="openModal(service._id)" class="service-actions">Extend this service</li>
       <Modal v-if="open" :modalID="service._id">
         <ExtendService :service="service" :clientID="clientID" />
@@ -74,13 +73,13 @@ export default {
         end,
         start
       };
+    },
+    daysCounter() {
+      return timeCounter(this.finishTime);
     }
   },
   methods: {
-    ...mapActions(["openModal", "closeService"]),
-    DisplayCounter() {
-      return timeCounter(this.finishTime);
-    }
+    ...mapActions(["openModal", "closeService"])
   }
 };
 </script>

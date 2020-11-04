@@ -15,14 +15,13 @@
         >check_box_outline_blank</span>
         <span v-else class="material-icons" @click="changeValue(service._id)">check_box</span>
         <label>{{ service.name }}</label>
-        <label>Contract lenght:</label>
+        <label>Contract length:</label>
         <input
           @change="setTotal(service._id)"
           v-model.number.lazy="service.months"
           min="0"
           max="36"
           type="number"
-          placeholder="Min 1 month, max 36 months"
         />
         <div class="total-item">
           Unit price:

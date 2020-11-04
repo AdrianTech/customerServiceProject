@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 export type IServices = {
-  name: String;
+  name: string;
   months: any;
-  startTime: String;
+  startTime: string;
   finishTime: string;
   active: Boolean;
-  extendTimes: Number;
+  extendTimes: number;
+  unitPrice: number;
   createdDate?: string;
   closed?: string;
   _id: any;
@@ -15,19 +16,22 @@ export type INotes = {
   date: string;
   body: string;
 };
-export type IClient = {
+export interface IClient extends mongoose.Document {
   fullname: string;
   email: string;
   typeOfService: Array<IServices>;
   notes: Array<INotes>;
+  allMonths: number;
+  totalIncome: number;
   servicesHistory?: Array<IServices>;
-};
+}
 
 export interface IUser extends mongoose.Document {
   password: string;
   email: string;
   role: string;
   loginname: string;
+  isActive: boolean;
 }
 export type ICompanyServices = {
   name: string;

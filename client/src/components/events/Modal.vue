@@ -16,6 +16,9 @@ export default {
       if (target === "modalWindow" || target === "btn")
         this.openModal(this.modalID);
     }
+  },
+  destroyed() {
+    this.$store.state.modals.modals = [];
   }
 };
 </script>
@@ -26,12 +29,5 @@ export default {
   .btn {
     @include btn-close;
   }
-}
-
-@media (min-width: 500px) {
-}
-@media (min-width: 768px) {
-}
-@media (min-width: 1000px) {
 }
 </style>

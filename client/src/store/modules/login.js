@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "../../router/index";
-
+import { emailValidation } from "../../shared/validate";
 const state = {
   user: null,
   info: {
@@ -8,6 +8,7 @@ const state = {
     msg: "",
     status: 0,
   },
+  users: [],
   isLogged: false,
   dataLoaded: false,
 };
@@ -16,10 +17,12 @@ const getters = {
   eventInfo: (state) => state.info,
   userData: (state) => state.user,
   isLogged: (state) => state.isLogged,
-  dataLoaded: (state) => state.dataLoaded,
+  dataLoaded: ({ dataLoaded }) => dataLoaded,
+  users: ({ users }) => users,
 };
 
 const mutations = {
+  usersMutation: (state, payload) => (state.users = payload),
   userResponse: (state, payload) => (state.user = payload),
   dataLoaded: (state, payload) => (state.dataLoaded = payload),
   errUserResponse: (state, obj) => {
@@ -69,6 +72,7 @@ const actions = {
         ["isLogged", false],
         ["searchData", []],
         ["serviceData", []],
+        ["usersMutation", []],
       ].forEach((i) => commit(i[0], i[1]));
       dispatch("resetClientsArray");
       dispatch("errHandler", { msg: "You've been logged out", status: 200 });
@@ -78,21 +82,69 @@ const actions = {
         msg: err.response.data,
         status: 400,
       };
-      dispatch("errHandler", error);
+      dispatch("errHandler", { msg: error, status: 400 });
     }
   },
   async changeUserData({ commit, dispatch }, data) {
     try {
-      const res = await axios.post("/user", data);
+      const res = await axios.post("/users", data);
       commit("userResponse", res.data);
       return true;
     } catch (err) {
-      dispatch("errHandler", "Something went wrong. Try again.");
+      dispatch("errHandler", { msg: "Something went wrong. Try again.", status: 400 });
       return false;
     }
   },
+  async getUsers({ commit, dispatch }) {
+    try {
+      const res = await axios.get("/users");
+      commit("usersMutation", res.data);
+      return true;
+    } catch (err) {
+      dispatch("errHandler", { msg: "Something went wrong. Try again.", status: 400 });
+      return false;
+    }
+  },
+  async createUser({ commit, dispatch }, data) {
+    try {
+      const res = await axios.post("/users/create", data);
+      commit("usersMutation", res.data);
+      return true;
+    } catch (e) {
+      dispatch("errHandler", { msg: e.response.data, status: 400 });
+      return false;
+    }
+  },
+  async removeUser({ commit, dispatch }, id) {
+    try {
+      const res = await axios.delete(`/users?id=${id}`);
+      commit("usersMutation", res.data);
+      dispatch("errHandler", { msg: "User deleted", status: 200 });
+    } catch (e) {
+      dispatch("errHandler", { msg: e.response.data, status: 400 });
+    }
+  },
+  async updateUserByAdmin({ commit, dispatch }, data) {
+    try {
+      const res = await axios.post(`/users/update`, data);
+      commit("usersMutation", res.data);
+      dispatch("errHandler", { msg: "User updated", status: 200 });
+    } catch (e) {
+      dispatch("errHandler", { msg: e.response.data, status: 400 });
+    }
+  },
+  async forgotPassword({ commit, dispatch }, email) {
+    const { err, status } = await emailValidation(email);
+    !status && dispatch("errHandler", { msg: err[0], status: 400 });
+    if (!status) return dispatch("errHandler", { msg: err[0], status: 400 });
+    try {
+      const res = await axios.post(`/users/forgot_password`, email);
+      dispatch("errHandler", { msg: "Message sent. Check your email", status: 200 });
+    } catch (e) {
+      dispatch("errHandler", { msg: e.response.data, status: 400 });
+    }
+  },
 };
-
 export default {
   state,
   getters,

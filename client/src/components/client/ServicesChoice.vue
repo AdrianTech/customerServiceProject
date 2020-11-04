@@ -97,8 +97,6 @@ input {
   }
   .total {
     font-size: 14px;
-    // left: 50%;
-    // transform: translateX(-50%);
   }
 }
 @media (min-width: 1000px) {

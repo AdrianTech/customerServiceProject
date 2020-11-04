@@ -8,7 +8,9 @@ import moment from "moment-timezone";
 export default class Services {
   public async clientServiceUpdate(req: Request, res: Response) {
     const { id, currentClientsPage, filtered } = req.body;
+    let allMonths = 0;
     filtered.forEach((i: IServices) => {
+      allMonths += i.months;
       new TimeHandler().timeChecker(i);
       delete i.createdDate;
       delete i.__v;
@@ -17,6 +19,7 @@ export default class Services {
     try {
       const doc: any = await ClientModel.findOne({ _id: id });
       doc.typeOfService = functions.sorted([...doc.typeOfService, ...filtered]);
+      doc.allMonths = allMonths;
       const client = await doc.save();
       const response = await queries.getNumberOfClients(currentClientsPage, client);
       res.status(200).json(response);
@@ -32,6 +35,7 @@ export default class Services {
       const time = moment(find.finishTime).add(value, "months").format();
       find.finishTime = time;
       find.extendTimes += 1;
+      doc.allMonths += value;
       doc.typeOfService = functions.sorted(doc.typeOfService);
       const client = await doc.save();
       const response = await queries.getNumberOfClients(currentClientsPage, client);
