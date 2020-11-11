@@ -8,10 +8,10 @@
 <script>
 import Charts from "./Charts";
 import { mapGetters, mapActions } from "vuex";
-// import { filterClientsByTime } from "../../../shared/helpers";
 import Statistics from "./Statistics";
 import axios from "axios";
 export default {
+  name: "Analitycs",
   components: { Charts, Statistics },
   data() {
     return {
@@ -20,20 +20,6 @@ export default {
   },
   computed: {
     ...mapGetters(["clientData"])
-    // series() {
-    //   return [
-    //     {
-    //       data: filterClientsByTime(this.clients, this.setDays),
-    //       name: "clients"
-    //     }
-    //   ];
-    // }
-    // totalNumberOfServices() {
-    //   return this.clients.reduce(
-    //     (acc, { typeOfService }) => acc + typeOfService.length,
-    //     0
-    //   );
-    // }
   },
   mounted() {
     this.getClients();

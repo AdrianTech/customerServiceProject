@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { validationLogin } from "@/shared/validation";
+import { loginValidation } from "../shared/validate";
 export default {
   name: "Login",
   data() {
@@ -38,14 +38,14 @@ export default {
   },
   methods: {
     ...mapActions(["loginUser", "errHandler", "forgotPassword"]),
-    submitHandler() {
+    async submitHandler() {
       const { email, password } = this;
       const data = {
         email,
         password
       };
-      const { msg, bool } = validationLogin(data);
-      if (!bool) return this.errHandler({ msg, status: 400 });
+      const { err, status } = await loginValidation(data);
+      if (!status) return this.errHandler({ msg: err[0], status: 400 });
       this.loginUser(data);
     }
   }

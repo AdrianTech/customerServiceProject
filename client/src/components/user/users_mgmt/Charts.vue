@@ -1,11 +1,12 @@
 <template>
   <section class="charts">
-    <div class="buttons">
+    <div class="select">
       <select v-model="setDays">
         <option disabled value>Choose one</option>
-        <option value="30">Last Month</option>
-        <option value="90">Last Quarter</option>
-        <option value="182">Half Year</option>
+        <option value="7">Last week</option>
+        <option value="30">Last month</option>
+        <option value="90">Last quarter</option>
+        <option value="182">Half year</option>
         <option value="365">Last year</option>
       </select>
     </div>
@@ -24,8 +25,27 @@ export default {
   components: { apexChart: VueApexCharts },
   data() {
     return {
-      setDays: 30,
-      chartOptions: {
+      setDays: 7
+    };
+  },
+  computed: {
+    ...mapGetters(["clientData"]),
+    series() {
+      return [
+        {
+          data: filterClientsByTime(this.clients, this.setDays),
+          name: "Service value"
+        }
+      ];
+    },
+    changeTimeRange() {
+      return {
+        type: "datetime",
+        min: new Date().setDate(new Date().getDate() - this.setDays)
+      };
+    },
+    chartOptions() {
+      return {
         chart: {
           id: "area-datetime",
           type: "bar",
@@ -36,20 +56,6 @@ export default {
           }
         },
         annotations: {
-          yaxis: [
-            {
-              y: 30,
-              borderColor: "#999",
-              label: {
-                show: true,
-                text: "Support",
-                style: {
-                  color: "#fff",
-                  background: "#00E396"
-                }
-              }
-            }
-          ],
           xaxis: [
             {
               x: new Date().getTime(),
@@ -73,10 +79,7 @@ export default {
           size: 0,
           style: "hollow"
         },
-        xaxis: {
-          type: "datetime"
-          // min: new Date().getTime() - 30 * 60 * 60 * 60 * 1000,
-        },
+        xaxis: this.changeTimeRange,
         title: {
           text: "Clients chart",
           align: "left",
@@ -98,7 +101,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: "15%"
+            columnWidth: "20%"
           }
         },
         fill: {
@@ -110,19 +113,7 @@ export default {
             stops: [0, 100]
           }
         }
-      }
-    };
-  },
-
-  computed: {
-    ...mapGetters(["clientData"]),
-    series() {
-      return [
-        {
-          data: filterClientsByTime(this.clients, this.setDays),
-          name: "clients"
-        }
-      ];
+      };
     }
   }
 };
@@ -133,19 +124,18 @@ export default {
   max-width: 900px;
   margin: auto;
 }
-.buttons {
+.select {
   text-align: center;
+  margin-bottom: 15px;
+  select {
+    font-family: $openSans;
+    padding: 6px;
+  }
 }
 button {
   @include primary-btn;
   font-size: 14px;
   padding: 3px 8px;
   margin: 5px;
-}
-@media (min-width: 500px) {
-}
-@media (min-width: 768px) {
-}
-@media (min-width: 1000px) {
 }
 </style>

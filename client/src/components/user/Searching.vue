@@ -19,21 +19,22 @@ export default {
   data() {
     return {
       option: "clients",
-      searchValue: "",
+      searchValue: ""
     };
   },
   methods: {
     ...mapActions(["search", "errHandler"]),
     runSearchFunction() {
-      if (this.searchValue === "") return this.errHandler({ msg: "Please, type some value", status: 400 });
+      if (this.searchValue === "")
+        return this.errHandler({ msg: "Please, type some value", status: 400 });
       const { searchValue, option } = this;
       const data = {
         searchValue,
-        option,
+        option
       };
       this.search(data);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -58,7 +59,7 @@ form {
   input,
   select,
   button {
-    border: 2px solid rgba(85, 23, 23, 0.397);
+    border: 2px solid #410202;
     font-size: 15px;
     font-weight: 700;
   }

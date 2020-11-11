@@ -3,7 +3,7 @@
     <div class="item">
       <p>
         You have
-        <span>{{clients.length}}</span> clients
+        <span>{{clientsLength}}</span> clients
       </p>
     </div>
     <div class="item">
@@ -14,8 +14,20 @@
     </div>
     <div class="item">
       <p>
+        Your total income
+        <span>{{yourTotalIncome}}</span>
+      </p>
+    </div>
+    <div class="item">
+      <p>
+        Average income per client
+        <span>{{yourTotalIncome / clientsLength}}</span>
+      </p>
+    </div>
+    <div class="item">
+      <p>
         And this is
-        <span>{{(totalNumberOfServices / clients.length).toFixed(2)}}</span> services per one client
+        <span>{{(totalNumberOfServices / clientsLength).toFixed(2)}}</span> services per client
       </p>
     </div>
     <hr />
@@ -36,6 +48,14 @@ export default {
         (acc, { typeOfService }) => acc + typeOfService.length,
         0
       );
+    },
+    yourTotalIncome() {
+      return this.clients
+        .reduce((acc, { totalIncome }) => acc + totalIncome, 0)
+        .toFixed(2);
+    },
+    clientsLength() {
+      return this.clients.length;
     }
   },
   methods: {
@@ -55,6 +75,8 @@ export default {
 .loading {
   text-align: center;
   font-size: 18px;
+  font-weight: 700;
+  padding: 15px;
 }
 .item {
   width: 80%;

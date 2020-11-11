@@ -23,12 +23,18 @@
       </div>
     </div>
     <div class="services-header">
-      <h3>Active services ({{ data.typeOfService.length }})</h3>
-      <button
-        v-if="data.servicesHistory.length > 0"
-        class="btn-history"
-        @click="openModal(history)"
-      >Client's history</button>
+      <h3>
+        Active services ({{ data.typeOfService.length }})
+        <button
+          v-if="data.servicesHistory.length > 0"
+          class="btn-history"
+          @click="openModal(history)"
+        >Client's history</button>
+      </h3>
+      <span
+        v-if="data.typeOfService.length > 0"
+        class="totalIncome"
+      >Your total income: {{data.totalIncome}}</span>
     </div>
     <div
       v-if="data.typeOfService.length > 0"
@@ -43,7 +49,7 @@
       />
     </div>
     <button @click="openModal(addServiceID)" class="btn-add">
-      <img src="../assets/add.png" alt="add button" />
+      <img src="../../assets/add.png" alt="add button" />
     </button>
     <Modal v-if="addServiceOpen" :modalID="addServiceID">
       <AddNewServiceToClient :id="id" :data="prop" />
@@ -58,14 +64,18 @@
 </template>
 
 <script>
-import Services from "@/components/client/ClientServices";
+import Services from "./ClientServices";
 import { mapGetters, mapActions } from "vuex";
-import AddNewServiceToClient from "../components/client/AddNewService";
-import Modal from "../components/events/Modal";
-import UpdateClient from "../components/client/UpdateClient";
-import SendEmail from "../components/client/SendEmail";
-import ConsumerHistory from "../components/client/ConsumerHistory";
-import { setClientData, findObj, generateID } from "../shared/sharedFunctions";
+import AddNewServiceToClient from "./AddNewService";
+import Modal from "../events/Modal";
+import UpdateClient from "./UpdateClient";
+import SendEmail from "./SendEmail";
+import ConsumerHistory from "./ConsumerHistory";
+import {
+  setClientData,
+  findObj,
+  generateID
+} from "../../shared/sharedFunctions";
 export default {
   components: {
     Services,
@@ -148,9 +158,17 @@ export default {
   padding-top: 15px;
   justify-content: space-evenly;
 }
+.totalIncome {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #025802;
+  font-weight: 700;
+  text-align: center;
+}
 .services-header {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   .btn-history {
     background-color: transparent;
     border: 1px solid $dark-blue;

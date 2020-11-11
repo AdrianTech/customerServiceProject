@@ -43,8 +43,10 @@ const actions = {
       commit("setClientsData", res.data.clients);
       commit("setMeta", res.data.meta);
       dispatch("errHandler", { msg: "Client added", status: 200 });
+      return true;
     } catch (err) {
       dispatch("errHandler", { msg: "Error ocurred. Check your data", status: 400 });
+      return false;
     }
   },
 
@@ -135,10 +137,10 @@ const actions = {
 
   async closeService({ commit, dispatch }, data) {
     const confirm = window.confirm("Close this service?");
-    const { clientID, serviceID, page } = data;
+    const { clientID, serviceID, currentClientsPage } = data;
     if (!confirm) return;
     try {
-      const res = await axios.put(`/clients/services/close?userid=${clientID}&serviceid=${serviceID}&page=${page}`);
+      const res = await axios.put(`/clients/services/close?userid=${clientID}&serviceid=${serviceID}&page=${currentClientsPage}`);
       dispatch("errHandler", { msg: "This service has been closed", status: 200 });
       commit("setClientsData", res.data.clients);
       return true;

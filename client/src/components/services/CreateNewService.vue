@@ -14,12 +14,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { createNewServiceValid } from "@/shared/validation.js";
+import { serviceValidation } from "@/shared/validate.js";
 export default {
   data() {
     return {
       name: "",
-      unitPrice: "",
+      unitPrice: 0,
       months: 0
     };
   },
@@ -28,17 +28,18 @@ export default {
   },
   methods: {
     ...mapActions(["errHandler", "createService"]),
-    serviceHandler() {
+    async serviceHandler() {
       const { name, unitPrice, months } = this;
       const data = {
         name,
         unitPrice,
         months
       };
-      const { msg, bool } = createNewServiceValid(data);
-      if (!bool) return this.errHandler({ msg, status: 400 });
-      this.createService(data);
-      Object.assign(this.$data, { name: "", unitPrice: "", months: 0 });
+      const { err, status } = await serviceValidation(data);
+      if (!status) return this.errHandler({ msg: err[0], status: 400 });
+      const result = await this.createService(data);
+      result &&
+        Object.assign(this.$data, { name: "", unitPrice: "", months: 0 });
     }
   }
 };

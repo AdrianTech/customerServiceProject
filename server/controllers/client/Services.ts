@@ -8,10 +8,9 @@ import moment from "moment-timezone";
 export default class Services {
   public async clientServiceUpdate(req: Request, res: Response) {
     const { id, currentClientsPage, filtered } = req.body;
-    let allMonths = 0;
     filtered.forEach((i: IServices) => {
-      allMonths += i.months;
       new TimeHandler().timeChecker(i);
+      i.totalPrice = functions.totalPriceHelper(i);
       delete i.createdDate;
       delete i.__v;
       return i;
@@ -19,7 +18,7 @@ export default class Services {
     try {
       const doc: any = await ClientModel.findOne({ _id: id });
       doc.typeOfService = functions.sorted([...doc.typeOfService, ...filtered]);
-      doc.allMonths = allMonths;
+      doc.totalIncome = functions.totalIncomeHelper(doc.typeOfService);
       const client = await doc.save();
       const response = await queries.getNumberOfClients(currentClientsPage, client);
       res.status(200).json(response);
@@ -35,7 +34,9 @@ export default class Services {
       const time = moment(find.finishTime).add(value, "months").format();
       find.finishTime = time;
       find.extendTimes += 1;
-      doc.allMonths += value;
+      //Errors with old data!!!
+      find.totalPrice = functions.totalPriceHelper(find);
+      doc.totalIncome = functions.totalIncomeHelper(doc.typeOfService);
       doc.typeOfService = functions.sorted(doc.typeOfService);
       const client = await doc.save();
       const response = await queries.getNumberOfClients(currentClientsPage, client);
@@ -45,7 +46,7 @@ export default class Services {
     }
   }
   public async closeService(req: Request, res: Response) {
-    const { userid, serviceid, currentClientsPage } = req.query;
+    const { userid, serviceid, page } = req.query;
     // Note: pushing object with the same id might cause an error, when items will be map!
     try {
       const client: any = await ClientModel.findOne({ _id: userid });
@@ -55,8 +56,10 @@ export default class Services {
       client.servicesHistory.push(service);
       client.typeOfService = client.typeOfService.filter((i: any) => i.id !== serviceid);
       client.typeOfService = functions.sorted(client.typeOfService);
+      service.totalPrice = functions.totalPriceHelper(service);
+      client.totalIncome = functions.totalIncomeHelper(client.typeOfService);
       const clientData = await client.save();
-      const response = await queries.getNumberOfClients(currentClientsPage, clientData);
+      const response = await queries.getNumberOfClients(page, clientData);
       res.status(200).json(response);
     } catch (e) {
       res.status(400).json("Something went wrong");

@@ -35,10 +35,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { createNewUserValid } from "../../shared/validation";
 import ServicesChoice from "./ServicesChoice";
 import Modal from "../events/Modal";
 import { findObj } from "../../shared/sharedFunctions";
+import { clientValidation } from "../../shared/validate";
 export default {
   name: "CreateClientAccount",
   components: { Modal, ServicesChoice },
@@ -71,19 +71,21 @@ export default {
       this.servicesArr = JSON.parse(JSON.stringify(this.services));
       this.servicesArr.forEach(i => (i.total = 0));
     },
-    submitData() {
+    async submitData() {
       this.client.clientArr = this.servicesArr.filter(({ active }) => active);
-      const { msg, bool } = createNewUserValid(this.client);
-      if (!bool) return this.errHandler({ msg, status: 400 });
-      this.createClient(this.client);
-      this.client = {
-        fullname: "",
-        phone: "",
-        email: "",
-        clientArr: [],
-        totalIncome: 0
-      };
-      this.setServicesArr();
+      const { err, status } = await clientValidation(this.client);
+      if (!status) return this.errHandler({ msg: err[0], status: 400 });
+      const result = await this.createClient(this.client);
+      if (result) {
+        this.client = {
+          fullname: "",
+          phone: "",
+          email: "",
+          clientArr: [],
+          totalIncome: 0
+        };
+        this.setServicesArr();
+      }
     },
     totalFunc() {
       let value = 0;

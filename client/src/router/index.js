@@ -5,7 +5,7 @@ import ClientList from "../views/ShowClientList.vue";
 import CreateAccount from "../components/client/CreateClientAccount.vue";
 import CreateNewService from "../components/services/CreateNewService.vue";
 import Settings from "../views/Settings.vue";
-import ClientDetails from "../views/ClientDetails.vue";
+import ClientDetails from "../components/client/ClientDetails.vue";
 import AddNewService from "../components/client/AddNewService.vue";
 import ClientNotes from "../components/client/ClientNotes.vue";
 import UserSettings from "../components/user/UserSettings.vue";

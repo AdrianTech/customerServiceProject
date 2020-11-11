@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-// var CronJob = require("cron").CronJob;
 dotenv.config();
 type Params = {
   email: string;

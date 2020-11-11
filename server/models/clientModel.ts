@@ -5,6 +5,7 @@ const ArrayClientSubSchema = new Schema({
   name: String,
   startTime: String,
   finishTime: String,
+  totalPrice: Number,
   months: Number,
   active: Boolean,
   unitPrice: Number,

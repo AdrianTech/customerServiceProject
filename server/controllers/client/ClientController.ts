@@ -9,11 +9,10 @@ import { Request, Response } from "express";
 
 export default class ClientController {
   public async addNewClient(req: Request, res: Response) {
-    const { fullname, email, clientArr, phone, page, totalIncome } = req.body;
-    // let allMonths = 0;
+    const { fullname, email, clientArr, phone, page } = req.body;
     clientArr.forEach((item: IServices) => {
-      // allMonths += item.months;
       new TimeHandler().timeChecker(item);
+      item.totalPrice = functions.totalPriceHelper(item);
       delete item.__v;
       delete item.createdDate;
       return item;
@@ -22,8 +21,7 @@ export default class ClientController {
     const newClient = {
       fullname,
       email,
-      totalIncome,
-      // allMonths,
+      totalIncome: functions.totalIncomeHelper(clientArr),
       typeOfService: sorted,
       phone,
       notes: [],
@@ -32,7 +30,7 @@ export default class ClientController {
     try {
       await new ClientModel(newClient).save();
       const response = await queries.getNumberOfClients(page);
-      res.status(200).json(response);
+      res.status(201).json(response);
     } catch (err) {
       console.log(err);
       res.status(400).json("Something went wrong");

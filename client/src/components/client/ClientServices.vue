@@ -17,6 +17,18 @@
         <span>Extended</span>
         <span>{{ extendTimes }} times</span>
       </li>
+      <li>
+        <span>Serv. length:</span>
+        <span>{{ totalMonths }}</span>
+      </li>
+      <li>
+        <span>Unit Price</span>
+        <span>{{ unitPrice }} / mo</span>
+      </li>
+      <li>
+        <span>Total price</span>
+        <span>{{ totalPrice }}</span>
+      </li>
       <li>{{ daysCounter > 0 ? `${daysCounter} days left` : `${daysCounter} days late` }}</li>
       <li @click="openModal(service._id)" class="service-actions">Extend this service</li>
       <Modal v-if="open" :modalID="service._id">
@@ -58,6 +70,18 @@ export default {
     },
     finishTime() {
       return this.service && this.service.finishTime;
+    },
+    unitPrice() {
+      return this.service && this.service.unitPrice;
+    },
+    totalPrice() {
+      return this.service && this.service.totalPrice;
+    },
+    totalMonths() {
+      return moment(this.service.finishTime).diff(
+        this.service.startTime,
+        "months"
+      );
     },
     changeTime() {
       const guess = moment.tz.guess();
@@ -121,7 +145,5 @@ ul li {
   &:first-child {
     margin-top: 10px;
   }
-}
-@media (min-width: 768px) {
 }
 </style>

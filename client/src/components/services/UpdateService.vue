@@ -7,21 +7,35 @@
           Change name
           <span>[{{ name }}]</span>
         </label>
-        <input type="text" v-model.trim="clickedObj[0].value.name" @change="updateItem" v-if="clickedObj[0].state" />
+        <input
+          type="text"
+          v-model.trim="clickedObj[0].value.name"
+          @change="updateItem"
+          v-if="clickedObj[0].state"
+        />
       </div>
       <div class="itemList">
         <label @click="displayInput('unitPrice')">
           Change unit price
           <span>[{{ unitPrice }}]</span>
         </label>
-        <input v-model.number.trim="clickedObj[1].value.unitPrice" @change="updateItem" v-if="clickedObj[1].state" />
+        <input
+          v-model.number.trim="clickedObj[1].value.unitPrice"
+          @change="updateItem"
+          v-if="clickedObj[1].state"
+        />
       </div>
       <div class="itemList">
         <label @click="displayInput('months')">
           Set default months
           <span>[{{ months }}]</span>
         </label>
-        <input type="number" v-model.number.trim="clickedObj[2].value.months" @change="updateItem" v-if="clickedObj[2].state" />
+        <input
+          type="number"
+          v-model.number.trim="clickedObj[2].value.months"
+          @change="updateItem"
+          v-if="clickedObj[2].state"
+        />
       </div>
       <button class="modal-btn">Confirm</button>
     </form>
@@ -30,7 +44,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { validateUpdateServices } from "../../shared/validate.js";
+import { serviceValidation } from "../../shared/validate.js";
 export default {
   name: "UpdateService",
   props: ["service"],
@@ -41,9 +55,9 @@ export default {
       clickedObj: [
         { nameItem: "name", state: false, value: { name: "" } },
         { nameItem: "unitPrice", state: false, value: { unitPrice: 0.0 } },
-        { nameItem: "months", state: false, value: { months: 0 } },
+        { nameItem: "months", state: false, value: { months: 0 } }
       ],
-      data: {},
+      data: {}
     };
   },
   computed: {
@@ -55,26 +69,29 @@ export default {
     },
     unitPrice() {
       return this.service.unitPrice;
-    },
+    }
   },
   methods: {
     ...mapActions(["updateService", "errHandler"]),
     async submitData() {
       let { data, errHandler, id, updateService, clickedObj } = this;
-      const isEmpty = Object.keys(data).length === 0 && data.constructor === Object;
+      const isEmpty =
+        Object.keys(data).length === 0 && data.constructor === Object;
       if (isEmpty) return errHandler({ msg: "Nothing changed", status: 400 });
       data.id = id;
-      const valid = await validateUpdateServices(data);
-      if (valid.length > 0) return errHandler({ msg: valid[0], status: 400 });
-      updateService(data);
-      clickedObj[0].value.name = "";
-      clickedObj[1].value.unitPrice = 0.0;
-      clickedObj[1].value.months = 0;
-      clickedObj.forEach((i) => (i.state = false));
+      const { status, err } = await serviceValidation(data);
+      if (!status) return errHandler({ msg: err[0], status: 400 });
+      const result = await updateService(data);
+      if (result) {
+        clickedObj[0].value.name = "";
+        clickedObj[1].value.unitPrice = 0.0;
+        clickedObj[1].value.months = 0;
+        clickedObj.forEach(i => (i.state = false));
+      }
     },
     displayInput(name) {
       let { clickedObj } = this;
-      clickedObj.forEach((i) => {
+      clickedObj.forEach(i => {
         if (i.nameItem === name) {
           i.state = !i.state;
         }
@@ -84,10 +101,10 @@ export default {
     updateItem() {
       let { clickedObj } = this;
       let val = {};
-      clickedObj.filter((i) => i.state && Object.assign(val, i.value));
+      clickedObj.filter(i => i.state && Object.assign(val, i.value));
       this.data = val;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -127,6 +144,9 @@ input {
   }
 }
 @media (min-width: 768px) {
+  button {
+    width: 50% !important;
+  }
   .inside {
     @include inside(60%, 80%);
     padding: 40px;

@@ -42,7 +42,11 @@
 }
 
 button {
-  min-height: 35px;
+  min-height: 38px;
+}
+input {
+  font-family: "Open Sans";
+  font-weight: 700;
 }
 @media (min-width: 768px) {
   .modal-btn {

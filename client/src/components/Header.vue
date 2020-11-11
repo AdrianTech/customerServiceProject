@@ -11,10 +11,16 @@
         <li>
           <router-link to="/services-list">Services</router-link>
         </li>
-        <li>
-          <router-link to="/search-page">
-            <span class="material-icons search-icon">search</span>
-          </router-link>
+        <li class="dropdown" @click="showDropdownMenu">
+          Tools
+          <ul v-if="dropdownMenu">
+            <li>
+              <router-link to="/search-page">Search</router-link>
+            </li>
+            <li>
+              <router-link to="/settings">Settings</router-link>
+            </li>
+          </ul>
         </li>
         <button class="logout" v-if="isLogged" @click="logout">
           <svg
@@ -43,6 +49,11 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Header",
+  data() {
+    return {
+      dropdownMenu: false
+    };
+  },
   computed: {
     ...mapGetters(["isLogged"])
   },
@@ -50,6 +61,9 @@ export default {
     ...mapActions(["logoutUser"]),
     logout() {
       this.logoutUser();
+    },
+    showDropdownMenu() {
+      this.dropdownMenu = !this.dropdownMenu;
     }
   }
 };
@@ -58,6 +72,39 @@ export default {
 <style lang="scss" scoped>
 .search-icon {
   margin-top: 5px;
+}
+a {
+  transition: color 0.4s;
+  will-change: color;
+}
+a:hover {
+  color: #6dc3fc;
+}
+.dropdown {
+  position: relative;
+  cursor: pointer;
+
+  ul {
+    display: block;
+    position: absolute;
+    margin-top: 8px;
+    width: 80px;
+    text-align: center;
+    left: -60%;
+    border: 1px solid #eef863;
+    background-color: $dark-blue;
+    height: auto;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  li {
+    padding: 5px;
+    border-bottom: 1px solid white;
+  }
+
+  li + li {
+    border: none;
+  }
 }
 header {
   width: 100%;
@@ -93,7 +140,8 @@ nav {
     justify-content: space-evenly;
     align-items: center;
   }
-  a {
+  a,
+  .dropdown {
     color: aliceblue;
     font-weight: bold;
     font-size: 14px;
@@ -107,13 +155,27 @@ nav {
   nav ul a {
     font-size: 17px;
   }
+  nav .dropdown {
+    font-size: 17px;
+  }
+  nav .dropdown ul {
+    width: 15vw;
+  }
 }
 @media (min-width: 768px) {
   nav ul a {
     font-size: 21px;
   }
+  nav .dropdown {
+    font-size: 21px;
+  }
   header .logout {
     width: 25px;
+  }
+}
+@media (min-width: 1000px) {
+  nav .dropdown ul {
+    width: 10vw;
   }
 }
 </style>

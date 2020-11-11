@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Form from "./Form";
+import Form from "./AddNewUserForm";
 import UserList from "./UserList";
 export default {
   name: "AddNewUser",

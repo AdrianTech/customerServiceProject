@@ -19,8 +19,10 @@ const actions = {
       commit("serviceData", res.data);
       commit("serviceHandler", servicePage);
       dispatch("errHandler", { msg: "Service added", status: 200 });
+      return true;
     } catch ({ response }) {
       dispatch("errHandler", { msg: response.data, status: 400 });
+      return false;
     }
   },
   async getServices({ commit, dispatch }) {
@@ -50,8 +52,10 @@ const actions = {
       commit("serviceData", res.data);
       dispatch("errHandler", { msg: "Service updated", status: 200 });
       commit("serviceHandler", servicePage);
+      return true;
     } catch (err) {
       dispatch("errHandler", { msg: "Error, try again", status: 400 });
+      return false;
     }
   },
 };

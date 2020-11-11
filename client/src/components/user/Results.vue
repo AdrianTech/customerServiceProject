@@ -17,7 +17,7 @@
       </ul>
     </div>
     <div class="info" v-else>
-      <h2>Let's see what you'll find</h2>
+      <h2>You'll see results here</h2>
     </div>
   </div>
 </template>

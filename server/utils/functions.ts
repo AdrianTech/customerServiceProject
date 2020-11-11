@@ -1,6 +1,8 @@
 import { IServices, IUser } from "../types/types";
 import ClientModel from "../models/clientModel";
+import moment from "moment-timezone";
 import { ServicesModel } from "../models/servicesModel";
+import { parse } from "path";
 class Functions {
   public sorted(arr: Array<IServices>) {
     return arr.sort((a: any, b: any) => <any>new Date(a.finishTime) - <any>new Date(b.finishTime));
@@ -43,6 +45,13 @@ class Functions {
     <a href="http://localhost:8080/your-settings/set-password?id=${user._id}&name=${user.loginname}"><button style="padding: 12px; background-color: #03be1c; color: black; border: none; font-weight: 700;">Set your password</button></a>
     </div>
     `;
+  }
+  public totalPriceHelper(service: IServices): any {
+    if (service.unitPrice) return parseFloat((moment(service.finishTime).diff(service.startTime, "months") * service.unitPrice).toFixed(2));
+    else return 0;
+  }
+  public totalIncomeHelper(services: Array<IServices>) {
+    return services.reduce((acc: any, curr) => acc + curr.totalPrice, 0).toFixed(2);
   }
 }
 

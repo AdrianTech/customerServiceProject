@@ -25,7 +25,7 @@ class CronJob {
     const last_14days = this.sortServices(clients, ranges.last_14days).sort((a: any, b: any) => this.sortClients(a.typeOfService[0], b.typeOfService[0]));
     if ([last_day, last_7days, last_14days].filter((i) => i.length !== 0 && i).length === 0) return;
     const html = hTMLEmailHelper({ last_day, last_7days, last_14days });
-    emailHandler.sendEmail({ email: "mojofw@gmail.com", html });
+    emailHandler.sendEmail({ email: "dev@adriantech.eu", html });
   }
   private sortClients(a: IServices, b: IServices) {
     return <any>new Date(a.finishTime) - <any>new Date(b.finishTime);

@@ -5,6 +5,7 @@ export type IServices = {
   startTime: string;
   finishTime: string;
   active: Boolean;
+  totalPrice: number;
   extendTimes: number;
   unitPrice: number;
   createdDate?: string;
