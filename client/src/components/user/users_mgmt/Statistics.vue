@@ -21,7 +21,7 @@
     <div class="item">
       <p>
         Average income per client
-        <span>{{yourTotalIncome / clientsLength}}</span>
+        <span>{{(yourTotalIncome / clientsLength).toFixed(2)}}</span>
       </p>
     </div>
     <div class="item">
@@ -32,7 +32,6 @@
     </div>
     <hr />
   </div>
-  <div class="loading" v-else>Loading...</div>
 </template>
 
 <script>
@@ -40,7 +39,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Statistics",
   props: ["clients"],
-  components: {},
   computed: {
     ...mapGetters(["clientData"]),
     totalNumberOfServices() {
@@ -72,12 +70,6 @@ export default {
     margin: 15px auto;
   }
 }
-.loading {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 15px;
-}
 .item {
   width: 80%;
   margin: 5px auto;
@@ -99,7 +91,5 @@ export default {
       font-size: 20px;
     }
   }
-}
-@media (min-width: 1000px) {
 }
 </style>

@@ -1,18 +1,20 @@
 <template>
-  <section class="analytics">
+  <section class="analytics" v-if="clients.length > 0">
     <Statistics :clients="clients" />
     <Charts :clients="clients" />
   </section>
+  <Spinner v-else />
 </template>
 
 <script>
 import Charts from "./Charts";
 import { mapGetters, mapActions } from "vuex";
 import Statistics from "./Statistics";
+import Spinner from "../../../shared/Spinner";
 import axios from "axios";
 export default {
   name: "Analitycs",
-  components: { Charts, Statistics },
+  components: { Charts, Statistics, Spinner },
   data() {
     return {
       clients: []

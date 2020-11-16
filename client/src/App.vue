@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Header v-if="isLogged" />
+    <Spinner v-if="dataLoading" />
     <router-view />
     <Alert />
   </div>
@@ -10,13 +11,15 @@
 import Header from "../src/components/Header";
 import { mapGetters, mapActions } from "vuex";
 import Alert from "../src/components/events/Alert";
+import Spinner from "../src/shared/Spinner";
 export default {
   components: {
     Header,
-    Alert
+    Alert,
+    Spinner
   },
   computed: {
-    ...mapGetters(["isLogged"])
+    ...mapGetters(["isLogged", "dataLoading"])
   },
   methods: {
     ...mapActions(["getClients", "loginUser"])

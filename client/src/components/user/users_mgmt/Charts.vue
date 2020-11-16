@@ -25,7 +25,7 @@ export default {
   components: { apexChart: VueApexCharts },
   data() {
     return {
-      setDays: 7
+      setDays: 7,
     };
   },
   computed: {
@@ -34,14 +34,14 @@ export default {
       return [
         {
           data: filterClientsByTime(this.clients, this.setDays),
-          name: "Service value"
-        }
+          name: "service value",
+        },
       ];
     },
     changeTimeRange() {
       return {
         type: "datetime",
-        min: new Date().setDate(new Date().getDate() - this.setDays)
+        min: new Date().setDate(new Date().getDate() - this.setDays),
       };
     },
     chartOptions() {
@@ -52,8 +52,8 @@ export default {
           height: 350,
           zoom: {
             type: "x",
-            autoScaleYaxis: true
-          }
+            autoScaleYaxis: true,
+          },
         },
         annotations: {
           xaxis: [
@@ -66,18 +66,23 @@ export default {
                 text: "Today",
                 style: {
                   color: "#fff",
-                  background: "#775DD0"
-                }
-              }
-            }
-          ]
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
         },
         dataLabels: {
-          enabled: false
+          enabled: true,
+          offsetY: -20,
+          style: {
+            fontSize: "12px",
+            colors: ["#304758"],
+          },
         },
         markers: {
           size: 0,
-          style: "hollow"
+          style: "hollow",
         },
         xaxis: this.changeTimeRange,
         title: {
@@ -91,18 +96,22 @@ export default {
             fontSize: "16px",
             fontWeight: "bold",
             fontFamily: "Baloo Thambi 2",
-            color: "darkblue"
-          }
+            color: "darkblue",
+          },
         },
         tooltip: {
           x: {
-            format: "dd MMM yyyy"
-          }
+            format: "dd MMM yyyy",
+          },
         },
         plotOptions: {
           bar: {
-            columnWidth: "20%"
-          }
+            columnWidth: "20%",
+            rangeBarOverlap: true,
+            dataLabels: {
+              position: "top",
+            },
+          },
         },
         fill: {
           type: "solid",
@@ -110,12 +119,12 @@ export default {
             shadeIntensity: 1,
             opacityFrom: 0.7,
             opacityTo: 0.9,
-            stops: [0, 100]
-          }
-        }
+            stops: [0, 100],
+          },
+        },
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

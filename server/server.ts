@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import ClientRoute from "./routes/clients";
 import UserRoute from "./routes/user";
 import ServiceRoute from "./routes/service";
+import SettingsRoute from "./routes/settings";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import path from "path";
@@ -17,12 +18,14 @@ class App {
   public clientRoute: ClientRoute = new ClientRoute();
   public userRoute: UserRoute = new UserRoute();
   public serviceRoute: ServiceRoute = new ServiceRoute();
+  public settingsRoute: SettingsRoute = new SettingsRoute();
   constructor() {
     this.app = express();
     this.config();
     this.clientRoute.routes(this.app);
     this.userRoute.routes(this.app);
     this.serviceRoute.routes(this.app);
+    this.settingsRoute.routes(this.app);
     this.dbSetup();
     this.handleWrongRequest();
   }

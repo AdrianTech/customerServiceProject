@@ -10,21 +10,21 @@ const state = {
   },
   users: [],
   isLogged: false,
-  dataLoaded: false,
+  dataLoading: false,
 };
 
 const getters = {
   eventInfo: (state) => state.info,
   userData: (state) => state.user,
   isLogged: (state) => state.isLogged,
-  dataLoaded: ({ dataLoaded }) => dataLoaded,
+  dataLoading: ({ dataLoading }) => dataLoading,
   users: ({ users }) => users,
 };
 
 const mutations = {
   usersMutation: (state, payload) => (state.users = payload),
   userResponse: (state, payload) => (state.user = payload),
-  dataLoaded: (state, payload) => (state.dataLoaded = payload),
+  dataLoading: (state, payload) => (state.dataLoading = payload),
   errUserResponse: (state, obj) => {
     state.info = {
       bool: true,
@@ -47,11 +47,13 @@ const actions = {
     commit("errUserResponse", data);
   },
   async loginUser({ commit, dispatch }, data) {
+    commit("dataLoading", true);
     try {
       const res = await axios.post("/login", data);
       [
         ["userResponse", res.data],
         ["isLogged", true],
+        ["dataLoading", false],
       ].forEach((i) => commit(i[0], i[1]));
       ["getClients", "getServices"].forEach((i) => dispatch(i));
     } catch (err) {

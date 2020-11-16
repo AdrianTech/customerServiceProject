@@ -24,10 +24,8 @@ const actions = {
       commit("setClientsData", res.data.clients);
       commit("setMeta", res.data.meta);
       commit("currentClientsPage", page == undefined ? 1 : page);
-      commit("dataLoaded", true);
     } catch (e) {
       commit("isLogged", false);
-      commit("dataLoaded", false);
     }
   },
 
@@ -55,7 +53,6 @@ const actions = {
       const res = await axios.post("/clientServiceUpdate", data);
       commit("setClientsData", res.data.clients);
       dispatch("errHandler", { msg: "Service added", status: 200 });
-      commit("dataLoaded", true);
       return true;
     } catch (err) {
       dispatch("errHandler", { msg: "Something went wrong. Try again", status: 400 });

@@ -56,6 +56,8 @@ export default {
   .info {
     margin-top: 15px;
     text-align: center;
+    opacity: 0.6;
+    font-size: 12px;
   }
 }
 ul {
@@ -85,6 +87,9 @@ ul {
   .results {
     width: 75%;
     margin: auto;
+    .info {
+      font-size: 14px;
+    }
   }
   ul li {
     font-size: 18px;
