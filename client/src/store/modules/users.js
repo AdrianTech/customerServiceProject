@@ -55,7 +55,7 @@ const actions = {
         ["isLogged", true],
         ["dataLoading", false],
       ].forEach((i) => commit(i[0], i[1]));
-      ["getClients", "getServices"].forEach((i) => dispatch(i));
+      ["getClients", "getServices", "getSettings"].forEach((i) => dispatch(i));
     } catch (err) {
       const error = {
         msg: err.response.data,

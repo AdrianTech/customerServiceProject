@@ -2,7 +2,7 @@
   <div class="applicationSettings">
     <Title :name="'Application Settings'" />
     <SwitchToggle
-      :data="{nameOn: 'Enable email notifications', nameOff: 'Disable email notifications', state: true}"
+      :data="{nameOn: 'Enable email notifications', nameOff: 'Disable email notifications', state: emailState, method: switcher, route: '/application/settings'}"
       @checkedEvent="checkedEvent"
     />
   </div>
@@ -11,13 +11,21 @@
 <script>
 import SwitchToggle from "../../../shared/SwitchToggle";
 import Title from "../../../shared/Title";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "ApplicationSettings",
   components: { SwitchToggle, Title },
-  methods: {
-    checkedEvent(val) {
-      console.log(val);
+  computed: {
+    ...mapGetters(["appSettings"]),
+    emailState() {
+      return this.appSettings.emailNotifications;
     }
+  },
+  methods: {
+    ...mapActions(["switcher"])
+    // checkedEvent(val) {
+    //   console.log(val);
+    // }
   }
 };
 </script>

@@ -12,7 +12,9 @@ export default {
     data: {
       nameOn: String,
       nameOff: String,
-      state: Boolean
+      state: Boolean,
+      method: Function,
+      route: String
     }
   },
   data() {
@@ -22,6 +24,11 @@ export default {
   },
   methods: {
     onChange() {
+      const settings = {
+        route: this.data.route,
+        value: this.checked
+      };
+      this.data.method(settings);
       this.$emit("checkedEvent", this.checked);
     }
   }
