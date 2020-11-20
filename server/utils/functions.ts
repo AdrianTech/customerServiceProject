@@ -2,7 +2,10 @@ import { IServices, IUser } from "../types/types";
 import ClientModel from "../models/clientModel";
 import moment from "moment-timezone";
 import { ServicesModel } from "../models/servicesModel";
-import { parse } from "path";
+import dotenv from "dotenv";
+dotenv.config();
+import jwt from "jsonwebtoken";
+const KEY: string = <string>process.env.KEY;
 class Functions {
   public sorted(arr: Array<IServices>) {
     return arr.sort((a: any, b: any) => <any>new Date(a.finishTime) - <any>new Date(b.finishTime));
@@ -38,11 +41,16 @@ class Functions {
     if (result.length > 10) throw "Too many results. Be more precise";
     return result;
   }
-  public createEmailHtml(user: IUser, text: string): string {
+  public createEmailHtml(user: IUser, text: string, req?: any): string {
+    const token = jwt.sign({ user: user._id }, KEY, { expiresIn: "2h" });
+    let setHostname: string = "";
+    !req.secure ? (setHostname = "http://localhost:8080") : (setHostname = "https://" + req.headers.host);
     return `
     <div style="font-family: Tahoma">
     <h3>${text}</h3>
-    <a href="http://localhost:8080/your-settings/set-password?id=${user._id}&name=${user.loginname}"><button style="padding: 12px; background-color: #03be1c; color: black; border: none; font-weight: 700;">Set your password</button></a>
+    <a href="${setHostname}/your-settings/set-password?id=${encodeURIComponent(user._id)}&name=${encodeURIComponent(user.loginname)}&token=${encodeURIComponent(
+      token
+    )}"><button style="padding: 12px; margin: 20px; font-family: Tahoma; border-radius: 6px; background-color: darkblue; color: white; border: 1px solid black; font-weight: 700; cursor: pointer">Set your password</button></a>
     </div>
     `;
   }

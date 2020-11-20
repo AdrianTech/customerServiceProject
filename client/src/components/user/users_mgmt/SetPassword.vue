@@ -1,6 +1,6 @@
 <template>
   <div class="setPassword">
-    <h3>Hello, {{name}}. Set your password</h3>
+    <h3>Hello, {{ name }}. Set your password</h3>
     <form class="form" @submit.prevent="submit">
       <label>Type password</label>
       <input type="password" v-model.trim="password" />
@@ -28,12 +28,15 @@ export default {
     },
     name() {
       return this.$route.query.name;
+    },
+    token() {
+      return this.$route.query.token;
     }
   },
   methods: {
     ...mapActions(["errHandler"]),
     async submit() {
-      const { password, repeatedPassword, errHandler, id } = this;
+      const { password, repeatedPassword, errHandler, id, token } = this;
       if (!password || password.length < 8 || password.length > 25)
         return errHandler({
           msg: "Password must have at least 8 characters but no more than 25",
@@ -45,9 +48,9 @@ export default {
           status: 400
         });
       try {
-        await axios.post("/users/set_password", { password, id });
+        await axios.post("/users/set_password", { password, id, token });
         errHandler({
-          msg: "password has been added correctly. Now, just log in",
+          msg: "Password has been added correctly. Now, just log in",
           status: 200
         });
         setTimeout(() => {
@@ -64,8 +67,12 @@ export default {
 <style lang="scss" scoped>
 .setPassword {
   padding-top: $topPadding;
+  font-family: $openSans;
   h3 {
     text-align: center;
+  }
+  input {
+    border-radius: 0;
   }
 }
 button {
@@ -74,7 +81,7 @@ button {
 }
 @media (min-width: 500px) {
   form {
-    max-width: 600px;
+    max-width: 500px;
     margin: auto;
   }
 }

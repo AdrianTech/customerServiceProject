@@ -29,5 +29,12 @@ class Auth {
     if (role !== "admin") return res.status(403).json("Forbridden");
     next();
   }
+  checkSetPasswordToken(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const { token } = req.body;
+    jwt.verify(token, KEY, (err: any) => {
+      if (err) res.status(401).json("Your email is expired. Try again");
+    });
+    next();
+  }
 }
 export default Auth;

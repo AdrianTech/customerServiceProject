@@ -1,6 +1,6 @@
 <template>
   <div class="title">
-    <h2>{{name}}</h2>
+    <h2>{{ name }}</h2>
   </div>
 </template>
 
@@ -8,15 +8,15 @@
 export default {
   name: "Title",
   props: {
-    name: String
-  }
+    name: String,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .title {
   text-align: center;
-  margin: 10px 0 30px 0;
+  margin: 10px 0 50px 0;
 }
 h2 {
   font: 18px Tahoma;
@@ -29,9 +29,6 @@ h2 {
 @media (min-width: 500px) {
 }
 @media (min-width: 768px) {
-  //   .title {
-  //     margin-bottom: ;
-  //   }
   h2 {
     font-size: 22px;
   }

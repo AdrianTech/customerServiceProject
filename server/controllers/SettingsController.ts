@@ -10,6 +10,15 @@ export default class SettingsController {
       res.status(400).json("Something went wrong");
     }
   }
+  public async setCurrency(req: Request, res: Response) {
+    const { value, id } = req.body;
+    try {
+      const resp = await SettingsModel.findOneAndUpdate(id, { currency: value }, { new: true }).select("-ownerEmail");
+      res.status(200).json(resp);
+    } catch (e) {
+      res.status(400).json("Something went wrong");
+    }
+  }
   public async getSettings(req: Request, res: Response) {
     try {
       const result = await SettingsModel.find().select("-ownerEmail");

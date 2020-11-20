@@ -9,7 +9,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node app.js",
     "build": "webpack",
- "build:dev": "webpack && cd client && npm run build",   "test": "jest --watchAll",
+    "build:dev": "webpack && cd client && npm run build",
+    "test": "jest --watchAll",
     "start:dev": "SET NODE_ENV=development & nodemon build/app.js"
   },
   "author": "Adriantech",

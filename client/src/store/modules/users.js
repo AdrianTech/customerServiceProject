@@ -63,6 +63,7 @@ const actions = {
       };
       dispatch("errHandler", error);
       commit("isLogged", false);
+      commit("dataLoading", false);
     }
   },
 

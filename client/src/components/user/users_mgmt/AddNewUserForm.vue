@@ -5,9 +5,11 @@
     <input type="text" v-model.trim="loginname" />
     <label>User email</label>
     <input type="email" v-model.trim="email" />
-    <div style="marginTop: 10px">
-      <input type="checkbox" v-model="sendEmail" />
-      <label>Send an email to {{loginname}}?</label>
+    <div>
+      <SwitchToggle
+        :data="{nameOff: 'Email will be send' , nameOn: `Send email to new user?`, state: false}"
+        @checkedEvent="checkedEvent"
+      />
     </div>
     <select v-model="role">
       <option disabled value>Select role</option>
@@ -23,8 +25,10 @@
 import { mapActions } from "vuex";
 import { userValidation } from "../../../shared/validate.js";
 import { clearData } from "../../../shared/sharedFunctions";
+import SwitchToggle from "../../../shared/SwitchToggle";
 export default {
   name: "Form",
+  components: { SwitchToggle },
   data() {
     return {
       loginname: "",
@@ -47,6 +51,9 @@ export default {
       status
         ? this.createHandler()
         : this.errHandler({ msg: err[0], status: 400 });
+    },
+    checkedEvent(val) {
+      this.sendEmail = val;
     }
   }
 };
@@ -62,7 +69,7 @@ export default {
     border-radius: 0;
   }
   select {
-    margin: 13px 0;
+    margin: 13px auto;
     width: 40%;
   }
   button {

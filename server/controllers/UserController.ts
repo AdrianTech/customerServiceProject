@@ -12,8 +12,6 @@ import functions from "../utils/functions";
 import { cookieOptions } from "../utils/config";
 import emailHandler from "../utils/emailHandler";
 import ClientModel from "../models/clientModel";
-import cronJob from "../utils/cronJob";
-import userModel from "../models/userModel";
 
 export default class UseController {
   public async userLogin(req: Request, res: Response) {
@@ -85,7 +83,7 @@ export default class UseController {
     try {
       const user = await UserModel.create(req.body);
       if (sendEmail) {
-        const html = functions.createEmailHtml(user, "Your account was created. Now click the button and set up your password");
+        const html = functions.createEmailHtml(user, "Your account was created. Now click the button and set up your password", req);
         emailHandler.sendEmail({ email, html });
       }
       const data = await UserModel.find().select("-password");

@@ -1,7 +1,7 @@
 <template>
   <div class="switch">
+    <label>{{ checked ? data.nameOff : data.nameOn }}</label>
     <input type="checkbox" v-model="checked" @change="onChange" />
-    <label>{{checked ? data.nameOff : data.nameOn}}</label>
   </div>
 </template>
 
@@ -13,25 +13,18 @@ export default {
       nameOn: String,
       nameOff: String,
       state: Boolean,
-      method: Function,
-      route: String
-    }
+    },
   },
   data() {
     return {
-      checked: this.data.state
+      checked: this.data.state,
     };
   },
   methods: {
     onChange() {
-      const settings = {
-        route: this.data.route,
-        value: this.checked
-      };
-      this.data.method(settings);
       this.$emit("checkedEvent", this.checked);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -39,12 +32,15 @@ export default {
 .switch {
   @include flexCentered;
   font-family: $openSans;
+  margin: 20px 0;
 }
 label {
-  margin-left: 10px;
+  margin: 3px;
+  font-size: 15px;
 }
 input[type="checkbox"] {
   appearance: none;
+  border: none;
   position: relative;
   width: 65px;
   height: 30px;
@@ -81,10 +77,11 @@ input[type="checkbox"] {
 }
 @media (min-width: 768px) {
   input[type="checkbox"] {
-    transform: scale(1);
+    margin-left: 20px;
   }
   label {
     font-size: 19px;
+    margin-left: 10px;
   }
 }
 @media (min-width: 1000px) {
