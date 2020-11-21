@@ -3,47 +3,50 @@
     <div class="userSettings">
       <h4>{{ name }}, update one or many fields</h4>
       <div class="showData">
-        <table @change="isUpdateData">
-          <tr>
-            <th>Name</th>
-            <td>
-              <input type="text" v-model.trim="user.loginname" :placeholder="name" />
-            </td>
-          </tr>
-          <tr>
-            <th>Email</th>
-            <td>
-              <input
-                type="email"
-                v-model.trim="user.email"
-                :placeholder="user_email"
-                autocomplete="new-email"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>New Password</th>
-            <td>
-              <input
-                type="password"
-                v-model.trim="user.password"
-                placeholder="New password here..."
-                autocomplete="new-password"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Repeat password</th>
-            <td>
-              <input
-                type="password"
-                v-model.trim="user.repeatPass"
-                placeholder="Repeat password..."
-                :disabled="!user.password"
-              />
-            </td>
-          </tr>
-        </table>
+        <form action>
+          <table @change="isUpdateData">
+            <tr>
+              <th>Name</th>
+              <td>
+                <input type="text" v-model.trim="user.loginname" :placeholder="name" />
+              </td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>
+                <input
+                  type="email"
+                  v-model.trim="user.email"
+                  :placeholder="user_email"
+                  autocomplete="new-email"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>New Password</th>
+              <td>
+                <input
+                  type="password"
+                  v-model.trim="user.password"
+                  placeholder="New password here..."
+                  autocomplete="new-password"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Repeat password</th>
+              <td>
+                <input
+                  type="password"
+                  v-model.trim="user.repeatPass"
+                  autocomplete="new-password"
+                  placeholder="Repeat password..."
+                  :disabled="!user.password"
+                />
+              </td>
+            </tr>
+          </table>
+        </form>
         <button @click="update">Update</button>
       </div>
     </div>

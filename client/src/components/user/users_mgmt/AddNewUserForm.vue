@@ -6,10 +6,7 @@
     <label>User email</label>
     <input type="email" v-model.trim="email" />
     <div>
-      <SwitchToggle
-        :data="{nameOff: 'Email will be send' , nameOn: `Send email to new user?`, state: false}"
-        @checkedEvent="checkedEvent"
-      />
+      <SwitchToggle :data="{ nameOff: 'Email will be send', nameOn: `Send email to new user?`, state: sendEmail }" @checkedEvent="checkedEvent" />
     </div>
     <select v-model="role">
       <option disabled value>Select role</option>
@@ -34,7 +31,7 @@ export default {
       loginname: "",
       email: "",
       sendEmail: false,
-      role: ""
+      role: "",
     };
   },
   methods: {
@@ -44,18 +41,17 @@ export default {
       if (resolve) {
         this.errHandler({ msg: "Added new member", status: 200 });
         clearData(this.$data);
+        this.sendEmail = false;
       }
     },
     async create() {
       const { err, status } = await userValidation(this.$data);
-      status
-        ? this.createHandler()
-        : this.errHandler({ msg: err[0], status: 400 });
+      status ? this.createHandler() : this.errHandler({ msg: err[0], status: 400 });
     },
     checkedEvent(val) {
       this.sendEmail = val;
-    }
-  }
+    },
+  },
 };
 </script>
 

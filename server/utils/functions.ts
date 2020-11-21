@@ -44,7 +44,7 @@ class Functions {
   public createEmailHtml(user: IUser, text: string, req?: any): string {
     const token = jwt.sign({ user: user._id }, KEY, { expiresIn: "2h" });
     let setHostname: string = "";
-    !req.secure ? (setHostname = "http://localhost:8080") : (setHostname = "https://" + req.headers.host);
+    process.env.NODE_ENV === "dev" ? (setHostname = "http://localhost:8080") : (setHostname = "https://" + req.headers.host);
     return `
     <div style="font-family: Tahoma">
     <h3>${text}</h3>

@@ -10,6 +10,8 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
+import SettingsModel from "./models/settingsModel";
+import cronJob from "./utils/cronJob";
 mongoose.set("useFindAndModify", false);
 dotenv.config();
 
@@ -27,6 +29,7 @@ class App {
     this.serviceRoute.routes(this.app);
     this.settingsRoute.routes(this.app);
     this.dbSetup();
+    this.setEmailNotifications();
     this.handleWrongRequest();
   }
 
@@ -39,6 +42,10 @@ class App {
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*"), next();
     });
+  }
+  private async setEmailNotifications() {
+    const data: any = await SettingsModel.find();
+    data[0].emailNotifications && cronJob.clientChecker();
   }
   private handleWrongRequest(): void {
     this.app.all("*", (req: Request, res: Response) => {

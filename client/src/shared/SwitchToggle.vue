@@ -1,7 +1,7 @@
 <template>
   <div class="switch">
     <label>{{ checked ? data.nameOff : data.nameOn }}</label>
-    <input type="checkbox" v-model="checked" @change="onChange" />
+    <input type="checkbox" :class="[state && 'active']" v-model="checked" @change="onChange" />
   </div>
 </template>
 
@@ -12,19 +12,24 @@ export default {
     data: {
       nameOn: String,
       nameOff: String,
-      state: Boolean,
-    },
+      state: Boolean
+    }
   },
   data() {
     return {
-      checked: this.data.state,
+      checked: this.data.state
     };
+  },
+  computed: {
+    state() {
+      return this.data.state;
+    }
   },
   methods: {
     onChange() {
       this.$emit("checkedEvent", this.checked);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -66,11 +71,17 @@ input[type="checkbox"] {
     position: absolute;
     transition: 0.3s;
   }
-  &:checked {
-    background-color: #1fa504;
-    &::before {
-      left: 35px;
-    }
+  // &:checked {
+  //   background-color: #1fa504;
+  //   &::before {
+  //     left: 35px;
+  //   }
+  // }
+}
+.active:checked {
+  background-color: #1fa504;
+  &::before {
+    left: 35px;
   }
 }
 @media (min-width: 500px) {

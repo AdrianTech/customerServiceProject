@@ -4,8 +4,10 @@ import emailHandler from "../../utils/emailHandler";
 import functions from "../../utils/functions";
 import queries from "../../utils/queries";
 import moment from "moment-timezone";
+import Dotenv from "dotenv";
 import { IServices } from "../../types/types";
 import { Request, Response } from "express";
+Dotenv.config();
 
 export default class ClientController {
   public async addNewClient(req: Request, res: Response) {

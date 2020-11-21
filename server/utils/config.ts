@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 export type IRanges = {
   last_14days: number;
   last_7days: number;
@@ -7,9 +9,9 @@ export type IRanges = {
 export const cookieOptions = {
   maxAge: 1000 * 60 * 60 * 5,
   sameSite: true,
-  // secure: true,
-  // httpOnly: true,
-  // domain: "test.adriantech.eu",
+  secure: process.env.NODE_ENV === "prod" ? true : false,
+  httpOnly: true,
+  domain: process.env.NODE_ENV === "prod" ? "test.adriantech.eu" : "localhost",
 };
 export const ranges: IRanges = {
   last_day: 1,
