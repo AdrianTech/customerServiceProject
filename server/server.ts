@@ -6,6 +6,7 @@ import ServiceRoute from "./routes/service";
 import SettingsRoute from "./routes/settings";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import history from "connect-history-api-fallback";
 import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -36,6 +37,7 @@ class App {
   private config(): void {
     this.app.use(bodyParser.json());
     this.app.use(cookieParser());
+    this.app.use(history());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(helmet.hidePoweredBy({ setTo: "None" }));
     this.app.use(express.static(path.join(__dirname, "public")));
@@ -47,9 +49,9 @@ class App {
     const data: any = await SettingsModel.find();
     data[0].emailNotifications && cronJob.clientChecker();
   }
-  private handleWrongRequest(): void {
-    this.app.all("*", (req: Request, res: Response) => {
-      res.redirect("/");
+  private handleWrongRequest() {
+    this.app.get("*", async (req: Request, res: Response) => {
+      res.send("<h2>Nothing Found</h2>");
     });
   }
 

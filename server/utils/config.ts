@@ -6,12 +6,17 @@ export type IRanges = {
   last_day: number;
 };
 
-export const cookieOptions = {
-  maxAge: 1000 * 60 * 60 * 5,
+export const cookieOptionsDev = {
+  maxAge: 1000 * 60 * 60 * 2,
   sameSite: true,
-  secure: process.env.NODE_ENV === "prod" ? true : false,
   httpOnly: true,
-  domain: process.env.NODE_ENV === "prod" ? "test.adriantech.eu" : "localhost",
+};
+export const cookieOptionsProd = {
+  maxAge: 1000 * 60 * 60 * 2,
+  sameSite: true,
+  secure: true,
+  httpOnly: true,
+  domain: "service.adriantech.eu",
 };
 export const ranges: IRanges = {
   last_day: 1,

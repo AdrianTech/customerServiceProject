@@ -43,12 +43,12 @@ class Functions {
   }
   public createEmailHtml(user: IUser, text: string, req?: any): string {
     const token = jwt.sign({ user: user._id }, KEY, { expiresIn: "2h" });
-    let setHostname: string = "";
-    process.env.NODE_ENV === "dev" ? (setHostname = "http://localhost:8080") : (setHostname = "https://" + req.headers.host);
+    // let setHostname: string = "";
+    // process.env.NODE_ENV === "dev" ? (setHostname = "http://localhost:8080") : (setHostname = req.headers.origin);
     return `
     <div style="font-family: Tahoma">
     <h3>${text}</h3>
-    <a href="${setHostname}/your-settings/set-password?id=${encodeURIComponent(user._id)}&name=${encodeURIComponent(user.loginname)}&token=${encodeURIComponent(
+    <a href="${process.env.HOST_NAME}/your-settings/set-password?id=${encodeURIComponent(user._id)}&name=${encodeURIComponent(user.loginname)}&token=${encodeURIComponent(
       token
     )}"><button style="padding: 12px; margin: 20px; font-family: Tahoma; border-radius: 6px; background-color: darkblue; color: white; border: 1px solid black; font-weight: 700; cursor: pointer">Set your password</button></a>
     </div>

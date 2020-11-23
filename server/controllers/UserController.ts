@@ -9,7 +9,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import functions from "../utils/functions";
-import { cookieOptions } from "../utils/config";
+import { cookieOptionsProd, cookieOptionsDev } from "../utils/config";
 import emailHandler from "../utils/emailHandler";
 import ClientModel from "../models/clientModel";
 
@@ -33,7 +33,7 @@ export default class UseController {
         role: user.role,
         loginname: user.loginname,
       };
-      res.cookie("Auth", auth, cookieOptions);
+      res.cookie("Auth", auth, process.env.NODE_ENV === "prod" ? cookieOptionsProd : cookieOptionsDev);
       return res.status(200).json(userRes);
     }
   }

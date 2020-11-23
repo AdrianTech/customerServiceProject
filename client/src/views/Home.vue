@@ -4,7 +4,7 @@
     <template v-else>
       <h1>Welcome, {{userData.loginname}}</h1>
       <div class="introduction">
-        <h3>Client manager main functions:</h3>
+        <h3>Main functions of the app:</h3>
         <ul>
           <li>Add new client and manage his services</li>
           <li>Send an email to the client</li>
