@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Services } from "../models/servicesModel";
+import { Services } from "../schemes/servicesModel";
 import mongoose from "mongoose";
 const ServicesModel = mongoose.model("services", Services);
 import moment from "moment-timezone";

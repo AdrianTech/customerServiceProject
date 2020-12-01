@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 const KEY: string = <string>process.env.KEY;
-import model from "../models/userModel";
+import model from "../schemes/userModel";
 import { IUser } from "../types/types";
 const UserModel = mongoose.model<IUser>("users", model);
 import { Request, Response } from "express";
@@ -11,7 +11,7 @@ import bcrypt from "bcrypt";
 import functions from "../utils/functions";
 import { cookieOptionsProd, cookieOptionsDev } from "../utils/config";
 import emailHandler from "../utils/emailHandler";
-import ClientModel from "../models/clientModel";
+import ClientModel from "../schemes/clientModel";
 
 export default class UseController {
   public async userLogin(req: Request, res: Response) {

@@ -6,7 +6,7 @@
           <router-link to="/">Home</router-link>
         </li>
         <li>
-          <router-link to="/clients-list">Client List</router-link>
+          <router-link to="/clients-list">Clients</router-link>
         </li>
         <li>
           <router-link to="/services-list">Services</router-link>
@@ -23,13 +23,7 @@
           </ul>
         </li>
         <button class="logout" v-if="isLogged" @click="logout">
-          <svg
-            width="120"
-            height="117"
-            viewBox="0 0 120 117"
-            fill="#fff"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="120" height="117" viewBox="0 0 120 117" fill="#fff" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -44,18 +38,17 @@
   </header>
 </template>
 
-
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Header",
   data() {
     return {
-      dropdownMenu: false
+      dropdownMenu: false,
     };
   },
   computed: {
-    ...mapGetters(["isLogged"])
+    ...mapGetters(["isLogged"]),
   },
   methods: {
     ...mapActions(["logoutUser"]),
@@ -64,8 +57,8 @@ export default {
     },
     showDropdownMenu() {
       this.dropdownMenu = !this.dropdownMenu;
-    }
-  }
+    },
+  },
 };
 </script>
 

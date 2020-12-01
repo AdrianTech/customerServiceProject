@@ -13,8 +13,14 @@
       placeholder="Min 1 month, max 36 months"
     />
     <div class="total">
-      <span>Unit price: {{service.unitPrice}}</span>
-      <span>Total: {{total.toFixed(2)}}</span>
+      <span>
+        Unit price: {{service.unitPrice}}
+        <p v-html="currCode" class="codeP"></p>
+      </span>
+      <span>
+        Total: {{total.toFixed(2)}}
+        <p v-html="currCode" class="codeP"></p>
+      </span>
     </div>
   </div>
 </template>
@@ -25,9 +31,12 @@ export default {
   name: "ServicesChoice",
   props: ["service", "totalSum"],
   computed: {
-    ...mapGetters(["eventInfo"]),
+    ...mapGetters(["eventInfo", "appSettings"]),
     total() {
       return this.service.months * this.service.unitPrice;
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   methods: {

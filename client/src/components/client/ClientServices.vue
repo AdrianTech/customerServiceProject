@@ -23,11 +23,17 @@
       </li>
       <li>
         <span>Unit Price</span>
-        <span>{{ unitPrice }} / mo</span>
+        <span>
+          {{ unitPrice }}
+          <p class="codeP" v-html="currCode"></p>/ mo
+        </span>
       </li>
       <li>
         <span>Total price</span>
-        <span>{{ totalPrice }}</span>
+        <span>
+          {{ totalPrice }}
+          <p class="codeP" v-html="currCode"></p>
+        </span>
       </li>
       <li>{{ daysCounter > 0 ? `${daysCounter} days left` : `${daysCounter} days late` }}</li>
       <li @click="openModal(service._id)" class="service-actions">Extend this service</li>
@@ -61,7 +67,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["modals", "currentClientsPage"]),
+    ...mapGetters(["modals", "currentClientsPage", "appSettings"]),
     open() {
       return this.modals.find(i => this.service._id === i.id && i.open);
     },
@@ -82,6 +88,9 @@ export default {
         this.service.startTime,
         "months"
       );
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     },
     changeTime() {
       const guess = moment.tz.guess();

@@ -1,4 +1,4 @@
-import ClientModel from "../models/clientModel";
+import ClientModel from "../schemes/clientModel";
 import uniqBy from "lodash.uniqby";
 
 class Queries {

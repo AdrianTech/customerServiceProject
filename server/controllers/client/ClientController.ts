@@ -1,4 +1,4 @@
-import ClientModel from "../../models/clientModel";
+import ClientModel from "../../schemes/clientModel";
 import TimeHandler from "../../utils/timeHandler";
 import emailHandler from "../../utils/emailHandler";
 import functions from "../../utils/functions";

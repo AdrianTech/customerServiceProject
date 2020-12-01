@@ -15,13 +15,19 @@
     <div class="item">
       <p>
         Your total income
-        <span>{{yourTotalIncome}}</span>
+        <span>
+          {{yourTotalIncome}}
+          <p class="codeP" v-html="currCode"></p>
+        </span>
       </p>
     </div>
     <div class="item">
       <p>
         Average income per client
-        <span>{{(yourTotalIncome / clientsLength).toFixed(2)}}</span>
+        <span>
+          {{(yourTotalIncome / clientsLength).toFixed(2)}}
+          <p class="codeP" v-html="currCode"></p>
+        </span>
       </p>
     </div>
     <div class="item">
@@ -40,7 +46,7 @@ export default {
   name: "Statistics",
   props: ["clients"],
   computed: {
-    ...mapGetters(["clientData"]),
+    ...mapGetters(["clientData", "appSettings"]),
     totalNumberOfServices() {
       return this.clients.reduce(
         (acc, { typeOfService }) => acc + typeOfService.length,
@@ -54,6 +60,9 @@ export default {
     },
     clientsLength() {
       return this.clients.length;
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   methods: {

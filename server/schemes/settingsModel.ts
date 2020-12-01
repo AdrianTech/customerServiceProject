@@ -13,6 +13,7 @@ const settingsSchema = new Schema({
     default: "dolar",
     type: String,
   },
+  currencyCode: String,
   emailNotifications: {
     type: Boolean,
     default: false,

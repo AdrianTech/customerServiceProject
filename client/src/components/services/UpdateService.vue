@@ -17,7 +17,10 @@
       <div class="itemList">
         <label @click="displayInput('unitPrice')">
           Change unit price
-          <span>[{{ unitPrice }}]</span>
+          <span>
+            [{{ unitPrice }}]
+            <p v-html="currCode" class="codeP"></p>
+          </span>
         </label>
         <input
           v-model.number.trim="clickedObj[1].value.unitPrice"
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { serviceValidation } from "../../shared/validate.js";
 export default {
   name: "UpdateService",
@@ -61,6 +64,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["appSettings"]),
     name() {
       return this.service.name;
     },
@@ -69,6 +73,9 @@ export default {
     },
     unitPrice() {
       return this.service.unitPrice;
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   methods: {

@@ -1,7 +1,7 @@
 import { IServices, IUser } from "../types/types";
-import ClientModel from "../models/clientModel";
+import ClientModel from "../schemes/clientModel";
 import moment from "moment-timezone";
-import { ServicesModel } from "../models/servicesModel";
+import { ServicesModel } from "../schemes/servicesModel";
 import dotenv from "dotenv";
 dotenv.config();
 import jwt from "jsonwebtoken";
@@ -43,8 +43,6 @@ class Functions {
   }
   public createEmailHtml(user: IUser, text: string, req?: any): string {
     const token = jwt.sign({ user: user._id }, KEY, { expiresIn: "2h" });
-    // let setHostname: string = "";
-    // process.env.NODE_ENV === "dev" ? (setHostname = "http://localhost:8080") : (setHostname = req.headers.origin);
     return `
     <div style="font-family: Tahoma">
     <h3>${text}</h3>
@@ -60,6 +58,12 @@ class Functions {
   }
   public totalIncomeHelper(services: Array<IServices>) {
     return services.reduce((acc: any, curr) => acc + curr.totalPrice, 0).toFixed(2);
+  }
+  public setCurrencyCode(str: String) {
+    if (str === "euro") return "&euro;";
+    if (str === "pound") return "&pound;";
+    if (str === "dolar") return "&dollar;";
+    if (str === "zloty") return "PLN";
   }
 }
 

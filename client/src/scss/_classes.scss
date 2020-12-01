@@ -48,6 +48,9 @@ input {
   font-family: "Open Sans";
   font-weight: 700;
 }
+.codeP {
+  display: inline;
+}
 @media (min-width: 768px) {
   .modal-btn {
     padding: 5px;

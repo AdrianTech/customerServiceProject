@@ -25,8 +25,14 @@
         />
         <div class="total-item">
           Unit price:
-          <span>{{ service.unitPrice }}</span> Total:
-          <span>{{ service.total.toFixed(2) }}</span>
+          <span>
+            {{ service.unitPrice }}
+            <p class="codeP" v-html="currCode"></p>
+          </span> Total:
+          <span>
+            {{ service.total.toFixed(2) }}
+            <p class="codeP" v-html="currCode"></p>
+          </span>
         </div>
       </div>
     </form>
@@ -63,8 +69,12 @@ export default {
       "clientData",
       "eventInfo",
       "currentClientsPage",
-      "dataLoaded"
-    ])
+      "dataLoaded",
+      "appSettings"
+    ]),
+    currCode() {
+      return this.appSettings.currencyCode;
+    }
   },
   methods: {
     ...mapActions(["addNewServiceToClient", "errHandler"]),

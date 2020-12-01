@@ -7,22 +7,25 @@ module.exports = {
   entry: "./server/app.ts",
   mode: NODE_ENV,
   target: "node",
+  node: {
+    __dirname: false, // disables webpack from changing what __dirname does
+  },
   watch: NODE_ENV === "development",
   externals: [nodeExternals()],
   output: {
     path: path.resolve(__dirname, "./server/build"),
-    filename: "app.js"
+    filename: "app.js",
   },
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: ["ts-loader"]
-      }
-    ]
-  }
+        use: ["ts-loader"],
+      },
+    ],
+  },
 };

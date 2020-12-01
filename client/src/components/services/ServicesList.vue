@@ -6,7 +6,10 @@
     </h3>
     <h4>
       Unit price:
-      <span>{{ unitPrice }}</span>
+      <span>
+        {{ unitPrice }}
+        <p class="codeP" v-html="currCode"></p>
+      </span>
     </h4>
     <h4>
       Created:
@@ -37,7 +40,7 @@ export default {
   props: ["service", "allServicesFunc"],
   components: { Modal, UpdateService },
   computed: {
-    ...mapGetters(["services", "modals"]),
+    ...mapGetters(["services", "modals", "appSettings"]),
     id() {
       return this.service._id;
     },
@@ -52,6 +55,9 @@ export default {
     },
     updateOpen() {
       return findObj(this.modals, this.id);
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   methods: {

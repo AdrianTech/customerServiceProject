@@ -31,10 +31,10 @@
           @click="openModal(history)"
         >Client's history</button>
       </h3>
-      <span
-        v-if="data.typeOfService.length > 0"
-        class="totalIncome"
-      >Your total income: {{data.totalIncome}}</span>
+      <span v-if="data.typeOfService.length > 0" class="totalIncome">
+        Your total income: {{data.totalIncome}}
+        <p class="codeP" v-html="currCode"></p>
+      </span>
     </div>
     <div
       v-if="data.typeOfService.length > 0"
@@ -106,7 +106,7 @@ export default {
       : (this.data = this.prop);
   },
   computed: {
-    ...mapGetters(["clientData", "modals"]),
+    ...mapGetters(["clientData", "modals", "appSettings"]),
     addServiceOpen() {
       return findObj(this.modals, this.addServiceID);
     },
@@ -118,6 +118,9 @@ export default {
     },
     consumerHistory() {
       return findObj(this.modals, this.history);
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   watch: {

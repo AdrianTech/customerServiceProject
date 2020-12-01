@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import ClientModel from "../models/clientModel";
+import ClientModel from "../schemes/clientModel";
 import { IClient, IServices } from "../types/types";
 import { ranges } from "../utils/config";
 import emailHandler from "./emailHandler";

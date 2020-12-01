@@ -12,7 +12,10 @@
       <button class="btn" :disabled="!client.email">Submit</button>
       <div class="total">
         Total value of selected services:
-        <span>{{total.toFixed(2)}}</span>
+        <span>
+          {{total.toFixed(2)}}
+          <p v-html="currCode" class="codeP"></p>
+        </span>
       </div>
     </form>
     <Modal v-if="open" :modalID="modalID">
@@ -26,7 +29,11 @@
             @totalSum="totalFunc"
           />
         </div>
-        <p>Total value: {{total.toFixed(2)}}</p>
+        <span>
+          Total value: {{total.toFixed(2)}}
+          <p v-html="currCode" class="codeP"></p>
+        </span>
+
         <button @click.prevent="openModal(modalID)" class="modal-btn">I choosen</button>
       </div>
     </Modal>
@@ -60,9 +67,12 @@ export default {
     this.setServicesArr();
   },
   computed: {
-    ...mapGetters(["eventInfo", "services", "modals"]),
+    ...mapGetters(["eventInfo", "services", "modals", "appSettings"]),
     open() {
       return findObj(this.modals, this.modalID);
+    },
+    currCode() {
+      return this.appSettings.currencyCode;
     }
   },
   methods: {

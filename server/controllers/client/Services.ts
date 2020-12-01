@@ -1,6 +1,6 @@
 import { IServices } from "../../types/types";
 import TimeHandler from "../../utils/timeHandler";
-import ClientModel from "../../models/clientModel";
+import ClientModel from "../../schemes/clientModel";
 import functions from "../../utils/functions";
 import queries from "../../utils/queries";
 import { Request, Response } from "express";
